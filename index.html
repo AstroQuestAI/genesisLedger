@@ -682,78 +682,146 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">Appearance</p>
           </div>
 
-          <!-- Theme -->
-          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
-            <p class="sg" style="font-size:11px;font-weight:700;color:var(--fg);margin-bottom:8px">Theme</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px" id="theme-grid">
-              <button onclick="setTheme('cyber')" class="theme-btn active-theme" id="theme-cyber"
-                style="border-radius:10px;padding:10px 6px;cursor:pointer;border:1px solid rgba(0,240,255,.4);background:rgba(0,240,255,.08);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s">
-                <div style="width:28px;height:18px;border-radius:5px;background:linear-gradient(135deg,#111127,#1d1d34);border:1px solid #00f0ff;position:relative">
-                  <div style="position:absolute;bottom:3px;left:3px;right:3px;height:2px;border-radius:2px;background:linear-gradient(90deg,#ff24e4,#00f0ff)"></div>
-                </div>
-                <span class="sg" style="font-size:9px;font-weight:700;color:var(--cyan)">Cyber</span>
-              </button>
-              <button onclick="setTheme('midnight')" class="theme-btn" id="theme-midnight"
-                style="border-radius:10px;padding:10px 6px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s">
-                <div style="width:28px;height:18px;border-radius:5px;background:linear-gradient(135deg,#0a0a0f,#1a1a2e);border:1px solid rgba(255,255,255,.15);position:relative">
-                  <div style="position:absolute;bottom:3px;left:3px;right:3px;height:2px;border-radius:2px;background:linear-gradient(90deg,#818cf8,#c084fc)"></div>
-                </div>
-                <span class="sg" style="font-size:9px;font-weight:700;color:var(--fg-dim)">Midnight</span>
-              </button>
-              <button onclick="setTheme('forest')" class="theme-btn" id="theme-forest"
-                style="border-radius:10px;padding:10px 6px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s">
-                <div style="width:28px;height:18px;border-radius:5px;background:linear-gradient(135deg,#0d1f0e,#1a3a1c);border:1px solid rgba(52,211,153,.3);position:relative">
-                  <div style="position:absolute;bottom:3px;left:3px;right:3px;height:2px;border-radius:2px;background:linear-gradient(90deg,#34d399,#86efac)"></div>
-                </div>
-                <span class="sg" style="font-size:9px;font-weight:700;color:var(--fg-dim)">Forest</span>
-              </button>
-              <button onclick="setTheme('ember')" class="theme-btn" id="theme-ember"
-                style="border-radius:10px;padding:10px 6px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s">
-                <div style="width:28px;height:18px;border-radius:5px;background:linear-gradient(135deg,#1f0d0d,#3a1a1a);border:1px solid rgba(251,146,60,.3);position:relative">
-                  <div style="position:absolute;bottom:3px;left:3px;right:3px;height:2px;border-radius:2px;background:linear-gradient(90deg,#fb923c,#f87171)"></div>
-                </div>
-                <span class="sg" style="font-size:9px;font-weight:700;color:var(--fg-dim)">Ember</span>
-              </button>
-              <button onclick="setTheme('arctic')" class="theme-btn" id="theme-arctic"
-                style="border-radius:10px;padding:10px 6px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s">
-                <div style="width:28px;height:18px;border-radius:5px;background:linear-gradient(135deg,#e8f4f8,#d1ecf5);border:1px solid rgba(56,189,248,.4);position:relative">
-                  <div style="position:absolute;bottom:3px;left:3px;right:3px;height:2px;border-radius:2px;background:linear-gradient(90deg,#0ea5e9,#38bdf8)"></div>
-                </div>
-                <span class="sg" style="font-size:9px;font-weight:700;color:var(--fg-dim)">Arctic</span>
-              </button>
-              <button onclick="setTheme('gold')" class="theme-btn" id="theme-gold"
-                style="border-radius:10px;padding:10px 6px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s">
-                <div style="width:28px;height:18px;border-radius:5px;background:linear-gradient(135deg,#1a1400,#2e2200);border:1px solid rgba(234,179,8,.35);position:relative">
-                  <div style="position:absolute;bottom:3px;left:3px;right:3px;height:2px;border-radius:2px;background:linear-gradient(90deg,#eab308,#fde047)"></div>
-                </div>
-                <span class="sg" style="font-size:9px;font-weight:700;color:var(--fg-dim)">Gold</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Accent colour -->
+          <!-- Theme dropdown -->
           <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <p class="sg" style="font-size:11px;font-weight:700;color:var(--fg)">Accent Colour</p>
-              <div id="accent-preview" style="width:20px;height:20px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="ms" style="font-size:17px;color:var(--cyan)">style</span>
+                <div>
+                  <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Theme</p>
+                  <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Colours + background preset</p>
+                </div>
+              </div>
+              <div id="theme-preview-dot" style="width:20px;height:20px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0"></div>
             </div>
-            <div style="display:flex;gap:8px">
-              <button onclick="setAccent('#00f0ff')" style="width:24px;height:24px;border-radius:50%;background:#00f0ff;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #00f0ff40"></button>
-              <button onclick="setAccent('#ff24e4')" style="width:24px;height:24px;border-radius:50%;background:#ff24e4;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #ff24e440"></button>
-              <button onclick="setAccent('#eeff96')" style="width:24px;height:24px;border-radius:50%;background:#eeff96;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #eeff9640"></button>
-              <button onclick="setAccent('#34d399')" style="width:24px;height:24px;border-radius:50%;background:#34d399;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #34d39940"></button>
-              <button onclick="setAccent('#fb923c')" style="width:24px;height:24px;border-radius:50%;background:#fb923c;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #fb923c40"></button>
-              <button onclick="setAccent('#a78bfa')" style="width:24px;height:24px;border-radius:50%;background:#a78bfa;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #a78bfa40"></button>
-              <button onclick="setAccent('#f472b6')" style="width:24px;height:24px;border-radius:50%;background:#f472b6;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #f472b640"></button>
-              <button onclick="setAccent('#38bdf8')" style="width:24px;height:24px;border-radius:50%;background:#38bdf8;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;box-shadow:0 0 6px #38bdf840"></button>
-            </div>
+            <select id="theme-select" onchange="setTheme(this.value)"
+              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+              <optgroup label="── Dark Themes ──" style="background:var(--bg-con);color:var(--out)">
+                <option value="cyber">Cyber — Deep space, cyan glow</option>
+                <option value="midnight">Midnight — Pure black, purple</option>
+                <option value="forest">Forest — Dark green, emerald</option>
+                <option value="ember">Ember — Dark red, orange</option>
+                <option value="ocean">Ocean — Deep blue, sky</option>
+                <option value="gold">Gold — Dark, golden yellow</option>
+                <option value="violet">Violet — Dark purple, lavender</option>
+                <option value="crimson">Crimson — Dark, red accent</option>
+                <option value="rose">Rose — Dark, pink accent</option>
+                <option value="teal">Teal — Dark, teal glow</option>
+              </optgroup>
+              <optgroup label="── Light Themes ──" style="background:var(--bg-con);color:var(--out)">
+                <option value="snow">Snow — Clean white, sky blue</option>
+                <option value="paper">Paper — Warm white, teal</option>
+                <option value="blossom">Blossom — Rose white, red</option>
+                <option value="sage">Sage — Mint green, forest</option>
+                <option value="sand">Sand — Warm cream, gold</option>
+                <option value="lavender">Lavender — Soft purple, violet</option>
+                <option value="sky">Sky — Light blue, ocean</option>
+                <option value="peach">Peach — Warm orange, amber</option>
+              </optgroup>
+            </select>
           </div>
 
-          <!-- Font size -->
+          <!-- Accent colour dropdown -->
+          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="ms" style="font-size:17px;color:var(--cyan)">colorize</span>
+                <div>
+                  <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Accent Colour</p>
+                  <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Highlights, buttons, glows</p>
+                </div>
+              </div>
+              <div id="accent-preview" style="width:20px;height:20px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0"></div>
+            </div>
+            <select id="accent-select" onchange="setAccentFromSelect(this.value)"
+              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+              <option value="#00f0ff">Cyan — Electric blue</option>
+              <option value="#ff24e4">Magenta — Neon pink</option>
+              <option value="#eeff96">Lime — Acid yellow</option>
+              <option value="#34d399">Emerald — Fresh green</option>
+              <option value="#fb923c">Orange — Warm amber</option>
+              <option value="#a78bfa">Violet — Soft purple</option>
+              <option value="#f472b6">Pink — Hot rose</option>
+              <option value="#38bdf8">Sky — Light blue</option>
+              <option value="#fbbf24">Gold — Warm yellow</option>
+              <option value="#ef4444">Red — Bright crimson</option>
+              <option value="#2dd4bf">Teal — Cool mint</option>
+              <option value="#e2e8f0">Silver — Neutral white</option>
+            </select>
+          </div>
+
+          <!-- Text colour dropdown -->
+          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <span class="ms" style="font-size:17px;color:var(--cyan)">format_color_text</span>
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Text Colour</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Primary text across all screens</p>
+              </div>
+            </div>
+            <select id="text-select" onchange="setTextColor(this.value)"
+              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+              <option value="#e2dffe">Default — Soft white</option>
+              <option value="#ffffff">Pure White</option>
+              <option value="#f8fafc">Snow White</option>
+              <option value="#e2e8f0">Light Grey</option>
+              <option value="#cbd5e1">Muted Silver</option>
+              <option value="#fef3c7">Warm Cream</option>
+              <option value="#d1fae5">Mint</option>
+              <option value="#0f172a">Dark (for light themes)</option>
+              <option value="#1c1917">Charcoal (for light themes)</option>
+              <option value="#14532d">Forest (for light themes)</option>
+            </select>
+          </div>
+
+          <!-- Background dropdown -->
+          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <span class="ms" style="font-size:17px;color:var(--cyan)">gradient</span>
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Background</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Override theme background</p>
+              </div>
+            </div>
+            <select id="bg-select" onchange="setBgColor(this.value)"
+              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+              <optgroup label="── Dark ──" style="background:var(--bg-con)">
+                <option value="#111127">Deep Space #111127</option>
+                <option value="#0a0a0f">Pure Black #0a0a0f</option>
+                <option value="#0f172a">Dark Navy #0f172a</option>
+                <option value="#050d1a">Ocean Deep #050d1a</option>
+                <option value="#0d1a0e">Dark Forest #0d1a0e</option>
+                <option value="#1a0a0a">Dark Ember #1a0a0a</option>
+                <option value="#130d1f">Dark Violet #130d1f</option>
+                <option value="#0f0d00">Dark Gold #0f0d00</option>
+                <option value="#170007">Dark Crimson #170007</option>
+                <option value="#021a18">Dark Teal #021a18</option>
+                <option value="#1a1a2e">Indigo #1a1a2e</option>
+                <option value="#0d0d0d">Charcoal #0d0d0d</option>
+              </optgroup>
+              <optgroup label="── Light ──" style="background:var(--bg-con)">
+                <option value="#f8fafc">Snow #f8fafc</option>
+                <option value="#fafaf9">Paper #fafaf9</option>
+                <option value="#fff1f2">Blossom #fff1f2</option>
+                <option value="#f0fdf4">Mint #f0fdf4</option>
+                <option value="#fefce8">Cream #fefce8</option>
+                <option value="#f5f3ff">Lavender #f5f3ff</option>
+                <option value="#f0f9ff">Sky #f0f9ff</option>
+                <option value="#fff7ed">Peach #fff7ed</option>
+                <option value="#fdf4ff">Lilac #fdf4ff</option>
+                <option value="#ecfdf5">Seafoam #ecfdf5</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- Text size -->
           <div style="padding:12px 14px">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <p class="sg" style="font-size:11px;font-weight:700;color:var(--fg)">Text Size</p>
-              <span class="sg" id="font-size-label" style="font-size:9px;color:var(--out)">Medium</span>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="ms" style="font-size:17px;color:var(--cyan)">text_fields</span>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Text Size</p>
+              </div>
+              <span class="sg" id="font-size-label" style="font-size:9px;color:var(--out)">Normal</span>
             </div>
             <input type="range" id="font-size-slider" min="85" max="130" value="100" step="5"
               oninput="setFontSize(this.value)"
@@ -2480,6 +2548,8 @@ async function loadFromDB(){
       sets[0].values.forEach(([k,v])=>{
         if(k==='accent') setAccent(v);
         if(k==='theme')  setTheme(v);
+        if(k==='bg')     setBgColor(v);
+        if(k==='textcolor') setTextColor(v);
         if(k==='zoom')   { const shell=document.getElementById('shell'); if(shell) shell.style.zoom=v; const sl=document.getElementById('font-size-slider'); if(sl){sl.value=Math.round(parseFloat(v)*100);const lbl=document.getElementById('font-size-label');if(lbl)lbl.textContent=FONT_LABELS[sl.value]||sl.value+'%';} }
       });
     }
@@ -2546,13 +2616,43 @@ function sortMeFirst(arr, nameKey){
 
 // ── Settings ──────────────────────────────────────────────────────────────────
 const THEMES = {
-  cyber:    {bg:'#111127', primary:'#00f0ff', secondary:'#ff24e4', accent:'#eeff96'},
-  midnight: {bg:'#0a0a0f', primary:'#818cf8', secondary:'#c084fc', accent:'#f0abfc'},
-  forest:   {bg:'#0d1a0e', primary:'#34d399', secondary:'#86efac', accent:'#d9f99d'},
-  ember:    {bg:'#1a0a0a', primary:'#fb923c', secondary:'#f87171', accent:'#fde68a'},
-  arctic:   {bg:'#e8f4f8', primary:'#0ea5e9', secondary:'#38bdf8', accent:'#0284c7'},
-  gold:     {bg:'#0f0d00', primary:'#eab308', secondary:'#fde047', accent:'#fbbf24'},
+  // ── Dark themes ─────────────────────────────────────────────
+  cyber:    {bg:'#111127', fg:'#e2dffe', primary:'#00f0ff', secondary:'#ff24e4', accent:'#eeff96', label:'Cyber',    dark:true},
+  midnight: {bg:'#0a0a0f', fg:'#e2e8f0', primary:'#818cf8', secondary:'#c084fc', accent:'#f0abfc', label:'Midnight', dark:true},
+  forest:   {bg:'#0d1a0e', fg:'#d1fae5', primary:'#34d399', secondary:'#86efac', accent:'#d9f99d', label:'Forest',   dark:true},
+  ember:    {bg:'#1a0a0a', fg:'#fef3c7', primary:'#fb923c', secondary:'#f87171', accent:'#fde68a', label:'Ember',    dark:true},
+  ocean:    {bg:'#050d1a', fg:'#e0f2fe', primary:'#38bdf8', secondary:'#818cf8', accent:'#67e8f9', label:'Ocean',    dark:true},
+  gold:     {bg:'#0f0d00', fg:'#fef9c3', primary:'#eab308', secondary:'#fde047', accent:'#fbbf24', label:'Gold',     dark:true},
+  violet:   {bg:'#130d1f', fg:'#ede9fe', primary:'#a78bfa', secondary:'#c084fc', accent:'#ddd6fe', label:'Violet',   dark:true},
+  crimson:  {bg:'#170007', fg:'#fee2e2', primary:'#ef4444', secondary:'#f87171', accent:'#fca5a5', label:'Crimson',  dark:true},
+  rose:     {bg:'#1a0a10', fg:'#fce7f3', primary:'#f472b6', secondary:'#fb7185', accent:'#fda4af', label:'Rose',     dark:true},
+  teal:     {bg:'#021a18', fg:'#ccfbf1', primary:'#2dd4bf', secondary:'#34d399', accent:'#99f6e4', label:'Teal',     dark:true},
+  // ── Light themes ─────────────────────────────────────────────
+  snow:     {bg:'#f8fafc', fg:'#0f172a', primary:'#0ea5e9', secondary:'#6366f1', accent:'#0284c7', label:'Snow',     dark:false},
+  paper:    {bg:'#fafaf9', fg:'#1c1917', primary:'#0d9488', secondary:'#7c3aed', accent:'#0f766e', label:'Paper',    dark:false},
+  blossom:  {bg:'#fff1f2', fg:'#881337', primary:'#e11d48', secondary:'#9f1239', accent:'#be123c', label:'Blossom',  dark:false},
+  sage:     {bg:'#f0fdf4', fg:'#14532d', primary:'#16a34a', secondary:'#15803d', accent:'#166534', label:'Sage',     dark:false},
+  sand:     {bg:'#fefce8', fg:'#713f12', primary:'#ca8a04', secondary:'#a16207', accent:'#854d0e', label:'Sand',     dark:false},
+  lavender: {bg:'#f5f3ff', fg:'#2e1065', primary:'#7c3aed', secondary:'#6d28d9', accent:'#5b21b6', label:'Lavender',dark:false},
+  sky:      {bg:'#f0f9ff', fg:'#0c4a6e', primary:'#0284c7', secondary:'#0369a1', accent:'#075985', label:'Sky',      dark:false},
+  peach:    {bg:'#fff7ed', fg:'#7c2d12', primary:'#ea580c', secondary:'#c2410c', accent:'#9a3412', label:'Peach',    dark:false},
 };
+
+// Background colour presets (independent of theme)
+const BG_PRESETS = [
+  {color:'#111127', label:'Deep Space'},
+  {color:'#0a0a0f', label:'Pure Black'},
+  {color:'#0f0f1a', label:'Dark Navy'},
+  {color:'#050d1a', label:'Ocean Deep'},
+  {color:'#0d1a0e', label:'Dark Forest'},
+  {color:'#1a0a0a', label:'Dark Ember'},
+  {color:'#130d1f', label:'Dark Violet'},
+  {color:'#0f0d00', label:'Dark Gold'},
+  {color:'#170007', label:'Dark Crimson'},
+  {color:'#021a18', label:'Dark Teal'},
+  {color:'#1a1a2e', label:'Indigo'},
+  {color:'#0d0d0d', label:'Charcoal'},
+];
 
 let currentTheme = 'cyber';
 let settings = {
@@ -2648,10 +2748,55 @@ function setTheme(name){
   // Highlight active theme button
   document.querySelectorAll('.theme-btn').forEach(b=>{
     const isActive = b.id === 'theme-'+name;
-    b.style.border = isActive ? '1px solid '+t.primary : '1px solid rgba(255,255,255,.1)';
-    b.style.background = isActive ? t.primary+'18' : 'rgba(255,255,255,.04)';
+    b.style.border = isActive ? '2px solid '+t.primary : '1px solid rgba(255,255,255,.1)';
+    b.style.background = isActive ? t.primary+'22' : 'rgba(255,255,255,.04)';
+    const dot = b.querySelector('.theme-dot');
+    if(dot) dot.style.boxShadow = isActive ? '0 0 8px '+t.primary : 'none';
   });
+  dbSaveSetting('theme', name);
 }
+
+// ── Accent from dropdown ──────────────────────────────────────────────────────
+function setAccentFromSelect(color){
+  setAccent(color);
+  const as = document.getElementById('accent-select');
+  if(as) as.value = color;
+}
+
+// ── Text colour ───────────────────────────────────────────────────────────────
+function setTextColor(color){
+  document.documentElement.style.setProperty('--fg', color);
+  const ts = document.getElementById('text-select');
+  if(ts) ts.value = color;
+  dbSaveSetting('textcolor', color);
+}
+
+// ── Background colour ─────────────────────────────────────────────────────────
+function setBgColor(color){
+  const root = document.documentElement;
+  root.style.setProperty('--bg',     color);
+  root.style.setProperty('--bg-low', color);
+  root.style.setProperty('--bg-con', adjustHex(color, 10));
+  root.style.setProperty('--bg-hi',  adjustHex(color, 18));
+  root.style.setProperty('--bg-top', adjustHex(color, 26));
+  root.style.setProperty('--bg-bot', adjustHex(color, -4));
+  document.body.style.background = adjustHex(color, -6);
+  const shell = document.getElementById('shell');
+  if(shell) shell.style.background = color;
+  // Update picker
+  const picker = document.getElementById('bg-color-picker');
+  if(picker) picker.value = color;
+  // Highlight active preset
+  document.querySelectorAll('.bg-preset-btn').forEach(b=>{
+    b.style.border = b.dataset.color===color ? '2px solid var(--cyan)' : '2px solid transparent';
+    b.style.transform = b.dataset.color===color ? 'scale(1.2)' : 'scale(1)';
+  });
+  dbSaveSetting('bg', color);
+}
+
+function renderThemeGrid(){}
+
+function renderBgPresets(){}
 
 function adjustHex(hex, amount){
   // Lighten/darken a hex color
@@ -2684,6 +2829,8 @@ function setFontSize(v){
 
 function initSettings(){
   renderSettingRows();
+  renderThemeGrid();
+  renderBgPresets();
 }
 
 
