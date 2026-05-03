@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#111127"/>
+<title>Ledger — Syndicate Financial System</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#111127;--bg-low:#191930;--bg-con:#1d1d34;--bg-hi:#28283f;
+  --bg-top:#33324a;--bg-bot:#0c0c22;
+  --fg:#e2dffe;--fg-dim:#b9cacb;
+  --cyan:#00f0ff;--cyan-lt:#7df4ff;--cyan-dk:#00dbe9;
+  --mag:#ff24e4;--mag-lt:#fface8;
+  --lime:#eeff96;
+  --out:#849495;--out-v:#3b494b;
+  --err:#ffb4ab;
+}
+html,body{height:100%;overflow:hidden;background:#080818}
+body{font-family:'Inter',sans-serif;color:var(--fg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+.sg{font-family:'Space Grotesk',sans-serif}
+.ms{font-family:'Material Symbols Outlined';font-size:24px;line-height:1;display:inline-block;
+  font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;user-select:none;vertical-align:middle}
+.ms.fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+
+/* ── Phone Shell ── */
+#shell{
+  width:390px;height:844px;
+  background:var(--bg);
+  border-radius:50px;overflow:hidden;
+  border:9px solid #14142a;
+  box-shadow:0 50px 100px rgba(0,0,0,.9),
+             0 0 0 1px rgba(255,255,255,.04),
+             0 0 80px rgba(0,240,255,.04);
+  display:flex;flex-direction:column;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  transition:transform .1s;
+}
+.notch{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:126px;height:30px;background:#14142a;
+  border-radius:0 0 22px 22px;z-index:999;
+}
+.status-bar{
+  height:28px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;background:rgba(0,0,0,.35);flex-shrink:0;
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--fg-dim);
+}
+.home-pill{
+  height:22px;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.35);flex-shrink:0;
+}
+.home-pill span{width:120px;height:4px;border-radius:9999px;background:rgba(255,255,255,.18)}
+
+/* ── Screens ── */
+#screens{flex:1;overflow:hidden;position:relative}
+.screen{
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  opacity:0;pointer-events:none;transition:opacity .28s ease,transform .28s ease;
+  transform:translateX(20px);display:flex;flex-direction:column;
+}
+.screen.active{opacity:1;pointer-events:all;transform:translateX(0)}
+.screen.exit{opacity:0;transform:translateX(-20px)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:rgba(0,240,255,.2);border-radius:9999px}
+
+/* ── Glass ── */
+.glass{
+  background:rgba(25,25,48,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.08);
+}
+.glass2{
+  background:rgba(40,40,63,.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+/* ── Neon ── */
+.neon-c{text-shadow:0 0 10px rgba(0,240,255,.7),0 0 30px rgba(0,240,255,.3)}
+.neon-m{text-shadow:0 0 10px rgba(255,36,228,.7)}
+.neon-l{text-shadow:0 0 8px rgba(238,255,150,.6)}
+.glow-c{box-shadow:0 0 16px rgba(0,240,255,.35)}
+.glow-m{box-shadow:0 0 16px rgba(255,36,228,.35)}
+
+/* ── Badges ── */
+.badge{
+  display:inline-flex;align-items:center;
+  background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.4);
+  color:var(--cyan-lt);font-family:'Space Grotesk',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.05em;
+  padding:2px 9px;border-radius:9999px;
+}
+.badge-m{background:rgba(255,36,228,.1)!important;border-color:rgba(255,36,228,.4)!important;color:var(--mag-lt)!important}
+.badge-l{background:rgba(238,255,150,.1)!important;border-color:rgba(238,255,150,.4)!important;color:var(--lime)!important}
+
+/* ── Progress Bar ── */
+.prog-track{height:5px;background:var(--bg-top);border-radius:9999px;overflow:hidden}
+.prog-fill{
+  height:100%;border-radius:9999px;
+  background:linear-gradient(90deg,var(--mag),var(--cyan));
+  box-shadow:0 0 12px rgba(0,240,255,.5);
+  transition:width 1.4s cubic-bezier(.25,.46,.45,.94);
+}
+
+/* ── Button ── */
+.btn-primary{
+  background:linear-gradient(135deg,var(--cyan-dk),var(--cyan));
+  color:#003034;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  border:none;border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;font-size:13px;letter-spacing:.04em;
+}
+.btn-primary:hover{opacity:.9;box-shadow:0 0 22px rgba(0,240,255,.5)}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.22);
+  border-radius:12px;cursor:pointer;color:var(--cyan-lt);
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;
+  transition:all .2s;
+}
+.btn-ghost:hover{background:rgba(0,240,255,.14)}
+
+/* ── Bottom Nav ── */
+#bottom-nav{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  width:88%;z-index:200;
+  background:rgba(7,7,28,.9);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:9999px;padding:10px 22px;
+  display:flex;justify-content:space-around;align-items:center;
+  box-shadow:0 10px 40px rgba(0,0,0,.8),0 0 0 1px rgba(0,240,255,.04);
+  transition:opacity .25s;
+}
+#bottom-nav.hidden{opacity:0;pointer-events:none}
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:12px;
+  transition:all .18s;
+}
+.nav-btn .ms{font-size:22px;color:var(--out);transition:all .18s}
+.nav-btn span.label{font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--out);transition:all .18s}
+.nav-btn.active .ms{color:var(--cyan);filter:drop-shadow(0 0 5px rgba(0,240,255,.8))}
+.nav-btn.active span.label{color:var(--cyan)}
+.nav-btn:active{transform:scale(.88)}
+
+/* ── Glow Blobs ── */
+.blob-c{position:absolute;border-radius:50%;background:rgba(0,240,255,.07);filter:blur(100px);pointer-events:none;z-index:0}
+.blob-m{position:absolute;border-radius:50%;background:rgba(255,36,228,.06);filter:blur(110px);pointer-events:none;z-index:0}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes scanLine{0%{top:4%}50%{top:80%}100%{top:4%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes pulseCyan{0%,100%{box-shadow:0 0 12px rgba(0,240,255,.4)}50%{box-shadow:0 0 28px rgba(0,240,255,.85)}}
+@keyframes progressFill{from{width:0}to{width:var(--target-w,64%)}}
+.fu{animation:fadeUp .4s ease both}
+.fi{animation:fadeIn .35s ease both}
+
+/* ── Input ── */
+input,textarea{outline:none;caret-color:var(--cyan);font-family:'Inter',sans-serif}
+input::placeholder,textarea::placeholder{color:var(--out-v)}
+
+/* ── Toggle ── */
+.toggle{
+  width:44px;height:24px;border-radius:9999px;border:none;
+  cursor:pointer;position:relative;flex-shrink:0;
+  transition:all .25s;
+}
+.toggle.on{background:var(--cyan);box-shadow:0 0 10px rgba(0,240,255,.4)}
+.toggle.off{background:var(--bg-top);border:1px solid var(--out-v)}
+.toggle::after{
+  content:'';position:absolute;top:3px;width:18px;height:18px;border-radius:50%;
+  background:#003034;transition:left .25s;
+}
+.toggle.on::after{left:23px;background:#003034}
+.toggle.off::after{left:3px;background:var(--out)}
+
+/* ── Partner Card ── */
+.partner-card{border-radius:12px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between}
+.partner-card.cyan{border-left:2px solid var(--cyan)}
+.partner-card.mag{border-left:2px solid var(--mag)}
+.partner-card.lime{border-left:2px solid var(--lime)}
+
+/* ── Chat messages ── */
+.msg-self{animation:msgSelf .3s ease both}
+.msg-system{animation:msgIn .3s ease both}
+@keyframes msgSelf{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes msgIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── Splash specific ── */
+#splash-ring circle.progress{
+  stroke-dasharray:314;
+  stroke-dashoffset:314;
+  transition:stroke-dashoffset .12s linear;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 6px rgba(0,240,255,.9));
+}
+#terminal-log p{animation:fadeUp .3s ease both}
+
+/* ── Card hover ── */
+.card-hover{transition:background .2s}
+.card-hover:hover{background:rgba(255,255,255,.05)!important}
+
+/* ── Filter pills ── */
+.filter-pill{
+  flex-shrink:0;border-radius:9999px;padding:6px 15px;cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.05em;
+  border:1px solid rgba(0,240,255,.18);background:rgba(0,240,255,.06);
+  color:var(--cyan-lt);transition:all .2s;
+}
+.filter-pill.active{background:var(--cyan);color:#003034;border-color:var(--cyan);box-shadow:0 0 12px rgba(0,240,255,.45)}
+
+/* Responsive: fill screen on small devices */
+@media(max-width:500px){
+  #shell{width:100vw;height:100vh;border-radius:0;border:none;top:0;left:0;transform:none;box-shadow:none}
+  .notch{display:none}
+  html,body{background:var(--bg)}
+}
+</style>
+</head>
+<body>
+
+<div id="shell">
+  <div class="notch"></div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span id="clock">--:--</span>
+    <div style="display:flex;align-items:center;gap:5px">
+      <span class="ms" style="font-size:13px;color:var(--fg-dim)">signal_cellular_alt</span>
+      <span class="ms" style="font-size:13px;color:var(--fg-dim)">wifi</span>
+      <span class="ms" style="font-size:13px;color:var(--cyan-lt)">battery_full</span>
+    </div>
+  </div>
+
+  <!-- Screens Container -->
+  <div id="screens">
+
+    <!-- ══ SPLASH ══ -->
+    <div class="screen active" id="s-splash" style="align-items:center;justify-content:center;gap:26px;padding:0 24px">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+
+      <!-- Logo -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:1">
+        <div class="glow-c" style="width:72px;height:72px;border-radius:20px;
+          background:linear-gradient(135deg,rgba(0,240,255,.15),rgba(255,36,228,.1));
+          border:1px solid rgba(0,240,255,.3);display:flex;align-items:center;justify-content:center;
+          animation:pulseCyan 2s infinite">
+          <span class="ms fill" style="font-size:36px;color:var(--cyan)">hub</span>
+        </div>
+        <h1 class="sg neon-c" style="font-size:32px;font-weight:900;letter-spacing:-.02em;color:var(--cyan)">Ledger</h1>
+        <p class="sg" style="font-size:10px;color:var(--out);letter-spacing:.18em">SYNDICATE FINANCIAL SYSTEM</p>
+      </div>
+
+      <!-- SVG Ring -->
+      <div style="position:relative;width:120px;height:120px;z-index:1">
+        <svg id="splash-ring" width="120" height="120" style="transform:rotate(-90deg)">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(0,240,255,.1)" stroke-width="4"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="var(--cyan)" stroke-width="4" class="progress"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <span class="sg neon-c" id="splash-pct" style="font-size:26px;font-weight:700;color:var(--cyan)">0%</span>
+          <span class="sg" style="font-size:8px;color:var(--out);letter-spacing:.12em">LOADING</span>
+        </div>
+      </div>
+
+      <!-- Terminal -->
+      <div class="glass" style="border-radius:12px;padding:16px 20px;width:260px;min-height:100px;z-index:1">
+        <div id="terminal-log"></div>
+        <span id="cursor" class="sg" style="color:var(--cyan);font-size:11px;animation:blink 1s infinite">█</span>
+      </div>
+      <span class="badge" style="z-index:1">SYSTEM_INITIALIZING...</span>
+    </div>
+
+    <!-- ══ LOGIN ══ -->
+    <div class="screen" id="s-login" style="align-items:center;justify-content:center;padding:0 22px;gap:0">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+      <div style="position:relative;z-index:1;width:100%;display:flex;flex-direction:column;gap:26px">
+        <div style="text-align:center">
+          <h1 class="sg neon-c" style="font-size:38px;font-weight:900;letter-spacing:-.02em;color:var(--cyan)">Ledger</h1>
+          <p class="sg" style="font-size:10px;color:var(--out);letter-spacing:.18em;margin-top:4px">SYNDICATE FINANCIAL SYSTEM</p>
+        </div>
+        <div class="glass" style="border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:16px">
+          <!-- Bridge ID -->
+          <div>
+            <label class="sg" style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--fg-dim);display:block;margin-bottom:7px;text-transform:uppercase">Bridge ID</label>
+            <div style="position:relative">
+              <span class="ms" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:17px;color:var(--out)">person</span>
+              <input id="inp-bid" type="text" placeholder="Enter your Bridge ID"
+                style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:11px;padding:12px 14px 12px 40px;color:var(--fg);font-size:13px"
+                onfocus="this.style.borderColor='var(--cyan)';this.style.boxShadow='0 0 8px rgba(0,240,255,.3)'"
+                onblur="this.style.borderColor='var(--out-v)';this.style.boxShadow='none'"/>
+            </div>
+          </div>
+          <!-- Access Key -->
+          <div>
+            <label class="sg" style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--fg-dim);display:block;margin-bottom:7px;text-transform:uppercase">Access Key</label>
+            <div style="position:relative">
+              <span class="ms" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:17px;color:var(--out)">key</span>
+              <input id="inp-ak" type="password" placeholder="Enter access key"
+                style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:11px;padding:12px 14px 12px 40px;color:var(--fg);font-size:13px"
+                onfocus="this.style.borderColor='var(--cyan)';this.style.boxShadow='0 0 8px rgba(0,240,255,.3)'"
+                onblur="this.style.borderColor='var(--out-v)';this.style.boxShadow='none'"/>
+            </div>
+          </div>
+          <button class="btn-primary" id="auth-btn" onclick="doLogin()" style="padding:15px;margin-top:4px;width:100%">
+            <span class="ms" style="font-size:17px;color:#003034">lock_open</span>
+            AUTHENTICATE
+          </button>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="flex:1;height:1px;background:var(--out-v)"></div>
+            <span style="color:var(--out);font-size:10px">or</span>
+            <div style="flex:1;height:1px;background:var(--out-v)"></div>
+          </div>
+          <button class="btn-ghost" onclick="doLogin()" style="padding:13px;width:100%">
+            <span class="ms" style="font-size:22px;color:var(--cyan)">fingerprint</span>
+            Access via Biometric
+          </button>
+        </div>
+        <p class="sg" style="text-align:center;color:var(--out-v);font-size:10px;letter-spacing:.06em">LEDGER BRIDGE v4.2 · ENCRYPTED · VERIFIED</p>
+      </div>
+    </div>
+
+    <!-- ══ HOME ══ -->
+    <div class="screen" id="s-home" style="padding-bottom:95px">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+      <!-- Top Bar -->
+      <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:13px 20px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
+        <div style="width:37px;height:37px;border-radius:50%;background:linear-gradient(135deg,rgba(0,240,255,.18),rgba(255,36,228,.12));border:1px solid rgba(0,240,255,.3);display:flex;align-items:center;justify-content:center">
+          <span class="ms" style="font-size:18px;color:var(--cyan-lt)">person</span>
+        </div>
+        <h1 class="sg neon-c" style="font-size:16px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)">VORTEX_CORE</h1>
+        <button style="background:none;border:none;cursor:pointer"><span class="ms" style="font-size:22px;color:var(--cyan)">settings</span></button>
+      </header>
+      <!-- Content -->
+      <div style="position:relative;z-index:1;padding:22px 18px 0;display:flex;flex-direction:column;gap:20px">
+        <!-- Hero Total -->
+        <div style="text-align:center;padding:6px 0" class="fu">
+          <p class="sg" style="font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--fg-dim);text-transform:uppercase;margin-bottom:10px">Total Project Cost</p>
+          <h2 class="sg neon-c" style="font-size:42px;font-weight:900;color:var(--cyan);letter-spacing:-.02em">$1,250,400</h2>
+          <div style="display:flex;justify-content:center;gap:8px;margin-top:10px">
+            <span class="badge">ALPHA SERIES</span>
+            <span class="badge badge-m">ACTIVE</span>
+          </div>
+        </div>
+        <!-- Contribution Card -->
+        <div class="glass" style="border-radius:16px;padding:20px" id="contrib-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px">
+            <div>
+              <p class="sg" style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--mag-lt);text-transform:uppercase;margin-bottom:5px">My Contribution</p>
+              <p class="sg" style="font-size:26px;font-weight:700;color:var(--fg)">$45,219</p>
+            </div>
+            <span class="badge" style="font-size:12px;padding:4px 12px">3.6%</span>
+          </div>
+          <div class="prog-track">
+            <div class="prog-fill" id="contrib-bar" style="width:0%;--target-w:3.6%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:7px">
+            <span class="sg" style="font-size:9px;color:var(--out)">$0</span>
+            <span class="sg" style="font-size:9px;color:var(--out)">$1.25M</span>
+          </div>
+        </div>
+        <!-- Quick Actions -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+          <button onclick="gotoScreen('ledger')" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+            <span class="ms" style="font-size:19px;color:var(--cyan)">add_card</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Add Entry</span>
+          </button>
+          <button onclick="gotoScreen('ledger')" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+            <span class="ms" style="font-size:19px;color:var(--mag)">document_scanner</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Scan Receipt</span>
+          </button>
+          <button style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+            <span class="ms" style="font-size:19px;color:var(--lime)">analytics</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Analytics</span>
+          </button>
+          <button style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+            <span class="ms" style="font-size:19px;color:var(--cyan-lt)">share</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Share Report</span>
+          </button>
+        </div>
+        <!-- Partners -->
+        <div>
+          <h3 class="sg" style="font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--fg-dim);text-transform:uppercase;margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--out-v)">Individual Partners</h3>
+          <div style="display:flex;flex-direction:column;gap:9px" id="partners-list">
+            <!-- JS renders -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LEDGER (CHAT) ══ -->
+    <div class="screen" id="s-ledger" style="padding-bottom:155px">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+      <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
+        <button onclick="startScan()" style="background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.22);border-radius:9999px;padding:7px 16px;cursor:pointer;display:flex;align-items:center;gap:6px">
+          <span class="ms" style="font-size:17px;color:var(--cyan)">document_scanner</span>
+          <span class="sg" style="font-size:11px;font-weight:700;color:var(--cyan-lt);letter-spacing:.05em">Scan</span>
+        </button>
+        <h2 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">My Ledger</h2>
+        <button style="background:none;border:none;cursor:pointer"><span class="ms" style="font-size:22px;color:var(--fg-dim)">more_vert</span></button>
+      </header>
+      <div id="chat-area" style="position:relative;z-index:1;padding:14px 14px 0;display:flex;flex-direction:column;gap:11px;flex:1;overflow-y:auto"></div>
+      <!-- Input Bar -->
+      <div class="glass" id="ledger-input-bar" style="position:fixed;bottom:88px;left:50%;transform:translateX(-50%);width:375px;padding:10px 14px;border-radius:0;border-left:none;border-right:none;display:flex;gap:9px;align-items:center;z-index:100">
+        <button onclick="startScan()" style="background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span class="ms" style="font-size:19px;color:var(--cyan)">photo_camera</span>
+        </button>
+        <input id="chat-input" placeholder="Describe a transaction..."
+          style="flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9999px;padding:9px 15px;color:var(--fg);font-size:12px"/>
+        <button id="send-btn" onclick="sendMsg()" style="background:rgba(0,240,255,.09);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s">
+          <span class="ms" style="font-size:19px;color:var(--out)">send</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ ADMIN ══ -->
+    <div class="screen" id="s-admin" style="padding-bottom:95px">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+      <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="ms" style="font-size:19px;color:var(--cyan)">account_balance_wallet</span>
+          <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Ledger</h1>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="sg" style="font-size:10px;font-weight:700;color:var(--fg-dim);letter-spacing:.06em">SETTINGS</span>
+          <span class="ms" style="font-size:18px;color:var(--fg-dim)">settings</span>
+        </div>
+      </header>
+      <div style="position:relative;z-index:1;padding:18px 18px 0">
+        <div style="margin-bottom:18px">
+          <h2 class="sg" style="font-size:22px;font-weight:700;color:var(--fg);margin-bottom:4px">Personnel</h2>
+          <p style="font-size:12px;color:var(--fg-dim);font-family:'Inter',sans-serif">Manage ecosystem access and global directory.</p>
+        </div>
+        <!-- Filters -->
+        <div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:18px;padding-bottom:3px" id="admin-filters">
+          <button class="filter-pill active" onclick="filterAdmin(this,'All')">All</button>
+          <button class="filter-pill" onclick="filterAdmin(this,'Partners')">Partners</button>
+          <button class="filter-pill" onclick="filterAdmin(this,'Vendors')">Vendors</button>
+          <button class="filter-pill" onclick="filterAdmin(this,'Contractors')">Contractors</button>
+        </div>
+        <!-- People -->
+        <div id="admin-list" style="display:flex;flex-direction:column;gap:9px"></div>
+        <button class="btn-primary" style="width:100%;padding:13px;margin-top:14px;border-radius:13px">
+          <span class="ms" style="font-size:18px;color:#003034">person_add</span>Add Personnel
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="screen" id="s-profile" style="padding-bottom:95px">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+      <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="ms" style="font-size:19px;color:var(--cyan)">account_balance_wallet</span>
+          <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Ledger</h1>
+        </div>
+        <button style="background:none;border:none;cursor:pointer"><span class="ms" style="font-size:22px;color:var(--fg-dim)">settings</span></button>
+      </header>
+      <div style="position:relative;z-index:1;padding:18px 18px 0;display:flex;flex-direction:column;gap:18px">
+        <!-- Avatar -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:6px">
+          <div style="position:relative">
+            <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(0,240,255,.18),rgba(255,36,228,.12));border:2px solid rgba(0,240,255,.38);display:flex;align-items:center;justify-content:center;animation:pulseCyan 3s infinite">
+              <span class="ms" style="font-size:40px;color:var(--cyan-lt)">person</span>
+            </div>
+            <button style="position:absolute;bottom:0;right:0;background:var(--cyan);border:2px solid var(--bg);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+              <span class="ms" style="font-size:12px;color:#003034">edit</span>
+            </button>
+          </div>
+          <div style="text-align:center">
+            <h2 class="sg" style="font-size:19px;font-weight:700;color:var(--fg)">Manage Profile</h2>
+            <span class="badge" style="margin-top:6px">✓ VERIFIED PARTNER</span>
+          </div>
+        </div>
+        <!-- Identity -->
+        <div class="glass" style="border-radius:16px;padding:18px">
+          <h3 class="sg" style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--cyan);text-transform:uppercase;margin-bottom:13px">Identity Details</h3>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Full Name</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:9px">
+                <span class="ms" style="font-size:15px;color:var(--out)">person</span><span style="font-size:13px;color:var(--fg)">Elena Rostova</span>
+              </div>
+            </div>
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Email Address</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:9px">
+                <span class="ms" style="font-size:15px;color:var(--out)">mail</span><span style="font-size:13px;color:var(--fg)">e.rostova@ledger.net</span>
+              </div>
+            </div>
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">System Role</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:9px">
+                <span class="ms" style="font-size:15px;color:var(--out)">badge</span><span style="font-size:13px;color:var(--fg)">Lead Partner</span>
+              </div>
+            </div>
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Security Key</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span class="ms" style="font-size:15px;color:var(--out)">key</span>
+                  <span class="sg" id="key-display" style="letter-spacing:.12em;font-size:13px;color:var(--fg)">****-****-9482</span>
+                </div>
+                <button onclick="toggleKey()" class="sg" style="background:none;border:none;cursor:pointer;color:var(--cyan-lt);font-size:10px;font-weight:700;letter-spacing:.06em">REVEAL</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Security -->
+        <div class="glass" style="border-radius:16px;padding:18px">
+          <h3 class="sg" style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--mag);text-transform:uppercase;margin-bottom:13px">Security &amp; Privacy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+            <div style="display:flex;align-items:center;gap:11px">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(255,36,228,.1);display:flex;align-items:center;justify-content:center">
+                <span class="ms" style="font-size:18px;color:var(--mag-lt)">fingerprint</span>
+              </div>
+              <div><p style="font-size:12px;font-weight:600;color:var(--fg);font-family:'Inter',sans-serif">Biometric Unlock</p><p style="font-size:10px;color:var(--fg-dim);margin-top:1px">Require Face ID / Touch ID</p></div>
+            </div>
+            <button class="toggle on" id="bio-toggle" onclick="toggleEl('bio-toggle')"></button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0">
+            <div style="display:flex;align-items:center;gap:11px">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(255,36,228,.1);display:flex;align-items:center;justify-content:center">
+                <span class="ms" style="font-size:18px;color:var(--mag-lt)">phonelink_lock</span>
+              </div>
+              <div><p style="font-size:12px;font-weight:600;color:var(--fg);font-family:'Inter',sans-serif">Two-Factor Auth</p><p style="font-size:10px;color:var(--fg-dim);margin-top:1px">Secure via Authenticator App</p></div>
+            </div>
+            <button class="toggle on" id="tfa-toggle" onclick="toggleEl('tfa-toggle')"></button>
+          </div>
+        </div>
+        <button class="btn-primary" style="padding:14px;width:100%;border-radius:13px">
+          <span class="ms" style="font-size:18px;color:#003034">save</span>Save Changes
+        </button>
+        <button onclick="doLogout()" style="background:rgba(255,180,171,.07);border:1px solid rgba(255,180,171,.2);border-radius:13px;padding:13px;cursor:pointer;color:var(--err);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .2s" onmouseenter="this.style.background='rgba(255,180,171,.14)'" onmouseleave="this.style.background='rgba(255,180,171,.07)'">
+          <span class="ms" style="font-size:17px;color:var(--err)">logout</span>Sign Out
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- Bottom Nav -->
+  <div id="bottom-nav" class="hidden">
+    <button class="nav-btn active" id="nav-home" onclick="gotoScreen('home')">
+      <span class="ms fill">home</span><span class="label">Home</span>
+    </button>
+    <button class="nav-btn" id="nav-ledger" onclick="gotoScreen('ledger')">
+      <span class="ms">account_balance_wallet</span><span class="label">Ledger</span>
+    </button>
+    <button class="nav-btn" id="nav-admin" onclick="gotoScreen('admin')">
+      <span class="ms">admin_panel_settings</span><span class="label">Admin</span>
+    </button>
+    <button class="nav-btn" id="nav-profile" onclick="gotoScreen('profile')">
+      <span class="ms">person</span><span class="label">Profile</span>
+    </button>
+  </div>
+
+  <div class="home-pill"><span></span></div>
+</div>
+
+<script>
+// ── Clock ──
+function updateClock(){
+  const d=new Date();
+  document.getElementById('clock').textContent=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+}
+updateClock();setInterval(updateClock,15000);
+
+// ── Screen navigation ──
+let currentScreen='splash';
+function gotoScreen(id){
+  const old=document.getElementById('s-'+currentScreen);
+  const nw=document.getElementById('s-'+id);
+  if(!nw||id===currentScreen)return;
+  old.classList.remove('active');
+  old.classList.add('exit');
+  setTimeout(()=>old.classList.remove('exit'),300);
+  nw.classList.add('active');
+  currentScreen=id;
+  // Nav highlight
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.remove('active');
+    b.querySelector('.ms').classList.remove('fill');
+  });
+  const nb=document.getElementById('nav-'+id);
+  if(nb){nb.classList.add('active');nb.querySelector('.ms').classList.add('fill');}
+  // Hide input bar when not on ledger
+  const bar=document.getElementById('ledger-input-bar');
+  if(bar)bar.style.display=id==='ledger'?'flex':'none';
+}
+
+// ── Splash ──
+const LINES=['BOOT_SEQUENCE_INITIATED','CRYPTOGRAPHIC_HANDSHAKE','SYNCING_LEDGER_NODES','IDENTITY_VERIFIED','MATRIX_LOADED'];
+let splashPct=0;
+const ring=document.querySelector('#splash-ring circle.progress');
+const pctEl=document.getElementById('splash-pct');
+const termEl=document.getElementById('terminal-log');
+const cursor=document.getElementById('cursor');
+
+function splashTick(){
+  splashPct+=Math.random()*3.5+1.5;
+  if(splashPct>=100){splashPct=100;clearInterval(splashIv);setTimeout(()=>{gotoScreen('login');},500);}
+  const p=Math.floor(splashPct);
+  ring.style.strokeDashoffset=314*(1-p/100);
+  pctEl.textContent=p+'%';
+  const vis=Math.floor((p/100)*LINES.length);
+  termEl.innerHTML='';
+  LINES.slice(0,vis).forEach((l,i)=>{
+    const row=document.createElement('p');
+    row.style.cssText='display:flex;gap:7px;margin-bottom:4px;font-family:Space Grotesk,sans-serif;font-size:10px;letter-spacing:.04em;animation:fadeUp .3s ease both;animation-delay:'+(i*.07)+'s';
+    row.innerHTML='<span style="color:var(--lime)">›</span><span style="color:'+(i===vis-1?'var(--cyan-lt)':'var(--out-v)')+'">'+l+'</span>';
+    termEl.appendChild(row);
+  });
+  cursor.style.display=vis>=LINES.length?'none':'inline';
+}
+const splashIv=setInterval(splashTick,55);
+
+// ── Login ──
+function doLogin(){
+  const btn=document.getElementById('auth-btn');
+  btn.innerHTML='<span class="ms" style="font-size:17px;color:#003034;animation:spin 1s linear infinite">sync</span> AUTHENTICATING...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('bottom-nav').classList.remove('hidden');
+    document.getElementById('ledger-input-bar').style.display='none';
+    gotoScreen('home');
+    initHome();
+    initChat();
+    initAdmin();
+  },1400);
+}
+
+// ── Home ──
+const PARTNERS=[
+  {name:'Elena Jenkins',role:'Lead Syndicator',amt:'$450,000',pct:36,cls:'mag'},
+  {name:'Marcus Reed',role:'Partner',amt:'$325,500',pct:26,cls:'cyan'},
+  {name:'Sofia Chen',role:'Contractor',amt:'$210,000',pct:16.8,cls:'lime'},
+  {name:'James Okafor',role:'Vendor',amt:'$180,200',pct:14.4,cls:'mag'},
+];
+const CLS_COLOR={cyan:'var(--cyan)',mag:'var(--mag)',lime:'var(--lime)'};
+function initHome(){
+  const list=document.getElementById('partners-list');
+  list.innerHTML='';
+  PARTNERS.forEach((p,i)=>{
+    const d=document.createElement('div');
+    d.className='glass partner-card '+p.cls;
+    d.style.cssText='animation:fadeUp .4s ease '+(i*.07)+'s both;cursor:pointer;transition:opacity .2s';
+    d.innerHTML=`
+      <div style="display:flex;align-items:center;gap:11px">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--bg-hi);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center">
+          <span class="ms" style="font-size:18px;color:${CLS_COLOR[p.cls]}">person</span>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;color:var(--fg);font-family:'Inter',sans-serif">${p.name}</p>
+          <p class="sg" style="font-size:10px;color:var(--fg-dim)">${p.role}</p>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <p class="sg" style="font-size:13px;font-weight:600;color:var(--fg)">${p.amt}</p>
+        <p class="sg" style="font-size:10px;color:${CLS_COLOR[p.cls]}">${p.pct}%</p>
+      </div>`;
+    list.appendChild(d);
+  });
+  setTimeout(()=>{document.getElementById('contrib-bar').style.width='3.6%';},200);
+}
+
+// ── Chat / Ledger ──
+const INIT_MSGS=[
+  {type:'date',text:'OCT 24, 2023'},
+  {type:'user',text:'Logged a manual entry for dinner at <span style="color:var(--cyan);font-weight:600">Starlight Diner</span>. Total was $42.50.',time:'19:42'},
+  {type:'sys',badge:'VERIFIED ENTRY',title:'Neo-Tokyo Transit',amt:'$120.00',cat:'Transit',time:'14:15'},
+  {type:'date',text:'TODAY'},
+  {type:'scan',title:'Cyberbistro V2',amt:'$84.20',date:'2023-10-25',cat:'Dining'},
+];
+const chatArea=document.getElementById('chat-area');
+
+function renderMsg(m){
+  const wrap=document.createElement('div');
+  if(m.type==='date'){
+    wrap.style.cssText='display:flex;justify-content:center;margin:4px 0';
+    wrap.innerHTML=`<span class="badge" style="background:rgba(255,255,255,.03);border-color:var(--out-v);color:var(--out);letter-spacing:.1em">${m.text}</span>`;
+  } else if(m.type==='user'){
+    wrap.style.cssText='display:flex;justify-content:flex-end;animation:msgSelf .3s ease both';
+    wrap.innerHTML=`<div class="glass2" style="border-radius:14px 3px 14px 14px;padding:11px 14px;max-width:80%">
+      <p style="font-size:12px;color:var(--fg);line-height:1.5">${m.text}</p>
+      <p class="sg" style="font-size:9px;color:var(--out);margin-top:4px;text-align:right">${m.time}</p>
+    </div>`;
+  } else if(m.type==='sys'){
+    wrap.style.cssText='display:flex;justify-content:flex-start;animation:msgIn .3s ease both';
+    wrap.innerHTML=`<div class="glass" style="border-radius:3px 14px 14px 14px;padding:13px 14px;max-width:85%;border-left:2px solid var(--cyan)">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:7px">
+        <span class="ms" style="font-size:13px;color:var(--cyan-lt)">smart_toy</span>
+        <span class="badge" style="font-size:9px">${m.badge}</span>
+      </div>
+      <p class="sg" style="font-size:13px;font-weight:700;color:var(--fg)">${m.title}</p>
+      <div style="display:flex;align-items:center;gap:7px;margin-top:4px">
+        <span class="sg" style="font-size:15px;font-weight:700;color:var(--cyan)">${m.amt}</span>
+        <span class="badge badge-l">${m.cat}</span>
+      </div>
+      <p class="sg" style="font-size:9px;color:var(--out);margin-top:5px">${m.time}</p>
+    </div>`;
+  } else if(m.type==='scan'){
+    wrap.style.cssText='display:flex;justify-content:flex-start;animation:msgIn .3s ease both';
+    wrap.innerHTML=`<div class="glass" style="border-radius:3px 14px 14px 14px;padding:14px;width:90%;border-left:2px solid var(--lime)">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:9px">
+        <span class="ms" style="font-size:13px;color:var(--lime)">check_circle</span>
+        <span class="badge badge-l" style="font-size:9px">EXTRACTION COMPLETE</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px">
+        <div><p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.1em;margin-bottom:2px">MERCHANT</p><p class="sg" style="font-size:11px;font-weight:700;color:var(--fg)">${m.title}</p></div>
+        <div><p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.1em;margin-bottom:2px">TOTAL</p><p class="sg" style="font-size:11px;font-weight:700;color:var(--cyan)">${m.amt}</p></div>
+        <div><p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.1em;margin-bottom:2px">DATE</p><p class="sg" style="font-size:11px;font-weight:700;color:var(--fg)">${m.date}</p></div>
+        <div><p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.1em;margin-bottom:2px">CATEGORY</p><p class="sg" style="font-size:11px;font-weight:700;color:var(--fg)">${m.cat}</p></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-ghost" style="flex:1;padding:7px 0;border-radius:9999px;font-size:10px;gap:4px">
+          <span class="ms" style="font-size:13px;color:var(--cyan-lt)">edit</span>EDIT
+        </button>
+        <button class="btn-primary" style="flex:1;padding:7px 0;border-radius:9999px;font-size:10px;gap:4px">
+          <span class="ms" style="font-size:13px;color:#003034">check_circle</span>CONFIRM
+        </button>
+      </div>
+    </div>`;
+  } else if(m.type==='scanning'){
+    wrap.id='scan-bubble';
+    wrap.style.cssText='display:flex;justify-content:flex-start;animation:msgIn .3s ease both';
+    wrap.innerHTML=`<div class="glass" style="border-radius:3px 14px 14px 14px;padding:14px;width:90%">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+        <span class="ms" id="scan-icon" style="font-size:16px;color:var(--cyan);animation:spin 1s linear infinite">sync</span>
+        <span class="badge" id="scan-badge">PROCESSING IMAGE... 0%</span>
+      </div>
+      <div class="prog-track" style="margin-bottom:10px"><div class="prog-fill" id="scan-bar" style="width:0%;transition:width .1s"></div></div>
+      <div style="position:relative;height:72px;background:rgba(0,240,255,.03);border-radius:8px;overflow:hidden;border:1px solid rgba(0,240,255,.1)">
+        <div id="scan-line" style="position:absolute;left:0;right:0;height:2px;background:rgba(0,240,255,.55);animation:scanLine 1.5s ease-in-out infinite;box-shadow:0 0 7px rgba(0,240,255,.9)"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <span class="ms" style="font-size:28px;color:rgba(0,240,255,.15)">document_scanner</span>
+        </div>
+      </div>
+    </div>`;
+  } else if(m.type==='user-text'){
+    wrap.style.cssText='display:flex;justify-content:flex-end;animation:msgSelf .3s ease both';
+    wrap.innerHTML=`<div class="glass2" style="border-radius:14px 3px 14px 14px;padding:11px 14px;max-width:82%">
+      <p style="font-size:12px;color:var(--fg);line-height:1.5">${m.text}</p>
+      <p class="sg" style="font-size:9px;color:var(--out);margin-top:4px;text-align:right">${m.time}</p>
+    </div>`;
+  }
+  chatArea.appendChild(wrap);
+  chatArea.scrollTop=chatArea.scrollHeight;
+  return wrap;
+}
+
+function initChat(){chatArea.innerHTML='';INIT_MSGS.forEach(m=>renderMsg(m));}
+
+let scanning=false;
+function startScan(){
+  if(scanning)return;scanning=true;
+  renderMsg({type:'scanning'});
+  let p=0;
+  const iv=setInterval(()=>{
+    p+=Math.random()*6+2;
+    if(p>=100){p=100;clearInterval(iv);scanning=false;
+      const bubble=document.getElementById('scan-bubble');
+      if(bubble){bubble.style.opacity='0';bubble.style.transition='opacity .3s';setTimeout(()=>{bubble.remove();renderMsg({type:'scan',title:'Cyberbistro V3',amt:'$67.40',date:new Date().toISOString().slice(0,10),cat:'Dining'});},300);}
+      return;
+    }
+    const bar=document.getElementById('scan-bar');
+    const badge=document.getElementById('scan-badge');
+    if(bar)bar.style.width=p+'%';
+    if(badge)badge.textContent='PROCESSING IMAGE... '+Math.floor(p)+'%';
+    chatArea.scrollTop=chatArea.scrollHeight;
+  },75);
+}
+
+function sendMsg(){
+  const inp=document.getElementById('chat-input');
+  if(!inp.value.trim())return;
+  const txt=inp.value;inp.value='';
+  const now=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+  renderMsg({type:'user-text',text:txt,time:now});
+  setTimeout(()=>{
+    renderMsg({type:'sys',badge:'LOGGED',title:'Manual Entry',amt:'$0.00',cat:'Other',time:now});
+  },800);
+}
+document.getElementById('chat-input').addEventListener('input',function(){
+  const btn=document.getElementById('send-btn');
+  if(this.value){btn.style.background='var(--cyan)';btn.querySelector('.ms').style.color='#003034';}
+  else{btn.style.background='rgba(0,240,255,.09)';btn.querySelector('.ms').style.color='var(--out)';}
+});
+
+// ── Admin ──
+const PEOPLE=[
+  {name:'Elena Rostova',role:'Partner',tag:'Partners',c:'mag',s:'Verified'},
+  {name:'Jax Thorne',role:'Contractor',tag:'Contractors',c:'cyan',s:'Active'},
+  {name:'Marcus Vance',role:'Vendor',tag:'Vendors',c:'lime',s:'Pending'},
+  {name:'Dr. Aris Thorne',role:'Employee',tag:'Partners',c:'mag',s:'Verified'},
+  {name:'Zara Kim',role:'Contractor',tag:'Contractors',c:'cyan',s:'Active'},
+  {name:'Dev Patel',role:'Vendor',tag:'Vendors',c:'lime',s:'Active'},
+];
+const SC={Verified:'var(--cyan)',Active:'var(--lime)',Pending:'var(--out)'};
+let adminFilter='All';
+
+function initAdmin(){renderAdminList();}
+function renderAdminList(){
+  const list=document.getElementById('admin-list');
+  list.innerHTML='';
+  const filtered=adminFilter==='All'?PEOPLE:PEOPLE.filter(p=>p.tag===adminFilter);
+  filtered.forEach((p,i)=>{
+    const d=document.createElement('div');
+    d.className='glass';
+    d.style.cssText=`border-radius:13px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;animation:fadeUp .3s ease ${i*.06}s both`;
+    d.innerHTML=`
+      <div style="display:flex;align-items:center;gap:11px">
+        <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,${CLS_COLOR[p.c]}22,${CLS_COLOR[p.c]}11);border:1px solid ${CLS_COLOR[p.c]}44;display:flex;align-items:center;justify-content:center">
+          <span class="sg" style="font-size:16px;font-weight:700;color:${CLS_COLOR[p.c]}">${p.name.charAt(0)}</span>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;color:var(--fg);font-family:'Inter',sans-serif">${p.name}</p>
+          <div style="display:flex;align-items:center;gap:5px;margin-top:2px">
+            <span class="sg" style="font-size:10px;color:var(--fg-dim)">${p.role}</span>
+            <div style="width:3px;height:3px;border-radius:50%;background:${SC[p.s]}"></div>
+            <span class="sg" style="font-size:9px;color:${SC[p.s]}">${p.s}</span>
+          </div>
+        </div>
+      </div>
+      <button style="background:none;border:none;cursor:pointer"><span class="ms" style="font-size:20px;color:var(--fg-dim)">settings_account_box</span></button>`;
+    list.appendChild(d);
+  });
+}
+function filterAdmin(btn,tag){
+  document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  adminFilter=tag;renderAdminList();
+}
+
+// ── Profile ──
+let keyShown=false;
+function toggleKey(){
+  keyShown=!keyShown;
+  document.getElementById('key-display').textContent=keyShown?'4a9F-2eB7-9482':'****-****-9482';
+  document.querySelector('#key-display+button')||document.querySelector('[onclick="toggleKey()"]').textContent=keyShown?'HIDE':'REVEAL';
+}
+function toggleEl(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('on');el.classList.toggle('off');
+}
+function doLogout(){
+  document.getElementById('bottom-nav').classList.add('hidden');
+  document.getElementById('ledger-input-bar').style.display='none';
+  gotoScreen('login');
+  document.getElementById('auth-btn').innerHTML='<span class="ms" style="font-size:17px;color:#003034">lock_open</span> AUTHENTICATE';
+  document.getElementById('auth-btn').disabled=false;
+  document.getElementById('inp-bid').value='';
+  document.getElementById('inp-ak').value='';
+}
+</script>
+</body>
+</html>
