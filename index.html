@@ -16,17 +16,22 @@
 /* ── Reset & Base ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#111127;--bg-low:#191930;--bg-con:#1d1d34;--bg-hi:#28283f;
-  --bg-top:#33324a;--bg-bot:#0c0c22;
-  --fg:#e2dffe;--fg-dim:#b9cacb;
-  --cyan:#00f0ff;--cyan-lt:#7df4ff;--cyan-dk:#00dbe9;
-  --mag:#ff24e4;--mag-lt:#fface8;
-  --lime:#eeff96;
-  --out:#849495;--out-v:#3b494b;
-  --err:#ffb4ab;
+  --bg:#faf7ff;--bg-low:#f4f0ff;--bg-con:#ece4ff;--bg-hi:#e4d8ff;
+  --bg-top:#ddd0ff;--bg-bot:#fff;
+  --fg:#32226a;--fg-dim:#5a48a0;
+  --cyan:#8c72d0;--cyan-lt:#c5b8f0;--cyan-dk:#7060c0;
+  --mag:#a990e8;--mag-lt:#ddd0ff;
+  --lime:#c5b8f0;
+  --out:#8878c0;--out-v:#e4d8ff;
+  --err:#e05060;
+  --card-bg:#ffffff;
+  --card-bg2:#faf7ff;
+  --card-border:rgba(140,114,208,.15);
+  --card-shadow:rgba(140,114,208,.1);
+  --card-accent:rgba(140,114,208,.06);
 }
-html,body{height:100%;overflow:hidden;background:#080818}
-body{font-family:'Inter',sans-serif;color:var(--fg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#f4f0ff}
+body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 .sg{font-family:'Space Grotesk',sans-serif}
 .ms{font-family:'Material Symbols Outlined';font-size:24px;line-height:1;display:inline-block;
   font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;user-select:none;vertical-align:middle}
@@ -37,7 +42,7 @@ body{font-family:'Inter',sans-serif;color:var(--fg);-webkit-font-smoothing:antia
   width:360px;height:740px;
   background:var(--bg);
   border-radius:40px;overflow:hidden;
-  border:9px solid #14142a;
+  border:9px solid var(--out-v);
   box-shadow:0 50px 100px rgba(0,0,0,.9),
              0 0 0 1px rgba(255,255,255,.04),
              0 0 80px rgba(0,240,255,.04);
@@ -45,6 +50,26 @@ body{font-family:'Inter',sans-serif;color:var(--fg);-webkit-font-smoothing:antia
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   transition:transform .1s;
 }
+/* Android / mobile full-screen override */
+@media (max-width: 480px) {
+  body { background: var(--bg) !important; display: block !important; align-items: unset !important; justify-content: unset !important; }
+  #shell {
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: 100vw !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+  .notch { display: none !important; }
+}
+
 .notch{
   position:absolute;top:0;left:50%;transform:translateX(-50%);
   width:110px;height:26px;background:#14142a;
@@ -75,12 +100,13 @@ body{font-family:'Inter',sans-serif;color:var(--fg);-webkit-font-smoothing:antia
 
 /* ── Glass ── */
 .glass{
-  background:rgba(25,25,48,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.08);
+  background:var(--card-bg, #fff);
+  border:1px solid var(--card-border, rgba(0,0,0,.08));
+  box-shadow:0 1px 4px var(--card-shadow, rgba(0,0,0,.06));
 }
 .glass2{
-  background:rgba(40,40,63,.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.1);
+  background:var(--card-bg2, #f7fbf9);
+  border:1px solid var(--card-border, rgba(0,0,0,.06));
 }
 
 /* ── Neon ── */
@@ -227,7 +253,20 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
   .notch{display:none}
   html,body{background:var(--bg)}
 }
+
+/* ── Breathing glow animation ── */
+@keyframes breathe-glow{
+  0%,100%{box-shadow:0 0 7px 2px var(--card-shadow),0 0 16px 4px var(--card-shadow)}
+  50%{box-shadow:0 0 16px 6px var(--card-shadow),0 0 32px 10px var(--card-shadow)}
+}
+@keyframes breathe-hero{
+  0%,100%{box-shadow:inset 0 0 18px 0px rgba(255,255,255,.15),0 4px 22px 0px var(--card-shadow)}
+  50%{box-shadow:inset 0 0 36px 5px rgba(255,255,255,.2),0 8px 40px 5px var(--card-shadow)}
+}
+.glass{animation:breathe-glow 4s ease-in-out infinite}
+.glass2{animation:breathe-glow 5s ease-in-out infinite}
 </style>
+  <!-- Tesseract.js loaded lazily only when selected -->
 </head>
 <body>
 
@@ -524,7 +563,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
               <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:8px;text-transform:uppercase">Icon</label>
               <div style="display:flex;gap:8px;flex-wrap:wrap" id="newcat-icons">
                 ${['group','handshake','storefront','inventory_2','engineering','badge','account_balance','casino','gavel','local_shipping','hub','factory','support_agent','real_estate_agent','precision_manufacturing'].map(ic=>`
-                <button onclick="selectCatIcon('${ic}',this)" style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s">
+                <button onclick="selectCatIcon('${ic}',this)" style="width:34px;height:34px;border-radius:8px;background:var(--out-v);border:1px solid rgba(255,255,255,.1);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s">
                   <span class="ms" style="font-size:18px;color:var(--fg-dim)">${ic}</span>
                 </button>`).join('')}
               </div>
@@ -696,27 +735,16 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             </div>
             <select id="theme-select" onchange="setTheme(this.value)"
               style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
-              <optgroup label="── Dark Themes ──" style="background:var(--bg-con);color:var(--out)">
-                <option value="cyber">Cyber — Deep space, cyan glow</option>
-                <option value="midnight">Midnight — Pure black, purple</option>
-                <option value="forest">Forest — Dark green, emerald</option>
-                <option value="ember">Ember — Dark red, orange</option>
-                <option value="ocean">Ocean — Deep blue, sky</option>
-                <option value="gold">Gold — Dark, golden yellow</option>
-                <option value="violet">Violet — Dark purple, lavender</option>
-                <option value="crimson">Crimson — Dark, red accent</option>
-                <option value="rose">Rose — Dark, pink accent</option>
-                <option value="teal">Teal — Dark, teal glow</option>
+              <optgroup label="── Light ──" style="background:var(--bg-con);color:var(--out)">
+                <option value="lavender">Lavender Dream — Bright lilac</option>
+                <option value="rose">Rose Quartz — Warm rose</option>
+                <option value="seafoam">Seafoam — Bright aqua</option>
+                <option value="amber">Warm Amber — Rich gold</option>
+                <option value="peri">Periwinkle — Soft indigo</option>
               </optgroup>
-              <optgroup label="── Light Themes ──" style="background:var(--bg-con);color:var(--out)">
-                <option value="snow">Snow — Clean white, sky blue</option>
-                <option value="paper">Paper — Warm white, teal</option>
-                <option value="blossom">Blossom — Rose white, red</option>
-                <option value="sage">Sage — Mint green, forest</option>
-                <option value="sand">Sand — Warm cream, gold</option>
-                <option value="lavender">Lavender — Soft purple, violet</option>
-                <option value="sky">Sky — Light blue, ocean</option>
-                <option value="peach">Peach — Warm orange, amber</option>
+              <optgroup label="── Dark ──" style="background:var(--bg-con);color:var(--out)">
+                <option value="cyber">Cyber — Neon cyan</option>
+                <option value="midnight">Midnight — Deep purple</option>
               </optgroup>
             </select>
           </div>
@@ -868,6 +896,63 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
           <div style="text-align:right">
             <p class="sg" style="font-size:9px;color:var(--out)">Build 2026.05</p>
             <p class="sg" style="font-size:9px;color:var(--out);margin-top:2px">Made in India 🇮🇳</p>
+          </div>
+        </div>
+
+        <!-- AI Configuration -->
+        <div class="glass" style="border-radius:14px;overflow:hidden">
+          <div style="padding:11px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
+            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">AI Configuration</p>
+          </div>
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:12px">
+            <!-- Provider selector -->
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">AI Provider</label>
+              <select id="ai-provider-select" onchange="setAIProvider(this.value)"
+                style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+                <option value="anthropic">Claude (Anthropic) — Best quality</option>
+                <option value="openai">GPT-4o Mini (OpenAI) — Cheap &amp; fast</option>
+                <option value="gemini">Gemini 2.5 Flash-Lite (Google) — Free tier</option>
+                <option value="ollama">Ollama (Local) — Free, runs on your Mac</option>
+                <option value="tesseract">Tesseract OCR — Free, runs on device</option>
+                <option value="deviceocr">Device OCR — Built-in Chrome/Android (fastest)</option>
+              </select>
+            </div>
+            <!-- API Key (hidden for Ollama) -->
+            <div id="api-key-row">
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">API Key</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <div style="flex:1;display:flex;align-items:center;gap:8px;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px"
+                  onfocusin="this.style.borderColor='var(--cyan)'" onfocusout="this.style.borderColor='var(--out-v)'">
+                  <span class="ms" style="font-size:15px;color:var(--out);flex-shrink:0">key</span>
+                  <input id="api-key-input" type="password" placeholder="Enter API key..."
+                    style="flex:1;background:transparent;border:none;color:var(--fg);font-size:12px;font-family:Inter,sans-serif;outline:none"
+                    oninput="saveApiKey(this.value)"/>
+                </div>
+                <div id="api-key-status" style="width:10px;height:10px;border-radius:50%;background:var(--out);flex-shrink:0"></div>
+              </div>
+              <p id="api-key-hint" style="font-size:10px;color:var(--out);font-family:Inter,sans-serif;margin-top:6px">console.anthropic.com</p>
+            </div>
+            <!-- Ollama settings (shown only when Ollama selected) -->
+            <div id="ollama-row" style="display:none;flex-direction:column;gap:8px">
+              <div>
+                <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Ollama URL</label>
+                <input id="ollama-url-input" value="http://localhost:11434" placeholder="http://localhost:11434"
+                  style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:12px;font-family:Inter,sans-serif;outline:none"
+                  oninput="localStorage.setItem('ledger_ollama_url',this.value)"/>
+              </div>
+              <div>
+                <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Model</label>
+                <select id="ollama-model-select" onchange="localStorage.setItem('ledger_ollama_model',this.value)"
+                  style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+                  <option value="llava">llava (vision, 4GB)</option>
+                  <option value="llama3.2-vision">llama3.2-vision (2GB)</option>
+                  <option value="minicpm-v">minicpm-v (2GB, fast)</option>
+                  <option value="bakllava">bakllava (4GB)</option>
+                </select>
+              </div>
+              <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Run: <code style="color:var(--cyan)">ollama serve</code> on your Mac before scanning</p>
+            </div>
           </div>
         </div>
 
@@ -1678,72 +1763,433 @@ async function runAIExtraction(fileData){
   animateScanBar();
 
   const payeeCtx = fileData.payee ? `\nThis payment was made TO: ${fileData.payee.name} (${fileData.payee.cat.replace(/s\$/,'')}). Tag this payee in the extracted entries as payee_name and payee_category.` : '';
-  const prompt=`You are a financial ledger assistant. Analyze this ${fileData.type==='pdf'?'PDF document':'image'} and extract ALL financial transactions, expenses, or entries you can find.
+  const isScreenshot = fileData.name && /screenshot|screen.shot|capture|whatsapp|photo|img|image/i.test(fileData.name);
 
-For EACH transaction found, return a JSON array. Each item must have:
-- merchant: string (business/payee name)
-- amount: string (e.g. "₹42.50", always use ₹ Rupee symbol, Indian numbering e.g. ₹1,50,000)
-- date: string (YYYY-MM-DD, the transaction/purchase date)
-- invoice_date: string (YYYY-MM-DD, the invoice/bill/statement date — same as date if not separately shown)
-- invoice_number: string (invoice/receipt/reference number, or "" if not found)
-- reference: string (subject line, reference field, PO number, work order, memo, narration, or any subject/reference text found in the document — "" if not found)
-- category: one of [Dining, Transit, Shopping, Utilities, Healthcare, Entertainment, Travel, Groceries, Fuel, Other]
-- description: one brief sentence describing the transaction
+  const prompt=`You are a financial document extraction assistant. Carefully analyze this ${fileData.type==='pdf'?'PDF':'image'} and extract any financial transaction or payment information visible.
 
-If multiple transactions exist, return all of them.
-If no clear transaction data exists, return an empty array [].
+This could be:
+- A receipt, invoice, or bill (printed or digital)
+- A screenshot of a payment app (PhonePe, GPay, Paytm, BHIM, bank app)
+- A screenshot of a UPI transaction confirmation
+- A WhatsApp screenshot showing a payment
+- A bank statement or passbook photo
+- A handwritten receipt or chalan
 
-Respond ONLY with valid JSON array, no other text. Example:
-[{"merchant":"Contoso Ltd.","amount":"₹1,200.00","date":"2024-01-15","invoice_date":"2024-01-14","invoice_number":"INV-100","reference":"Q1 2024 Consulting Services — Project Phoenix","category":"Other","description":"Professional services invoice","payee_name":"Riya Sharma","payee_category":"Supplier"}]
+Extract every transaction you can see. Be generous — even partial information is useful.
+
+For EACH transaction return a JSON object with:
+- merchant: the business, person, or entity that received the payment (look for "Paid to", "Merchant", "To", payee name, shop name, or any recipient)
+- amount: the payment amount with ₹ symbol in Indian format (e.g. "₹1,500.00"). Look for "Amount", "Total", "Rs", "INR", or any number near a rupee symbol
+- date: transaction date as YYYY-MM-DD. Look for "Date", "Transaction date", "Paid on". Use today if not visible.
+- invoice_date: invoice/bill date as YYYY-MM-DD (same as date if not shown separately)
+- invoice_number: any reference/transaction/invoice/UTR number you can find (or "" if none)
+- reference: any subject, narration, memo, UPI reference ID, or note (or "" if none)
+- category: best guess from [Dining, Transit, Shopping, Utilities, Healthcare, Entertainment, Travel, Groceries, Fuel, Other]
+- description: one sentence describing what this payment was for
+
+IMPORTANT RULES:
+1. Even if the image is a screenshot or photo, do your best to extract the data
+2. For UPI apps: the merchant/payee name is usually shown prominently — use it as merchant
+3. For bank screenshots: look for the debit amount and payee name
+4. If you see multiple transactions, return all of them
+5. Return [] only if there is absolutely no financial data visible (e.g. a landscape photo)
+6. Do NOT say "extraction failed" — always try your best
+
+Respond with ONLY a valid JSON array. No explanation, no markdown, just the array.
+Example for a UPI screenshot:
+[{"merchant":"Riya Sharma Traders","amount":"₹42,000.00","date":"2026-04-28","invoice_date":"2026-04-28","invoice_number":"UTR123456789","reference":"Payment for raw materials","category":"Other","description":"UPI payment to supplier"}]
 ${payeeCtx}`;
 
   try {
-    // Build message content
+    // Build message — always send as image even for screenshots
     const msgContent=[];
     if(fileData.type==='pdf'){
       msgContent.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:fileData.b64}});
     } else {
-      msgContent.push({type:'image',source:{type:'base64',media_type:fileData.mediaType,data:fileData.b64}});
+      // Ensure valid image media type
+      const mt = fileData.mediaType && fileData.mediaType.startsWith('image/')
+        ? fileData.mediaType : 'image/jpeg';
+      msgContent.push({type:'image',source:{type:'base64',media_type:mt,data:fileData.b64}});
     }
     msgContent.push({type:'text',text:prompt});
 
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:msgContent}]
-      })
-    });
+    const provider  = localStorage.getItem('ledger_provider')||'anthropic';
+    const storedKey = localStorage.getItem('ledger_apikey')||'';
+    const ollamaUrl = localStorage.getItem('ledger_ollama_url')||'http://localhost:11434';
+    const ollamaModel = localStorage.getItem('ledger_ollama_model')||'llava';
+
+    let res;
+
+    if(provider === 'deviceocr'){
+      // ── Chrome/Android Built-in Text Detector (Shape Detection API) ───────
+      // Works in Chrome on Android with no downloads or API keys
+      removeScanBubble(()=>{});
+      scanning = false;
+
+      if(!('TextDetector' in window)){
+        renderMsg({type:'error', text:'Device OCR is not supported on this browser. Try Chrome on Android, or switch to Tesseract OCR in Settings.'});
+        return;
+      }
+
+      renderMsg({type:'scanning', label:'READING TEXT...'});
+      animateScanBar();
+      scanning = true;
+
+      try {
+        // Convert base64 to ImageBitmap
+        const imgData = `data:${fileData.mediaType||'image/jpeg'};base64,${fileData.b64}`;
+        const blob = await fetch(imgData).then(r=>r.blob());
+        const bitmap = await createImageBitmap(blob);
+
+        const detector = new TextDetector();
+        const results  = await detector.detect(bitmap);
+        bitmap.close();
+
+        const ocrText = results.map(r=>r.rawValue).join('\n');
+        const entries = parsOCRText(ocrText, fileData.payee);
+
+        removeScanBubble(()=>{
+          scanning = false;
+          if(!entries || entries.length === 0){
+            renderMsg({type:'error', text:'Could not find transaction data. Device OCR works best with clear printed text. Try Tesseract or an AI provider for better accuracy.'});
+          } else {
+            renderMsg({type:'multi-scan', entries, fileName:fileData.name, scannedAt:fileData.scannedAt||new Date().toISOString()});
+          }
+        });
+
+      } catch(err){
+        removeScanBubble(()=>{
+          scanning = false;
+          renderMsg({type:'error', text:'Device OCR error: '+err.message+'. Try Tesseract OCR instead.'});
+        });
+      }
+      return;
+
+    } else if(provider === 'tesseract'){
+      // ── Tesseract.js (fully on-device OCR) ───────────────────────────────
+      removeScanBubble(()=>{}); // remove scanning bubble immediately
+      scanning = false;
+
+      if(typeof Tesseract === 'undefined'){
+        // Lazy load Tesseract only when needed
+        await new Promise((res,rej)=>{
+          const s=document.createElement('script');
+          s.src='https://unpkg.com/tesseract.js@5/dist/tesseract.min.js';
+          s.onload=res; s.onerror=rej;
+          document.head.appendChild(s);
+        });
+      }
+
+      // Show progress bubble
+      renderMsg({type:'scanning', label:'RUNNING OCR...'});
+      animateScanBar();
+
+      try {
+        // Run OCR on the image
+        const imgData = `data:${fileData.mediaType||'image/jpeg'};base64,${fileData.b64}`;
+        const result = await Tesseract.recognize(imgData, 'eng+hin', {
+          logger: m => {
+            if(m.status === 'recognizing text'){
+              const pctEl = document.querySelector('.scan-pct');
+              if(pctEl) pctEl.textContent = Math.round(m.progress*100)+'%';
+            }
+          }
+        });
+
+        const ocrText = result.data.text;
+        scanning = true; // re-lock while we parse
+
+        // Parse OCR text to extract financial data
+        const entries = parsOCRText(ocrText, fileData.payee);
+
+        removeScanBubble(()=>{
+          scanning = false;
+          if(!entries || entries.length === 0){
+            renderMsg({type:'error', text:'Could not find transaction data in this image. Tesseract works best with clear printed text. Try a different image or switch to an AI provider for better accuracy.'});
+          } else {
+            renderMsg({type:'multi-scan', entries, fileName:fileData.name, scannedAt:fileData.scannedAt||new Date().toISOString()});
+          }
+        });
+      } catch(ocrErr){
+        removeScanBubble(()=>{
+          scanning = false;
+          renderMsg({type:'error', text:'OCR failed: '+ocrErr.message});
+        });
+      }
+      return;
+
+    } else if(provider === 'ollama'){
+      // ── Ollama (local, free) ───────────────────────────────────────────────
+      // Ollama uses OpenAI-compatible /v1/chat/completions endpoint
+      const ollamaMessages = [];
+      if(fileData.type !== 'pdf'){
+        // Ollama vision: image as base64 in content
+        ollamaMessages.push({
+          role:'user',
+          content:[
+            {type:'image_url', image_url:{url:`data:${fileData.mediaType||'image/jpeg'};base64,${fileData.b64}`}},
+            {type:'text', text:prompt}
+          ]
+        });
+      } else {
+        ollamaMessages.push({role:'user', content: prompt + '\n[PDF uploaded — extract any visible financial data]'});
+      }
+      res = await fetch(`${ollamaUrl}/v1/chat/completions`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model: ollamaModel,
+          messages: ollamaMessages,
+          stream: false
+        })
+      });
+
+    } else if(provider === 'openai'){
+      // ── OpenAI GPT-4o (cheap, great at images) ────────────────────────────
+      if(!storedKey){
+        removeScanBubble(()=>{ scanning=false; renderMsg({type:'error',text:'No OpenAI API key. Go to Settings → AI Configuration.'}); });
+        return;
+      }
+      const oaiContent = [];
+      if(fileData.type !== 'pdf'){
+        oaiContent.push({type:'image_url', image_url:{url:`data:${fileData.mediaType||'image/jpeg'};base64,${fileData.b64}`, detail:'high'}});
+      }
+      oaiContent.push({type:'text', text:prompt});
+      res = await fetch('https://api.openai.com/v1/chat/completions',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+storedKey},
+        body:JSON.stringify({
+          model:'gpt-4o-mini',
+          max_tokens:2000,
+          messages:[{role:'user', content:oaiContent}]
+        })
+      });
+
+    } else if(provider === 'gemini'){
+      // ── Google Gemini Flash (very cheap, great at Indian receipts) ─────────
+      if(!storedKey){
+        removeScanBublic(()=>{ scanning=false; renderMsg({type:'error',text:'No Gemini API key. Go to Settings → AI Configuration.'}); });
+        return;
+      }
+      const geminiParts = [{text: prompt}];
+      if(fileData.type !== 'pdf'){
+        geminiParts.unshift({inline_data:{mime_type: fileData.mediaType||'image/jpeg', data: fileData.b64}});
+      }
+      // Try direct first, fall back to CORS proxy for Android WebView
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${storedKey}`;
+      const geminiBody = JSON.stringify({contents:[{parts: geminiParts}]});
+
+      // Retry up to 3 times for rate limits
+      let lastErr = null;
+      for(let attempt=0; attempt<3; attempt++){
+        try{
+          res = await fetch(geminiUrl,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: geminiBody
+          });
+          if(res.status === 429){
+            // Rate limited — wait and retry
+            const wait = (attempt+1)*10000; // 10s, 20s, 30s
+            renderMsg({type:'scanning', label:`Rate limit — retrying in ${wait/1000}s...`});
+            await new Promise(r=>setTimeout(r,wait));
+            continue;
+          }
+          break; // success
+        } catch(e){
+          lastErr = e;
+          if(attempt<2) await new Promise(r=>setTimeout(r,2000));
+        }
+      }
+      if(!res && lastErr) throw lastErr;
+
+    } else {
+      // ── Anthropic Claude (default) ────────────────────────────────────────
+      if(!storedKey){
+        removeScanBubble(()=>{ scanning=false; renderMsg({type:'error',text:'No API key set. Go to Settings → AI Configuration.'}); });
+        return;
+      }
+      res = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'x-api-key': storedKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body:JSON.stringify({
+          model:'claude-opus-4-5-20251101',
+          max_tokens:2000,
+          messages:[{role:'user',content:msgContent}]
+        })
+      });
+    }
+
+    if(!res.ok){
+      const errText = await res.text();
+      throw new Error('API error '+res.status+': '+errText.slice(0,200));
+    }
+
+    if(!res.ok){
+      const errText = await res.text();
+      throw new Error('API error '+res.status+': '+errText.slice(0,300));
+    }
 
     const data=await res.json();
-    const rawText=data?.content?.[0]?.text||'[]';
 
-    // Parse JSON — strip any markdown fences
+    // Parse response across all provider formats
+    let rawText = '';
+    const provider2 = localStorage.getItem('ledger_provider')||'anthropic';
+    if(provider2==='anthropic'){
+      rawText = (data?.content?.[0]?.text||'').trim();
+    } else if(provider2==='gemini'){
+      rawText = (data?.candidates?.[0]?.content?.parts?.[0]?.text||'').trim();
+    } else {
+      // OpenAI + Ollama use same format
+      rawText = (data?.choices?.[0]?.message?.content||'').trim();
+    }
+
+    // Robust JSON parsing — handle markdown fences, leading text, etc.
     let entries=[];
     try{
-      const clean=rawText.replace(/```json|```/g,'').trim();
-      entries=JSON.parse(clean);
-    } catch(e){ entries=[]; }
+      // Strip markdown code fences
+      let clean = rawText.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+      // Find the JSON array even if there's surrounding text
+      const arrStart = clean.indexOf('[');
+      const arrEnd   = clean.lastIndexOf(']');
+      if(arrStart !== -1 && arrEnd !== -1){
+        clean = clean.slice(arrStart, arrEnd+1);
+      }
+      entries = JSON.parse(clean);
+      if(!Array.isArray(entries)) entries = [entries]; // wrap single object
+    } catch(e){
+      console.warn('JSON parse failed:', e, 'Raw:', rawText.slice(0,300));
+      entries = [];
+    }
 
-    // Remove scanning bubble
+    // Validate and normalise entries
+    entries = entries.filter(e => e && (e.merchant || e.amount)).map(e=>({
+      merchant:      e.merchant     || 'Unknown Merchant',
+      amount:        e.amount       || '₹0.00',
+      date:          e.date         || new Date().toISOString().slice(0,10),
+      invoice_date:  e.invoice_date || e.date || new Date().toISOString().slice(0,10),
+      invoice_number:e.invoice_number || '',
+      reference:     e.reference    || '',
+      category:      e.category     || 'Other',
+      description:   e.description  || '',
+      payee_name:    e.payee_name   || '',
+      payee_category:e.payee_category || '',
+    }));
+
     removeScanBubble(()=>{
       scanning=false;
       if(!entries||entries.length===0){
-        renderMsg({type:'error',text:'No transactions found in this file. Try a clearer image or a receipt/statement PDF.'});
+        // Show what the AI actually said for debugging
+        const preview = rawText.slice(0,200);
+        renderMsg({type:'error',text:'Could not find transaction data in this image. Try a clearer photo, or make sure the receipt/amount is visible.\n\nTip: Screenshots of UPI apps, bank messages, or printed receipts work best.'});
       } else {
         renderMsg({type:'multi-scan', entries, fileName:fileData.name, scannedAt:fileData.scannedAt||new Date().toISOString()});
       }
     });
 
   } catch(err){
+    console.error('Extraction error:', err);
     removeScanBubble(()=>{
       scanning=false;
-      renderMsg({type:'error',text:'Could not read file. Check your connection and try again.'});
+      const msg = err.message||'';
+      if(msg.includes('401') || msg.includes('403')){
+        renderMsg({type:'error',text:'API authentication failed. Check your Claude API key in Settings.'});
+      } else if(msg.includes('429')){
+        renderMsg({type:'error',text:'Rate limit hit. Please wait a moment and try again.'});
+      } else if(msg.includes('network')||msg.includes('fetch')){
+        renderMsg({type:'error',text:'Network error. Check your internet connection and try again.'});
+      } else {
+        renderMsg({type:'error',text:'Extraction failed: '+msg.slice(0,100)+'. Try a different image format or clearer photo.'});
+      }
     });
   }
 }
+
+// ── OCR Text Parser (for Tesseract results) ───────────────────────────────────
+function parsOCRText(text, payee){
+  if(!text || text.trim().length < 10) return [];
+
+  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+  const full  = text.replace(/\s+/g,' ');
+
+  // ── Extract amount ─────────────────────────────────────────────────────────
+  // Match ₹/Rs/INR followed by numbers, or numbers followed by ₹
+  const amtPatterns = [
+    /(?:₹|Rs\.?|INR)\s*([\d,]+(?:\.\d{1,2})?)/i,
+    /([\d,]+(?:\.\d{1,2})?)\s*(?:₹|Rs\.?|INR)/i,
+    /(?:Amount|Total|Paid|Payment)[:\s]+(?:₹|Rs\.?)?\s*([\d,]+(?:\.\d{1,2})?)/i,
+    /([\d,]{3,}(?:\.\d{2})?)/,  // last resort: any number that looks like money
+  ];
+  let amount = '';
+  for(const p of amtPatterns){
+    const m = full.match(p);
+    if(m){ amount = '₹'+m[1].replace(/[^\d.]/g,'').replace(/(?=(\d{3})+(?!\d))/g,','); break; }
+  }
+  if(!amount) return [];
+
+  // ── Extract merchant/payee ─────────────────────────────────────────────────
+  const merchantPatterns = [
+    /(?:Paid to|To|Merchant|Payee|Recipient)[:\s]+([A-Za-z0-9 &.'-]{3,40})/i,
+    /(?:From|Sender)[:\s]+([A-Za-z0-9 &.'-]{3,40})/i,
+  ];
+  let merchant = payee?.name || '';
+  for(const p of merchantPatterns){
+    const m = full.match(p);
+    if(m){ merchant = m[1].trim(); break; }
+  }
+  if(!merchant){
+    // Use first meaningful line as merchant
+    merchant = lines.find(l => l.length > 3 && l.length < 50 && !/[\d]{4,}/.test(l)) || 'Unknown';
+  }
+
+  // ── Extract date ───────────────────────────────────────────────────────────
+  const datePatterns = [
+    /(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})/,
+    /(\d{4})[/-](\d{1,2})[/-](\d{1,2})/,
+    /(\d{1,2})\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+(\d{2,4})/i,
+  ];
+  let date = new Date().toISOString().slice(0,10);
+  for(const p of datePatterns){
+    const m = full.match(p);
+    if(m){
+      try{
+        const d = new Date(m[0]);
+        if(!isNaN(d)) date = d.toISOString().slice(0,10);
+      } catch(e){}
+      break;
+    }
+  }
+
+  // ── Extract reference/UTR ──────────────────────────────────────────────────
+  const refPatterns = [
+    /(?:UTR|UPI|Ref|Reference|Transaction ID|TXN)[:\s#]*([A-Z0-9]{8,})/i,
+    /([A-Z0-9]{12,20})/,
+  ];
+  let reference = '';
+  for(const p of refPatterns){
+    const m = full.match(p);
+    if(m){ reference = m[1]; break; }
+  }
+
+  return [{
+    merchant,
+    amount,
+    date,
+    invoice_date: date,
+    invoice_number: reference,
+    reference,
+    category: 'Other',
+    description: 'Extracted via on-device OCR',
+    payee_name:     payee?.name || '',
+    payee_category: payee?.cat  || '',
+  }];
+}
+
 
 // ── Scan bar animation ───────────────────────────────────────────────────────
 let scanBarIv=null;
@@ -2616,26 +3062,15 @@ function sortMeFirst(arr, nameKey){
 
 // ── Settings ──────────────────────────────────────────────────────────────────
 const THEMES = {
-  // ── Dark themes ─────────────────────────────────────────────
-  cyber:    {bg:'#111127', fg:'#e2dffe', primary:'#00f0ff', secondary:'#ff24e4', accent:'#eeff96', label:'Cyber',    dark:true},
-  midnight: {bg:'#0a0a0f', fg:'#e2e8f0', primary:'#818cf8', secondary:'#c084fc', accent:'#f0abfc', label:'Midnight', dark:true},
-  forest:   {bg:'#0d1a0e', fg:'#d1fae5', primary:'#34d399', secondary:'#86efac', accent:'#d9f99d', label:'Forest',   dark:true},
-  ember:    {bg:'#1a0a0a', fg:'#fef3c7', primary:'#fb923c', secondary:'#f87171', accent:'#fde68a', label:'Ember',    dark:true},
-  ocean:    {bg:'#050d1a', fg:'#e0f2fe', primary:'#38bdf8', secondary:'#818cf8', accent:'#67e8f9', label:'Ocean',    dark:true},
-  gold:     {bg:'#0f0d00', fg:'#fef9c3', primary:'#eab308', secondary:'#fde047', accent:'#fbbf24', label:'Gold',     dark:true},
-  violet:   {bg:'#130d1f', fg:'#ede9fe', primary:'#a78bfa', secondary:'#c084fc', accent:'#ddd6fe', label:'Violet',   dark:true},
-  crimson:  {bg:'#170007', fg:'#fee2e2', primary:'#ef4444', secondary:'#f87171', accent:'#fca5a5', label:'Crimson',  dark:true},
-  rose:     {bg:'#1a0a10', fg:'#fce7f3', primary:'#f472b6', secondary:'#fb7185', accent:'#fda4af', label:'Rose',     dark:true},
-  teal:     {bg:'#021a18', fg:'#ccfbf1', primary:'#2dd4bf', secondary:'#34d399', accent:'#99f6e4', label:'Teal',     dark:true},
-  // ── Light themes ─────────────────────────────────────────────
-  snow:     {bg:'#f8fafc', fg:'#0f172a', primary:'#0ea5e9', secondary:'#6366f1', accent:'#0284c7', label:'Snow',     dark:false},
-  paper:    {bg:'#fafaf9', fg:'#1c1917', primary:'#0d9488', secondary:'#7c3aed', accent:'#0f766e', label:'Paper',    dark:false},
-  blossom:  {bg:'#fff1f2', fg:'#881337', primary:'#e11d48', secondary:'#9f1239', accent:'#be123c', label:'Blossom',  dark:false},
-  sage:     {bg:'#f0fdf4', fg:'#14532d', primary:'#16a34a', secondary:'#15803d', accent:'#166534', label:'Sage',     dark:false},
-  sand:     {bg:'#fefce8', fg:'#713f12', primary:'#ca8a04', secondary:'#a16207', accent:'#854d0e', label:'Sand',     dark:false},
-  lavender: {bg:'#f5f3ff', fg:'#2e1065', primary:'#7c3aed', secondary:'#6d28d9', accent:'#5b21b6', label:'Lavender',dark:false},
-  sky:      {bg:'#f0f9ff', fg:'#0c4a6e', primary:'#0284c7', secondary:'#0369a1', accent:'#075985', label:'Sky',      dark:false},
-  peach:    {bg:'#fff7ed', fg:'#7c2d12', primary:'#ea580c', secondary:'#c2410c', accent:'#9a3412', label:'Peach',    dark:false},
+  // ── Light — Feminine Glow Collection ─────────────────────────────────────
+  lavender:  {bg:'#faf7ff', fg:'#32226a', primary:'#8c72d0', secondary:'#a990e8', accent:'#c5b8f0', label:'Lavender Dream', dark:false},
+  rose:      {bg:'#fff8fa', fg:'#62182e', primary:'#d07898', secondary:'#e898b0', accent:'#f4bcd0', label:'Rose Quartz',    dark:false},
+  seafoam:   {bg:'#f5fcfb', fg:'#123e3a', primary:'#48a0a0', secondary:'#68c0b8', accent:'#9cd8d4', label:'Seafoam',        dark:false},
+  amber:     {bg:'#fffdf5', fg:'#3e2608', primary:'#c89840', secondary:'#e8b858', accent:'#f4d488', label:'Warm Amber',     dark:false},
+  peri:      {bg:'#f6f9ff', fg:'#101845', primary:'#5878d8', secondary:'#7898f0', accent:'#aac0f8', label:'Periwinkle',     dark:false},
+  // ── Dark ─────────────────────────────────────────────────────────────────
+  cyber:     {bg:'#111127', fg:'#e2dffe', primary:'#00f0ff', secondary:'#ff24e4', accent:'#eeff96', label:'Cyber',          dark:true},
+  midnight:  {bg:'#0a0a0f', fg:'#e2e8f0', primary:'#818cf8', secondary:'#c084fc', accent:'#f0abfc', label:'Midnight',       dark:true},
 };
 
 // Background colour presets (independent of theme)
@@ -2820,17 +3255,72 @@ function setAccent(color){
 
 const FONT_LABELS = {85:'Small', 90:'Small+', 100:'Normal', 110:'Medium+', 120:'Large', 130:'X-Large'};
 function setFontSize(v){
-  const shell = document.getElementById('shell');
-  if(shell) shell.style.zoom = (v/100);
-  const lbl = document.getElementById('font-size-label');
-  if(lbl) lbl.textContent = FONT_LABELS[v]||v+'%';
-  dbSaveSetting('zoom', v/100);
+  const pct = parseInt(v);
+  const labels = {85:'XS',90:'Small',95:'Small',100:'Normal',105:'Normal',110:'Medium',115:'Large',120:'Large',125:'XL',130:'XL'};
+  document.getElementById('font-size-label').textContent = labels[pct]||'Normal';
+  // Only change base font-size — no zoom, no scale, no shell resize
+  document.documentElement.style.fontSize = (pct/100) + 'rem';
+  const sl = document.getElementById('font-size-slider');
+  if(sl) sl.value = pct;
+  dbSaveSetting('fontSize', v);
+}
+
+function saveApiKey(val){
+  val = (val||'').trim();
+  if(val){
+    localStorage.setItem('ledger_apikey', val);
+  } else {
+    localStorage.removeItem('ledger_apikey');
+  }
+  const dot = document.getElementById('api-key-status');
+  if(!dot) return;
+  const provider = localStorage.getItem('ledger_provider')||'anthropic';
+  if(!val){ dot.style.background='var(--out)'; return; }
+  const valid = (provider==='anthropic' && val.startsWith('sk-ant'))
+             || (provider==='openai'    && val.startsWith('sk-'))
+             || (provider==='gemini'    && val.length > 20);
+  dot.style.background = valid ? '#34d399' : '#fb923c';
+}
+
+function setAIProvider(provider){
+  localStorage.setItem('ledger_provider', provider);
+  const isOllama = provider === 'ollama' || provider === 'tesseract' || provider === 'deviceocr';
+  const keyRow    = document.getElementById('api-key-row');
+  const ollamaRow = document.getElementById('ollama-row');
+  const hint      = document.getElementById('api-key-hint');
+  if(keyRow)    keyRow.style.display    = isOllama ? 'none' : 'block';
+  if(ollamaRow) ollamaRow.style.display = isOllama ? 'flex' : 'none';
+  if(hint){
+    const hints = {
+      anthropic: 'console.anthropic.com',
+      openai:    'platform.openai.com → API Keys',
+      gemini:    'aistudio.google.com → Get API Key (free tier available)',
+      ollama:    'brew install ollama && ollama pull llava',
+    };
+    hint.textContent = hints[provider]||'';
+  }
+  const inp = document.getElementById('api-key-input');
+  const phs = {anthropic:'sk-ant-api03-...', openai:'sk-...', gemini:'AIza...'};
+  if(inp) inp.placeholder = phs[provider]||'';
 }
 
 function initSettings(){
   renderSettingRows();
   renderThemeGrid();
   renderBgPresets();
+  // Restore AI provider + key
+  const savedProvider = localStorage.getItem('ledger_provider')||'anthropic';
+  const sel = document.getElementById('ai-provider-select');
+  if(sel) sel.value = savedProvider;
+  setAIProvider(savedProvider);
+  const saved = localStorage.getItem('ledger_apikey')||'';
+  const inp = document.getElementById('api-key-input');
+  if(inp && saved) { inp.value = saved; saveApiKey(saved); }
+  // Ollama settings
+  const ou = document.getElementById('ollama-url-input');
+  if(ou) ou.value = localStorage.getItem('ledger_ollama_url')||'http://localhost:11434';
+  const om = document.getElementById('ollama-model-select');
+  if(om) om.value = localStorage.getItem('ledger_ollama_model')||'llava';
 }
 
 
@@ -2904,7 +3394,7 @@ function setRCat(c){
 }
 
 function miniBar(pct,color){
-  return `<div style="height:4px;background:rgba(255,255,255,.06);border-radius:9999px;overflow:hidden;width:100%"><div style="height:100%;width:${Math.min(pct,100).toFixed(1)}%;background:${color};border-radius:9999px;transition:width .7s ease"></div></div>`;
+  return `<div style="height:4px;background:var(--out-v);border-radius:9999px;overflow:hidden;width:100%"><div style="height:100%;width:${Math.min(pct,100).toFixed(1)}%;background:${color};border-radius:9999px;transition:width .7s ease"></div></div>`;
 }
 
 function renderReports(){
@@ -3204,7 +3694,7 @@ function refreshPersonSelect(){
 function clFmt(n){ return '₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2}); }
 
 function clBar(pct,color){
-  return `<div style="height:5px;background:rgba(255,255,255,.06);border-radius:9999px;overflow:hidden;flex:1">
+  return `<div style="height:5px;background:var(--out-v);border-radius:9999px;overflow:hidden;flex:1">
     <div style="height:100%;width:${Math.min(pct||0,100).toFixed(1)}%;background:${color};border-radius:9999px;box-shadow:0 0 6px ${color}55;transition:width .7s ease"></div>
   </div>`;
 }
