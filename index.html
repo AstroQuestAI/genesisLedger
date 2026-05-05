@@ -16,21 +16,36 @@
 /* ── Reset & Base ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#faf7ff;--bg-low:#f4f0ff;--bg-con:#ece4ff;--bg-hi:#e4d8ff;
-  --bg-top:#ddd0ff;--bg-bot:#fff;
-  --fg:#32226a;--fg-dim:#5a48a0;
-  --cyan:#8c72d0;--cyan-lt:#c5b8f0;--cyan-dk:#7060c0;
-  --mag:#a990e8;--mag-lt:#ddd0ff;
-  --lime:#c5b8f0;
-  --out:#8878c0;--out-v:#e4d8ff;
-  --err:#e05060;
+  --bg:#f8fafc;
+  --bg-low:#f1f5f9;
+  --bg-con:#e2e8f0;
+  --bg-hi:#cbd5e1;
+  --bg-top:#94a3b8;
+  --bg-bot:#ffffff;
+  --fg:#0f172a;
+  --fg-dim:#374151;
+  --out:#4b5563;
+  --out-v:#e5e7eb;
+  --cyan:#2563eb;
+  --cyan-lt:#93c5fd;
+  --cyan-dk:#1d4ed8;
+  --mag:#7c3aed;
+  --mag-lt:#c4b5fd;
+  --lime:#10b981;
+  --err:#dc2626;
+  --input-bg:#ffffff;
+  --input-border:#d1d5db;
+  --input-text:#0f172a;
+  --surface:#ffffff;
+  --surface-raised:#f8fafc;
   --card-bg:#ffffff;
-  --card-bg2:#faf7ff;
-  --card-border:rgba(140,114,208,.15);
-  --card-shadow:rgba(140,114,208,.1);
-  --card-accent:rgba(140,114,208,.06);
+  --card-bg2:#f8fafc;
+  --card-border:rgba(37,99,235,.15);
+  --card-shadow:rgba(37,99,235,.10);
+  --card-accent:rgba(37,99,235,.06);
+  --btn-text:#ffffff;
 }
-html,body{height:100%;overflow:hidden;background:#f4f0ff}
+html,body{height:100%;overflow:hidden;background:var(--bg-low)}
 body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 .sg{font-family:'Space Grotesk',sans-serif}
 .ms{font-family:'Material Symbols Outlined';font-size:24px;line-height:1;display:inline-block;
@@ -42,10 +57,8 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
   width:360px;height:740px;
   background:var(--bg);
   border-radius:40px;overflow:hidden;
-  border:9px solid var(--out-v);
-  box-shadow:0 50px 100px rgba(0,0,0,.9),
-             0 0 0 1px rgba(255,255,255,.04),
-             0 0 80px rgba(0,240,255,.04);
+  border:6px solid var(--card-border);
+  box-shadow:0 8px 40px rgba(0,0,0,.12),0 0 0 1px var(--card-border);
   display:flex;flex-direction:column;
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   transition:transform .1s;
@@ -72,7 +85,7 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
 
 .notch{
   position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:110px;height:26px;background:#14142a;
+  width:110px;height:26px;background:var(--bg);
   border-radius:0 0 18px 18px;z-index:999;
 }
 .status-bar{
@@ -84,7 +97,7 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
   height:22px;display:flex;align-items:center;justify-content:center;
   background:rgba(0,0,0,.35);flex-shrink:0;
 }
-.home-pill span{width:100px;height:4px;border-radius:9999px;background:rgba(255,255,255,.18)}
+.home-pill span{width:100px;height:4px;border-radius:9999px;background:var(--card-border)}
 
 /* ── Screens ── */
 #screens{flex:1;overflow:hidden;position:relative}
@@ -100,13 +113,13 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
 
 /* ── Glass ── */
 .glass{
-  background:var(--card-bg, #fff);
-  border:1px solid var(--card-border, rgba(0,0,0,.08));
-  box-shadow:0 1px 4px var(--card-shadow, rgba(0,0,0,.06));
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  box-shadow:0 1px 4px var(--card-shadow);
 }
 .glass2{
-  background:var(--card-bg2, #f7fbf9);
-  border:1px solid var(--card-border, rgba(0,0,0,.06));
+  background:var(--card-bg2);
+  border:1px solid var(--card-border);
 }
 
 /* ── Neon ── */
@@ -119,7 +132,7 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
 /* ── Badges ── */
 .badge{
   display:inline-flex;align-items:center;
-  background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.4);
+  background:var(--card-accent);border:1px solid rgba(0,240,255,.4);
   color:var(--cyan-lt);font-family:'Space Grotesk',sans-serif;
   font-size:10px;font-weight:700;letter-spacing:.05em;
   padding:2px 9px;border-radius:9999px;
@@ -131,15 +144,15 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
 .prog-track{height:5px;background:var(--bg-top);border-radius:9999px;overflow:hidden}
 .prog-fill{
   height:100%;border-radius:9999px;
-  background:linear-gradient(90deg,var(--mag),var(--cyan));
-  box-shadow:0 0 12px rgba(0,240,255,.5);
+  background:linear-gradient(90deg,var(--cyan-lt),var(--cyan));
+  box-shadow:0 0 8px var(--card-shadow);
   transition:width 1.4s cubic-bezier(.25,.46,.45,.94);
 }
 
 /* ── Button ── */
 .btn-primary{
   background:linear-gradient(135deg,var(--cyan-dk),var(--cyan));
-  color:#003034;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  color:var(--btn-text);font-family:'Space Grotesk',sans-serif;font-weight:700;
   border:none;border-radius:12px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:8px;
   transition:all .2s;font-size:13px;letter-spacing:.04em;
@@ -148,38 +161,36 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
 .btn-primary:active{transform:scale(.97)}
 .btn-ghost{
   display:flex;align-items:center;justify-content:center;gap:8px;
-  background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.22);
+  background:var(--card-accent);border:1px solid rgba(0,240,255,.22);
   border-radius:12px;cursor:pointer;color:var(--cyan-lt);
   font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;
   transition:all .2s;
 }
-.btn-ghost:hover{background:rgba(0,240,255,.14)}
+.btn-ghost:hover{background:var(--card-shadow)}
 
 /* ── Bottom Nav ── */
 #bottom-nav{
-  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-  width:96%;z-index:200;
-  background:rgba(7,7,28,.9);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:9999px;padding:7px 10px;
+  height:64px;
+  flex-shrink:0;
+  background:var(--surface);
+  border-top:1px solid var(--card-border);
   display:flex;justify-content:space-around;align-items:center;
-  box-shadow:0 10px 40px rgba(0,0,0,.8),0 0 0 1px rgba(0,240,255,.04);
-  transition:opacity .25s;
+  padding:0 8px 8px;
 }
-#bottom-nav.hidden{opacity:0;pointer-events:none}
+#bottom-nav.hidden{display:none!important}
 .nav-btn{
   display:flex;flex-direction:column;align-items:center;gap:2px;
-  background:none;border:none;cursor:pointer;padding:3px 5px;border-radius:10px;
-  transition:all .18s;flex:1;
+  background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:10px;
+  transition:all .18s;flex:1;color:var(--out);
 }
 .nav-btn .ms{font-size:19px;color:var(--out);transition:all .18s}
-.nav-btn span.label{font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--out);transition:all .18s}
+.nav-btn span.label{font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:700;letter-spacing:.04em;color:inherit;text-transform:uppercase;color:var(--out);transition:all .18s}
 .nav-btn.active .ms{color:var(--cyan);filter:drop-shadow(0 0 5px rgba(0,240,255,.8))}
 .nav-btn.active span.label{color:var(--cyan)}
 .nav-btn:active{transform:scale(.88)}
 
 /* ── Glow Blobs ── */
-.blob-c{position:absolute;border-radius:50%;background:rgba(0,240,255,.07);filter:blur(100px);pointer-events:none;z-index:0}
+.blob-c{position:absolute;border-radius:50%;background:var(--card-accent);filter:blur(100px);pointer-events:none;z-index:0}
 .blob-m{position:absolute;border-radius:50%;background:rgba(255,36,228,.06);filter:blur(110px);pointer-events:none;z-index:0}
 
 /* ── Animations ── */
@@ -195,7 +206,7 @@ body{font-family:'Inter',sans-serif;color:var(--fg);background:#e8f2ed;-webkit-f
 
 /* ── Input ── */
 input,textarea{outline:none;caret-color:var(--cyan);font-family:'Inter',sans-serif}
-input::placeholder,textarea::placeholder{color:var(--out-v)}
+input::placeholder,textarea::placeholder{color:var(--out);opacity:1}
 
 /* ── Toggle ── */
 .toggle{
@@ -207,9 +218,9 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
 .toggle.off{background:var(--bg-top);border:1px solid var(--out-v)}
 .toggle::after{
   content:'';position:absolute;top:3px;width:18px;height:18px;border-radius:50%;
-  background:#003034;transition:left .25s;
+  background:#ffffff;transition:left .25s;
 }
-.toggle.on::after{left:23px;background:#003034}
+.toggle.on::after{left:23px;background:var(--cyan-dk)}
 .toggle.off::after{left:3px;background:var(--out)}
 
 /* ── Partner Card ── */
@@ -236,22 +247,22 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
 
 /* ── Card hover ── */
 .card-hover{transition:background .2s}
-.card-hover:hover{background:rgba(255,255,255,.05)!important}
+.card-hover:hover{background:var(--surface-raised)!important}
 
 /* ── Filter pills ── */
 .filter-pill{
   flex-shrink:0;border-radius:9999px;padding:6px 15px;cursor:pointer;
   font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.05em;
-  border:1px solid rgba(0,240,255,.18);background:rgba(0,240,255,.06);
+  border:1px solid rgba(0,240,255,.18);background:var(--card-accent);
   color:var(--cyan-lt);transition:all .2s;
 }
-.filter-pill.active{background:var(--cyan);color:#003034;border-color:var(--cyan);box-shadow:0 0 12px rgba(0,240,255,.45)}
+.filter-pill.active{background:var(--cyan);color:var(--btn-text);border-color:var(--cyan);box-shadow:0 0 12px rgba(0,240,255,.45)}
 
 /* Responsive: fill screen on small devices */
 @media(max-width:500px){
   #shell{width:100vw;height:100dvh;border-radius:0;border:none;top:0;left:0;transform:none;box-shadow:none}
   .notch{display:none}
-  html,body{background:var(--bg)}
+  html,body{height:100%;overflow:hidden;background:var(--bg-low)}
 }
 
 /* ── Breathing glow animation ── */
@@ -339,7 +350,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             <div style="position:relative">
               <span class="ms" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:17px;color:var(--out)">person</span>
               <input id="inp-bid" type="text" placeholder="Enter your Bridge ID"
-                style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:11px;padding:12px 14px 12px 40px;color:var(--fg);font-size:13px"
+                style="width:100%;background:var(--input-bg);border:1px solid var(--out-v);border-radius:11px;padding:12px 14px 12px 40px;color:var(--fg);font-size:13px"
                 onfocus="this.style.borderColor='var(--cyan)';this.style.boxShadow='0 0 8px rgba(0,240,255,.3)'"
                 onblur="this.style.borderColor='var(--out-v)';this.style.boxShadow='none'"/>
             </div>
@@ -350,13 +361,13 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             <div style="position:relative">
               <span class="ms" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:17px;color:var(--out)">key</span>
               <input id="inp-ak" type="password" placeholder="Enter access key"
-                style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:11px;padding:12px 14px 12px 40px;color:var(--fg);font-size:13px"
+                style="width:100%;background:var(--input-bg);border:1px solid var(--out-v);border-radius:11px;padding:12px 14px 12px 40px;color:var(--fg);font-size:13px"
                 onfocus="this.style.borderColor='var(--cyan)';this.style.boxShadow='0 0 8px rgba(0,240,255,.3)'"
                 onblur="this.style.borderColor='var(--out-v)';this.style.boxShadow='none'"/>
             </div>
           </div>
           <button class="btn-primary" id="auth-btn" onclick="doLogin()" style="padding:11px;margin-top:4px;width:100%">
-            <span class="ms" style="font-size:17px;color:#003034">lock_open</span>
+            <span class="ms" style="font-size:17px;color:var(--btn-text)">lock_open</span>
             AUTHENTICATE
           </button>
           <div style="display:flex;align-items:center;gap:12px">
@@ -374,13 +385,13 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
     </div>
 
     <!-- ══ HOME ══ -->
-    <div class="screen" id="s-home" style="padding-bottom:72px">
+    <div class="screen" id="s-home">
       <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
       <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
       <!-- Top Bar -->
       <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
-        <div style="width:37px;height:37px;border-radius:50%;background:linear-gradient(135deg,rgba(0,240,255,.18),rgba(255,36,228,.12));border:1px solid rgba(0,240,255,.3);display:flex;align-items:center;justify-content:center">
-          <span class="ms" style="font-size:18px;color:var(--cyan-lt)">person</span>
+        <div onclick="gotoScreen('settings')" style="width:37px;height:37px;border-radius:50%;background:var(--card-accent);border:1.5px solid var(--card-border);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <span id="home-avatar-initial" class="sg" style="font-size:14px;font-weight:700;color:var(--cyan)">ER</span>
         </div>
         <h1 class="sg neon-c" style="font-size:16px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)">Ledger</h1>
         <button style="background:none;border:none;cursor:pointer"><span class="ms" style="font-size:22px;color:var(--cyan)">settings</span></button>
@@ -409,22 +420,22 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             <div class="prog-fill" id="contrib-bar" style="width:0%;--target-w:3.6%"></div>
           </div>
           <div style="display:flex;justify-content:space-between;margin-top:7px">
-            <span class="sg" style="font-size:9px;color:var(--out)">₹0</span>
-            <span class="sg" style="font-size:9px;color:var(--out)">₹12.50L</span>
+            <span class="sg" style="font-size:9px;color:var(--fg-dim)">₹0</span>
+            <span class="sg" style="font-size:9px;color:var(--fg-dim)">₹12.50L</span>
           </div>
         </div>
         <!-- Quick Actions -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-          <button onclick="goScan()" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+          <button onclick="goScan()" style="background:var(--surface-raised);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
             <span class="ms" style="font-size:19px;color:var(--cyan)">add_card</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Add Entry</span>
           </button>
-          <button onclick="goScan()" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+          <button onclick="goScan()" style="background:var(--surface-raised);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
             <span class="ms" style="font-size:19px;color:var(--mag)">document_scanner</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Scan Receipt</span>
           </button>
-          <button style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+          <button style="background:var(--surface-raised);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
             <span class="ms" style="font-size:19px;color:var(--lime)">analytics</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Analytics</span>
           </button>
-          <button style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
+          <button style="background:var(--surface-raised);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(255,255,255,.08)'" onmouseleave="this.style.background='rgba(255,255,255,.04)'">
             <span class="ms" style="font-size:19px;color:var(--cyan-lt)">share</span><span class="sg" style="font-size:11px;font-weight:600;color:var(--fg-dim)">Share Report</span>
           </button>
         </div>
@@ -439,7 +450,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
     </div>
 
     <!-- ══ LEDGER (CHAT) ══ -->
-    <div class="screen" id="s-ledger" style="display:flex;flex-direction:column;padding-bottom:0">
+    <div class="screen" id="s-ledger" style="display:flex;flex-direction:column">
       <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
       <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
       <!-- Hidden file input -->
@@ -464,7 +475,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
           </div>
           <div style="flex:1;max-width:100px">
             <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-              <span class="sg" style="font-size:9px;color:var(--out)">of ₹12.50L</span>
+              <span class="sg" style="font-size:9px;color:var(--fg-dim)">of ₹12.50L</span>
               <span class="badge" style="font-size:9px;padding:1px 7px" id="ledger-contrib-pct">3.6%</span>
             </div>
             <div class="prog-track" style="height:4px">
@@ -473,27 +484,26 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
           </div>
         </div>
       </header>
-      <div id="chat-area" style="position:relative;z-index:1;padding:10px 12px 0;display:flex;flex-direction:column;gap:11px"></div>
-      <!-- Spacer so last chat entry clears input bar + nav -->
-      <div style="flex-shrink:0;height:130px"></div>
+      <div id="chat-area" style="flex:1;overflow-y:auto;padding:10px 12px 0;display:flex;flex-direction:column;gap:11px;min-height:0"></div>
+      
       <!-- Input Bar: sticky to bottom of scroll container -->
-      <div class="glass" id="ledger-input-bar" style="position:sticky;bottom:62px;left:0;right:0;padding:8px 12px;border-left:none;border-right:none;display:flex;gap:9px;align-items:center;z-index:100;flex-shrink:0;margin-top:auto">
-        <button onclick="triggerFilePick()" style="background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <div class="glass" id="ledger-input-bar" style="padding:10px 12px;border-left:none;border-right:none;display:flex;gap:9px;align-items:center;flex-shrink:0;margin-top:auto">
+        <button onclick="triggerFilePick()" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <span class="ms" style="font-size:19px;color:var(--cyan)">photo_camera</span>
         </button>
-        <button onclick="triggerFilePick()" style="background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <button onclick="triggerFilePick()" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <span class="ms" style="font-size:19px;color:var(--cyan)">document_scanner</span>
         </button>
         <input id="chat-input" placeholder="Describe a transaction..."
-          style="flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9999px;padding:9px 15px;color:var(--fg);font-size:12px"/>
-        <button id="send-btn" onclick="sendMsg()" style="background:rgba(0,240,255,.09);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s">
+          style="flex:1;background:var(--surface-raised);border:1px solid rgba(255,255,255,.07);border-radius:9999px;padding:9px 15px;color:var(--fg);font-size:12px"/>
+        <button id="send-btn" onclick="sendMsg()" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s">
           <span class="ms" style="font-size:19px;color:var(--out)">send</span>
         </button>
       </div>
     </div>
 
     <!-- ══ PAYEE PICKER ══ -->
-    <div id="payee-modal" style="display:none;position:absolute;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:flex-end;justify-content:center">
+    <div id="payee-modal" style="display:none;position:absolute;inset:0;z-index:500;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(10px);align-items:flex-end;justify-content:center">
       <div id="payee-sheet" style="width:100%;border-radius:20px 20px 0 0;background:#1d1d34;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:18px 16px 30px;max-height:85%;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.25,.46,.45,.94)">
         <!-- Handle -->
         <div style="width:36px;height:3px;border-radius:9999px;background:rgba(255,255,255,.15);margin:0 auto 14px"></div>
@@ -513,18 +523,18 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
 
         <!-- Skip / Proceed -->
         <div style="display:flex;gap:8px">
-          <button onclick="proceedWithPayee(null)" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9999px;padding:11px 0;cursor:pointer;color:var(--fg-dim);font-family:Space Grotesk,sans-serif;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px">
+          <button onclick="proceedWithPayee(null)" style="flex:1;background:var(--surface-raised);border:1px solid rgba(255,255,255,.1);border-radius:9999px;padding:11px 0;cursor:pointer;color:var(--fg-dim);font-family:Space Grotesk,sans-serif;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px">
             <span class="ms" style="font-size:15px;color:var(--out)">skip_next</span>SKIP
           </button>
           <button id="payee-proceed-btn" onclick="proceedWithPayee(selectedPayee)" class="btn-primary" style="flex:2;border-radius:9999px;padding:11px 0;font-size:12px;gap:6px;opacity:.5;pointer-events:none">
-            <span class="ms" style="font-size:15px;color:#003034">check_circle</span>CONFIRM &amp; SCAN
+            <span class="ms" style="font-size:15px;color:var(--btn-text)">check_circle</span>CONFIRM &amp; SCAN
           </button>
         </div>
       </div>
     </div>
 
     <!-- ══ CATEGORY MODAL ══ -->
-    <div id="cat-modal" style="display:none;position:absolute;inset:0;z-index:600;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);align-items:flex-end;justify-content:center">
+    <div id="cat-modal" style="display:none;position:absolute;inset:0;z-index:600;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);align-items:flex-end;justify-content:center">
       <div id="cat-sheet" style="width:100%;border-radius:20px 20px 0 0;background:#1d1d34;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:18px 16px 30px;max-height:90%;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.25,.46,.45,.94)">
         <div style="width:36px;height:3px;border-radius:9999px;background:rgba(255,255,255,.15);margin:0 auto 14px"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -542,7 +552,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             <div>
               <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:5px;text-transform:uppercase">Category Name</label>
               <input id="newcat-name" placeholder="e.g. Freelancers, Agents…" maxlength="30"
-                style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
+                style="width:100%;background:var(--input-bg);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
                 onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--out-v)'"/>
             </div>
             <div>
@@ -569,7 +579,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
               </div>
             </div>
             <button onclick="addCategory()" class="btn-primary" style="padding:12px;border-radius:10px;font-size:13px;gap:7px;margin-top:2px">
-              <span class="ms" style="font-size:16px;color:#003034">add_circle</span>ADD CATEGORY
+              <span class="ms" style="font-size:16px;color:var(--btn-text)">add_circle</span>ADD CATEGORY
             </button>
           </div>
         </div>
@@ -579,7 +589,60 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
     <!-- ══ ADMIN ══ -->
 
     <!-- ══ ADMIN ══ -->
-    <div class="screen" id="s-admin" style="padding-bottom:72px">
+
+    <div class="screen" id="s-catledger">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+
+      <!-- Sticky header -->
+      <div class="glass" style="position:sticky;top:0;z-index:20;border-radius:0;border-top:none;border-left:none;border-right:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="ms" style="font-size:18px;color:var(--cyan)">list_alt</span>
+            <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Reports</h1>
+          </div>
+          <select id="cl-person-select" onchange="clSelectPerson(this.value)"
+            style="background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);border-radius:9999px;
+                   padding:5px 12px;color:var(--cyan-lt);font-family:Space Grotesk,sans-serif;font-size:10px;
+                   font-weight:700;cursor:pointer;outline:none;max-width:140px">
+            <option value="">All People</option>
+          </select>
+        </div>
+        <!-- Period + Category pills -->
+        <div style="display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 12px 10px;align-items:center">
+          <div style="display:flex;gap:5px;flex-shrink:0;margin-right:10px;padding-right:10px;border-right:1px solid rgba(255,255,255,.08)">
+            <button onclick="setCLPeriod('week')"  id="clp-week"  class="sg" style="font-size:9px;font-weight:700;padding:4px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:var(--surface-raised);color:var(--fg-dim);white-space:nowrap;transition:all .2s">Week</button>
+            <button onclick="setCLPeriod('month')" id="clp-month" class="sg" style="font-size:9px;font-weight:700;padding:4px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:var(--surface-raised);color:var(--fg-dim);white-space:nowrap;transition:all .2s">Month</button>
+            <button onclick="setCLPeriod('all')"   id="clp-all"   class="sg" style="font-size:9px;font-weight:700;padding:4px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(0,240,255,.4);background:rgba(0,240,255,.1);color:var(--cyan-lt);white-space:nowrap;transition:all .2s">All</button>
+          </div>
+          <div style="display:flex;gap:5px;overflow-x:auto;scrollbar-width:none" id="cl-cat-pills"></div>
+        </div>
+      </div>
+
+      <div style="position:relative;z-index:1;padding:10px 14px 0;display:flex;flex-direction:column;gap:12px">
+
+        <!-- Total received banner with person dropdown -->
+        <div id="cl-total-banner" style="border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)"></div>
+
+        <!-- Paid by each Partner -->
+        <div class="glass" style="border-radius:14px;overflow:hidden">
+          <div style="padding:9px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
+            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--mag-lt);text-transform:uppercase">Paid by each Partner</p>
+          </div>
+          <div id="cl-partner-rows" style="display:flex;flex-direction:column"></div>
+        </div>
+
+        <!-- Hidden anchors -->
+        <div style="display:none">
+          <div id="cl-payee-count"></div><div id="cl-payee-rows"></div>
+          <div id="cl-txn-count"></div><div id="cl-txn-rows"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ REPORTS ══ -->
+    <div class="screen" id="s-admin">
       <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
       <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
       <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
@@ -592,7 +655,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             <span class="ms" style="font-size:15px;color:var(--mag)">category</span>
             <span class="sg" style="font-size:10px;font-weight:700;color:var(--mag-lt)">CATS</span>
           </button>
-          <button onclick="openModal()" style="background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.25);border-radius:9999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:4px">
+          <button onclick="openModal()" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.25);border-radius:9999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:4px">
             <span class="ms" style="font-size:15px;color:var(--cyan)">person_add</span>
             <span class="sg" style="font-size:11px;font-weight:700;color:var(--cyan-lt)">ADD</span>
           </button>
@@ -609,7 +672,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
     </div>
 
     <!-- ══ PROFILE ══ -->
-    <div class="screen" id="s-profile" style="padding-bottom:72px">
+    <div class="screen" id="s-profile">
       <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
       <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
       <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
@@ -617,7 +680,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
           <span class="ms" style="font-size:19px;color:var(--cyan)">account_balance_wallet</span>
           <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Ledger</h1>
         </div>
-        <button onclick="gotoScreen('settings')" style="background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:5px"><span class="ms" style="font-size:15px;color:var(--cyan)">tune</span><span class="sg" style="font-size:10px;font-weight:700;color:var(--cyan-lt)">SETTINGS</span></button>
+        <button onclick="gotoScreen('settings')" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:5px"><span class="ms" style="font-size:15px;color:var(--cyan)">tune</span><span class="sg" style="font-size:10px;font-weight:700;color:var(--cyan-lt)">SETTINGS</span></button>
       </header>
       <div style="position:relative;z-index:1;padding:14px 16px 0;display:flex;flex-direction:column;gap:14px">
         <!-- Avatar -->
@@ -627,7 +690,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
               <span class="ms" style="font-size:32px;color:var(--cyan-lt)">person</span>
             </div>
             <button style="position:absolute;bottom:0;right:0;background:var(--cyan);border:2px solid var(--bg);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer">
-              <span class="ms" style="font-size:12px;color:#003034">edit</span>
+              <span class="ms" style="font-size:12px;color:var(--btn-text)">edit</span>
             </button>
           </div>
           <div style="text-align:center">
@@ -692,7 +755,7 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
           </div>
         </div>
         <button class="btn-primary" style="padding:14px;width:100%;border-radius:13px">
-          <span class="ms" style="font-size:18px;color:#003034">save</span>Save Changes
+          <span class="ms" style="font-size:18px;color:var(--btn-text)">save</span>Save Changes
         </button>
         <button onclick="doLogout()" style="background:rgba(255,180,171,.07);border:1px solid rgba(255,180,171,.2);border-radius:13px;padding:13px;cursor:pointer;color:var(--err);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .2s" onmouseenter="this.style.background='rgba(255,180,171,.14)'" onmouseleave="this.style.background='rgba(255,180,171,.07)'">
           <span class="ms" style="font-size:17px;color:var(--err)">logout</span>Sign Out
@@ -701,7 +764,330 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
     </div>
 
     <!-- ══ SETTINGS ══ -->
-    <div class="screen" id="s-settings" style="padding-bottom:72px">
+    <div class="screen" id="s-settings">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+
+      <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="ms" style="font-size:18px;color:var(--cyan)">tune</span>
+          <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Settings</h1>
+        </div>
+        <span class="badge">v1.0.0</span>
+      </header>
+
+      <div style="position:relative;z-index:1;padding:14px 14px 0;display:flex;flex-direction:column;gap:12px">
+
+        <!-- ── Appearance ── -->
+        <div class="glass" style="border-radius:14px;overflow:hidden">
+          <div style="padding:11px 14px 8px;border-bottom:1px solid var(--card-border)">
+            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">Appearance</p>
+          </div>
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:14px">
+
+            <!-- Theme -->
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                <span class="ms" style="font-size:20px;color:var(--cyan)">palette</span>
+                <div style="flex:1">
+                  <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Theme</p>
+                  <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Colour scheme</p>
+                </div>
+                <div id="theme-preview-dot" style="width:20px;height:20px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)80"></div>
+              </div>
+              <select id="theme-select" onchange="setTheme(this.value)"
+                style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+                <optgroup label="── Light ──">
+                  <option value="arctic">Arctic Blue — Clean white, electric blue</option>
+                  <option value="sage">Sage — Ivory, forest green</option>
+                  <option value="violet">Dusk Violet — Warm white, purple</option>
+                  <option value="copper">Copper — Cream, warm amber</option>
+                  <option value="rose">Rose — Soft white, crimson</option>
+                </optgroup>
+                <optgroup label="── Dark ──">
+                  <option value="obsidian">Obsidian — Slate dark, indigo</option>
+                  <option value="ember">Ember — Charcoal, amber fire</option>
+                  <option value="teal">Midnight Teal — Deep navy, teal neon</option>
+                  <option value="noir">Noir Rose — Pure black, hot pink</option>
+                  <option value="aurora">Aurora — Deep space, cyan</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Font Size -->
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                <span class="ms" style="font-size:20px;color:var(--cyan)">text_fields</span>
+                <div style="flex:1">
+                  <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Text Size</p>
+                  <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Adjust font size across the app</p>
+                </div>
+                <span id="font-size-label" class="sg" style="font-size:11px;font-weight:700;color:var(--cyan)">Normal</span>
+              </div>
+              <input type="range" id="font-size-slider" min="85" max="130" value="100" step="5"
+                oninput="setFontSize(this.value)"
+                style="width:100%;accent-color:var(--cyan);cursor:pointer"/>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── AI Configuration ── -->
+        <div class="glass" style="border-radius:14px;overflow:hidden">
+          <div style="padding:11px 14px 8px;border-bottom:1px solid var(--card-border)">
+            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">AI Configuration</p>
+          </div>
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:12px">
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">AI Provider</label>
+              <select id="ai-provider-select" onchange="setAIProvider(this.value)"
+                style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+                <option value="anthropic">Claude (Anthropic) — Best quality</option>
+                <option value="openai">GPT-4o Mini (OpenAI) — Cheap &amp; fast</option>
+                <option value="gemini">Gemini 2.5 Flash-Lite (Google) — Free tier</option>
+                <option value="ollama">Ollama (Local) — Free, runs on Mac</option>
+                <option value="tesseract">Tesseract OCR — Free, on-device</option>
+                <option value="easyocr">EasyOCR (Local Server) — Best quality free</option>
+              </select>
+            </div>
+            <div id="api-key-row">
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">API Key</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <div style="flex:1;display:flex;align-items:center;gap:8px;background:var(--input-bg);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px"
+                  onfocusin="this.style.borderColor='var(--cyan)'" onfocusout="this.style.borderColor='var(--out-v)'">
+                  <span class="ms" style="font-size:15px;color:var(--out);flex-shrink:0">key</span>
+                  <input id="api-key-input" type="password" placeholder="Enter API key..."
+                    style="flex:1;background:transparent;border:none;color:var(--fg);font-size:12px;font-family:Inter,sans-serif;outline:none"
+                    oninput="localStorage.setItem('ledger_apikey',this.value)"
+                    onfocus="this.parentElement.parentElement.style.borderColor='var(--cyan)'"
+                    onblur="this.parentElement.parentElement.style.borderColor='var(--out-v)'"/>
+                </div>
+                <button onclick="document.getElementById('api-key-input').type=document.getElementById('api-key-input').type==='password'?'text':'password'"
+                  style="background:var(--card-accent);border:1px solid var(--card-border);border-radius:9px;padding:10px 12px;cursor:pointer">
+                  <span class="ms" style="font-size:16px;color:var(--out)">visibility</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Security ── -->
+        <div class="glass" style="border-radius:14px;overflow:hidden">
+          <div style="padding:11px 14px 8px;border-bottom:1px solid var(--card-border)">
+            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">Security</p>
+          </div>
+          <div id="security-rows" style="display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--card-border)">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Biometric Lock</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Fingerprint or Face ID</p>
+              </div>
+              <button class="toggle off" id="toggle-biometric" onclick="toggleEl('toggle-biometric')"></button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--card-border)">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Hide Amounts</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Blur financial figures</p>
+              </div>
+              <button class="toggle off" id="toggle-hideamt" onclick="toggleEl('toggle-hideamt')"></button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Screenshot Protection</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Block screen capture</p>
+              </div>
+              <button class="toggle off" id="toggle-screenshot" onclick="toggleEl('toggle-screenshot')"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Notifications ── -->
+        <div class="glass" style="border-radius:14px;overflow:hidden">
+          <div style="padding:11px 14px 8px;border-bottom:1px solid var(--card-border)">
+            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">Notifications</p>
+          </div>
+          <div id="notif-rows" style="display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--card-border)">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Entry Reminders</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Daily log reminders</p>
+              </div>
+              <button class="toggle on" id="toggle-reminders" onclick="toggleEl('toggle-reminders')"></button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Partner Updates</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">When partners add entries</p>
+              </div>
+              <button class="toggle on" id="toggle-partner-notif" onclick="toggleEl('toggle-partner-notif')"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Data & Privacy ── -->
+        <div class="glass" style="border-radius:14px;overflow:hidden" id="data-rows">
+          <div style="padding:11px 14px 8px;border-bottom:1px solid var(--card-border)">
+            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">Data &amp; Privacy</p>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--card-border)">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Auto Backup</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Save to local storage daily</p>
+              </div>
+              <button class="toggle on" id="toggle-backup" onclick="toggleEl('toggle-backup')"></button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Analytics</p>
+                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Help improve the app</p>
+              </div>
+              <button class="toggle off" id="toggle-analytics" onclick="toggleEl('toggle-analytics')"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Account ── -->
+        <div style="display:flex;flex-direction:column;gap:10px;padding-bottom:8px">
+          <!-- Sign Out -->
+          <button onclick="doLogout()" style="background:rgba(255,180,171,.07);border:1px solid rgba(255,180,171,.2);border-radius:13px;padding:12px;cursor:pointer;color:var(--err);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .2s"
+            onmouseenter="this.style.background='rgba(255,180,171,.14)'" onmouseleave="this.style.background='rgba(255,180,171,.07)'">
+            <span class="ms" style="font-size:17px;color:var(--err)">logout</span>Sign Out
+          </button>
+          <!-- Reset All Data -->
+          <button onclick="dbResetAll()" style="background:rgba(255,100,80,.05);border:1px solid rgba(255,100,80,.15);border-radius:13px;padding:12px;cursor:pointer;color:var(--err);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;opacity:.7;transition:all .2s"
+            onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='.7'">
+            <span class="ms" style="font-size:16px">delete_forever</span>Reset All Data
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ REPORTS ══ -->
+    <div class="screen" id="s-admin">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+      <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="ms" style="font-size:19px;color:var(--cyan)">manage_accounts</span>
+          <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Directory</h1>
+        </div>
+        <div style="display:flex;gap:7px">
+          <button onclick="openCatModal()" style="background:rgba(255,36,228,.08);border:1px solid rgba(255,36,228,.25);border-radius:9999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:4px">
+            <span class="ms" style="font-size:15px;color:var(--mag)">category</span>
+            <span class="sg" style="font-size:10px;font-weight:700;color:var(--mag-lt)">CATS</span>
+          </button>
+          <button onclick="openModal()" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.25);border-radius:9999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:4px">
+            <span class="ms" style="font-size:15px;color:var(--cyan)">person_add</span>
+            <span class="sg" style="font-size:11px;font-weight:700;color:var(--cyan-lt)">ADD</span>
+          </button>
+        </div>
+      </header>
+      <div style="position:relative;z-index:1;padding:12px 14px 0">
+        <!-- Category filter pills — rendered dynamically -->
+        <div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px;scrollbar-width:none" id="admin-filters"></div>
+        <!-- Stats row -->
+        <div id="admin-stats" style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none"></div>
+        <!-- People list -->
+        <div id="admin-list" style="display:flex;flex-direction:column;gap:7px"></div>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="screen" id="s-profile">
+      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
+      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
+      <header class="glass" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:0;border-top:none;border-left:none;border-right:none;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="ms" style="font-size:19px;color:var(--cyan)">account_balance_wallet</span>
+          <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Ledger</h1>
+        </div>
+        <button onclick="gotoScreen('settings')" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:5px"><span class="ms" style="font-size:15px;color:var(--cyan)">tune</span><span class="sg" style="font-size:10px;font-weight:700;color:var(--cyan-lt)">SETTINGS</span></button>
+      </header>
+      <div style="position:relative;z-index:1;padding:14px 16px 0;display:flex;flex-direction:column;gap:14px">
+        <!-- Avatar -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:4px">
+          <div style="position:relative">
+            <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(0,240,255,.18),rgba(255,36,228,.12));border:2px solid rgba(0,240,255,.38);display:flex;align-items:center;justify-content:center;animation:pulseCyan 3s infinite">
+              <span class="ms" style="font-size:32px;color:var(--cyan-lt)">person</span>
+            </div>
+            <button style="position:absolute;bottom:0;right:0;background:var(--cyan);border:2px solid var(--bg);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+              <span class="ms" style="font-size:12px;color:var(--btn-text)">edit</span>
+            </button>
+          </div>
+          <div style="text-align:center">
+            <h2 class="sg" style="font-size:16px;font-weight:700;color:var(--fg)">Manage Profile</h2>
+            <span class="badge" style="margin-top:6px">✓ VERIFIED PARTNER</span>
+          </div>
+        </div>
+        <!-- Identity -->
+        <div class="glass" style="border-radius:14px;padding:14px">
+          <h3 class="sg" style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--cyan);text-transform:uppercase;margin-bottom:13px">Identity Details</h3>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Full Name</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:9px 11px;display:flex;align-items:center;gap:9px">
+                <span class="ms" style="font-size:15px;color:var(--out)">person</span><span style="font-size:13px;color:var(--fg)">Elena Rostova</span>
+              </div>
+            </div>
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Email Address</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:9px 11px;display:flex;align-items:center;gap:9px">
+                <span class="ms" style="font-size:15px;color:var(--out)">mail</span><span style="font-size:13px;color:var(--fg)">e.rostova@ledger.net</span>
+              </div>
+            </div>
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">System Role</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:9px 11px;display:flex;align-items:center;gap:9px">
+                <span class="ms" style="font-size:15px;color:var(--out)">badge</span><span style="font-size:13px;color:var(--fg)">Lead Partner</span>
+              </div>
+            </div>
+            <div>
+              <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Security Key</label>
+              <div style="background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span class="ms" style="font-size:15px;color:var(--out)">key</span>
+                  <span class="sg" id="key-display" style="letter-spacing:.12em;font-size:13px;color:var(--fg)">****-****-9482</span>
+                </div>
+                <button onclick="toggleKey()" class="sg" style="background:none;border:none;cursor:pointer;color:var(--cyan-lt);font-size:10px;font-weight:700;letter-spacing:.06em">REVEAL</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Security -->
+        <div class="glass" style="border-radius:14px;padding:14px">
+          <h3 class="sg" style="font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--mag);text-transform:uppercase;margin-bottom:13px">Security &amp; Privacy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+            <div style="display:flex;align-items:center;gap:11px">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(255,36,228,.1);display:flex;align-items:center;justify-content:center">
+                <span class="ms" style="font-size:18px;color:var(--mag-lt)">fingerprint</span>
+              </div>
+              <div><p style="font-size:12px;font-weight:600;color:var(--fg);font-family:'Inter',sans-serif">Biometric Unlock</p><p style="font-size:10px;color:var(--fg-dim);margin-top:1px">Require Face ID / Touch ID</p></div>
+            </div>
+            <button class="toggle on" id="bio-toggle" onclick="toggleEl('bio-toggle')"></button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0">
+            <div style="display:flex;align-items:center;gap:11px">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(255,36,228,.1);display:flex;align-items:center;justify-content:center">
+                <span class="ms" style="font-size:18px;color:var(--mag-lt)">phonelink_lock</span>
+              </div>
+              <div><p style="font-size:12px;font-weight:600;color:var(--fg);font-family:'Inter',sans-serif">Two-Factor Auth</p><p style="font-size:10px;color:var(--fg-dim);margin-top:1px">Secure via Authenticator App</p></div>
+            </div>
+            <button class="toggle on" id="tfa-toggle" onclick="toggleEl('tfa-toggle')"></button>
+          </div>
+        </div>
+        <button class="btn-primary" style="padding:14px;width:100%;border-radius:13px">
+          <span class="ms" style="font-size:18px;color:var(--btn-text)">save</span>Save Changes
+        </button>
+        <button onclick="doLogout()" style="background:rgba(255,180,171,.07);border:1px solid rgba(255,180,171,.2);border-radius:13px;padding:13px;cursor:pointer;color:var(--err);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .2s" onmouseenter="this.style.background='rgba(255,180,171,.14)'" onmouseleave="this.style.background='rgba(255,180,171,.07)'">
+          <span class="ms" style="font-size:17px;color:var(--err)">logout</span>Sign Out
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS ══ -->
+    <div class="screen" id="s-settings">
       <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
       <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
 
@@ -722,194 +1108,12 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
           </div>
 
           <!-- Theme dropdown -->
-          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span class="ms" style="font-size:17px;color:var(--cyan)">style</span>
-                <div>
-                  <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Theme</p>
-                  <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Colours + background preset</p>
-                </div>
-              </div>
-              <div id="theme-preview-dot" style="width:20px;height:20px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0"></div>
-            </div>
-            <select id="theme-select" onchange="setTheme(this.value)"
-              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
-              <optgroup label="── Light ──" style="background:var(--bg-con);color:var(--out)">
-                <option value="lavender">Lavender Dream — Bright lilac</option>
-                <option value="rose">Rose Quartz — Warm rose</option>
-                <option value="seafoam">Seafoam — Bright aqua</option>
-                <option value="amber">Warm Amber — Rich gold</option>
-                <option value="peri">Periwinkle — Soft indigo</option>
-              </optgroup>
-              <optgroup label="── Dark ──" style="background:var(--bg-con);color:var(--out)">
-                <option value="cyber">Cyber — Neon cyan</option>
-                <option value="midnight">Midnight — Deep purple</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <!-- Accent colour dropdown -->
-          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span class="ms" style="font-size:17px;color:var(--cyan)">colorize</span>
-                <div>
-                  <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Accent Colour</p>
-                  <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Highlights, buttons, glows</p>
-                </div>
-              </div>
-              <div id="accent-preview" style="width:20px;height:20px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0"></div>
-            </div>
-            <select id="accent-select" onchange="setAccentFromSelect(this.value)"
-              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
-              <option value="#00f0ff">Cyan — Electric blue</option>
-              <option value="#ff24e4">Magenta — Neon pink</option>
-              <option value="#eeff96">Lime — Acid yellow</option>
-              <option value="#34d399">Emerald — Fresh green</option>
-              <option value="#fb923c">Orange — Warm amber</option>
-              <option value="#a78bfa">Violet — Soft purple</option>
-              <option value="#f472b6">Pink — Hot rose</option>
-              <option value="#38bdf8">Sky — Light blue</option>
-              <option value="#fbbf24">Gold — Warm yellow</option>
-              <option value="#ef4444">Red — Bright crimson</option>
-              <option value="#2dd4bf">Teal — Cool mint</option>
-              <option value="#e2e8f0">Silver — Neutral white</option>
-            </select>
-          </div>
-
-          <!-- Text colour dropdown -->
-          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-              <span class="ms" style="font-size:17px;color:var(--cyan)">format_color_text</span>
-              <div>
-                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Text Colour</p>
-                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Primary text across all screens</p>
-              </div>
-            </div>
-            <select id="text-select" onchange="setTextColor(this.value)"
-              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
-              <option value="#e2dffe">Default — Soft white</option>
-              <option value="#ffffff">Pure White</option>
-              <option value="#f8fafc">Snow White</option>
-              <option value="#e2e8f0">Light Grey</option>
-              <option value="#cbd5e1">Muted Silver</option>
-              <option value="#fef3c7">Warm Cream</option>
-              <option value="#d1fae5">Mint</option>
-              <option value="#0f172a">Dark (for light themes)</option>
-              <option value="#1c1917">Charcoal (for light themes)</option>
-              <option value="#14532d">Forest (for light themes)</option>
-            </select>
-          </div>
-
-          <!-- Background dropdown -->
-          <div style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-              <span class="ms" style="font-size:17px;color:var(--cyan)">gradient</span>
-              <div>
-                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Background</p>
-                <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Override theme background</p>
-              </div>
-            </div>
-            <select id="bg-select" onchange="setBgColor(this.value)"
-              style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
-              <optgroup label="── Dark ──" style="background:var(--bg-con)">
-                <option value="#111127">Deep Space #111127</option>
-                <option value="#0a0a0f">Pure Black #0a0a0f</option>
-                <option value="#0f172a">Dark Navy #0f172a</option>
-                <option value="#050d1a">Ocean Deep #050d1a</option>
-                <option value="#0d1a0e">Dark Forest #0d1a0e</option>
-                <option value="#1a0a0a">Dark Ember #1a0a0a</option>
-                <option value="#130d1f">Dark Violet #130d1f</option>
-                <option value="#0f0d00">Dark Gold #0f0d00</option>
-                <option value="#170007">Dark Crimson #170007</option>
-                <option value="#021a18">Dark Teal #021a18</option>
-                <option value="#1a1a2e">Indigo #1a1a2e</option>
-                <option value="#0d0d0d">Charcoal #0d0d0d</option>
-              </optgroup>
-              <optgroup label="── Light ──" style="background:var(--bg-con)">
-                <option value="#f8fafc">Snow #f8fafc</option>
-                <option value="#fafaf9">Paper #fafaf9</option>
-                <option value="#fff1f2">Blossom #fff1f2</option>
-                <option value="#f0fdf4">Mint #f0fdf4</option>
-                <option value="#fefce8">Cream #fefce8</option>
-                <option value="#f5f3ff">Lavender #f5f3ff</option>
-                <option value="#f0f9ff">Sky #f0f9ff</option>
-                <option value="#fff7ed">Peach #fff7ed</option>
-                <option value="#fdf4ff">Lilac #fdf4ff</option>
-                <option value="#ecfdf5">Seafoam #ecfdf5</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <!-- Text size -->
-          <div style="padding:12px 14px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <div style="display:flex;align-items:center;gap:8px">
-                <span class="ms" style="font-size:17px;color:var(--cyan)">text_fields</span>
-                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">Text Size</p>
-              </div>
-              <span class="sg" id="font-size-label" style="font-size:9px;color:var(--out)">Normal</span>
-            </div>
-            <input type="range" id="font-size-slider" min="85" max="130" value="100" step="5"
-              oninput="setFontSize(this.value)"
-              style="width:100%;accent-color:var(--cyan);cursor:pointer"/>
-          </div>
-        </div>
-
-        <!-- ── Security ── -->
-        <div class="glass" style="border-radius:14px;overflow:hidden">
-          <div style="padding:11px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
-            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--mag);text-transform:uppercase">Security</p>
-          </div>
-          <div id="security-rows">
-            <!-- JS renders -->
-          </div>
-        </div>
-
-        <!-- ── Notifications ── -->
-        <div class="glass" style="border-radius:14px;overflow:hidden">
-          <div style="padding:11px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
-            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--lime);text-transform:uppercase">Notifications</p>
-          </div>
-          <div id="notif-rows">
-            <!-- JS renders -->
-          </div>
-        </div>
-
-        <!-- ── Data & Privacy ── -->
-        <div class="glass" style="border-radius:14px;overflow:hidden">
-          <div style="padding:11px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
-            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--out);text-transform:uppercase">Data &amp; Privacy</p>
-          </div>
-          <div id="data-rows">
-            <!-- JS renders -->
-          </div>
-        </div>
-
-        <!-- ── App info ── -->
-        <div class="glass" style="border-radius:14px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between">
-          <div>
-            <p class="sg" style="font-size:11px;font-weight:700;color:var(--fg)">Ledger</p>
-            <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif;margin-top:2px">Syndicate Financial System · v1.0.0</p>
-          </div>
-          <div style="text-align:right">
-            <p class="sg" style="font-size:9px;color:var(--out)">Build 2026.05</p>
-            <p class="sg" style="font-size:9px;color:var(--out);margin-top:2px">Made in India 🇮🇳</p>
-          </div>
-        </div>
-
-        <!-- AI Configuration -->
-        <div class="glass" style="border-radius:14px;overflow:hidden">
-          <div style="padding:11px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
-            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase">AI Configuration</p>
-          </div>
           <div style="padding:12px 14px;display:flex;flex-direction:column;gap:12px">
             <!-- Provider selector -->
             <div>
               <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">AI Provider</label>
               <select id="ai-provider-select" onchange="setAIProvider(this.value)"
-                style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
+                style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
                 <option value="anthropic">Claude (Anthropic) — Best quality</option>
                 <option value="openai">GPT-4o Mini (OpenAI) — Cheap &amp; fast</option>
                 <option value="gemini">Gemini 2.5 Flash-Lite (Google) — Free tier</option>
@@ -922,86 +1126,16 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
             <div id="api-key-row">
               <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">API Key</label>
               <div style="display:flex;gap:8px;align-items:center">
-                <div style="flex:1;display:flex;align-items:center;gap:8px;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px"
+                <div style="flex:1;display:flex;align-items:center;gap:8px;background:var(--input-bg);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px"
                   onfocusin="this.style.borderColor='var(--cyan)'" onfocusout="this.style.borderColor='var(--out-v)'">
                   <span class="ms" style="font-size:15px;color:var(--out);flex-shrink:0">key</span>
                   <input id="api-key-input" type="password" placeholder="Enter API key..."
-                    style="flex:1;background:transparent;border:none;color:var(--fg);font-size:12px;font-family:Inter,sans-serif;outline:none"
-                    oninput="saveApiKey(this.value)"/>
-                </div>
-                <div id="api-key-status" style="width:10px;height:10px;border-radius:50%;background:var(--out);flex-shrink:0"></div>
-              </div>
-              <p id="api-key-hint" style="font-size:10px;color:var(--out);font-family:Inter,sans-serif;margin-top:6px">console.anthropic.com</p>
-            </div>
-            <!-- Ollama settings (shown only when Ollama selected) -->
-            <div id="ollama-row" style="display:none;flex-direction:column;gap:8px">
-              <div>
-                <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Ollama URL</label>
-                <input id="ollama-url-input" value="http://localhost:11434" placeholder="http://localhost:11434"
-                  style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:12px;font-family:Inter,sans-serif;outline:none"
-                  oninput="localStorage.setItem('ledger_ollama_url',this.value)"/>
-              </div>
-              <div>
-                <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--fg-dim);display:block;margin-bottom:6px;text-transform:uppercase">Model</label>
-                <select id="ollama-model-select" onchange="localStorage.setItem('ledger_ollama_model',this.value)"
-                  style="width:100%;background:var(--bg-bot);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;font-family:Inter,sans-serif;cursor:pointer;outline:none">
-                  <option value="llava">llava (vision, 4GB)</option>
-                  <option value="llama3.2-vision">llama3.2-vision (2GB)</option>
-                  <option value="minicpm-v">minicpm-v (2GB, fast)</option>
-                  <option value="bakllava">bakllava (4GB)</option>
-                </select>
-              </div>
-              <p style="font-size:10px;color:var(--out);font-family:Inter,sans-serif">Run: <code style="color:var(--cyan)">ollama serve</code> on your Mac before scanning</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sign out -->
-        <button onclick="doLogout()" style="background:rgba(255,180,171,.07);border:1px solid rgba(255,180,171,.2);border-radius:13px;padding:12px;cursor:pointer;color:var(--err);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background .2s"
-          onmouseenter="this.style.background='rgba(255,180,171,.14)'" onmouseleave="this.style.background='rgba(255,180,171,.07)'">
-          <span class="ms" style="font-size:17px;color:var(--err)">logout</span>Sign Out
-        </button>
-        <button onclick="dbResetAll()" style="background:rgba(255,180,171,.04);border:1px solid rgba(255,180,171,.1);border-radius:13px;padding:10px;cursor:pointer;color:rgba(255,180,171,.5);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:7px;width:100%">
-          <span class="ms" style="font-size:15px;color:rgba(255,180,171,.5)">delete_forever</span>Reset All Data
-        </button>
-
-      </div>
-    </div>
-
-    <!-- ══ CATLEDGER ══ -->
-    <div class="screen" id="s-catledger" style="padding-bottom:72px">
-      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
-      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
-
-      <!-- Sticky header -->
-      <div class="glass" style="position:sticky;top:0;z-index:20;border-radius:0;border-top:none;border-left:none;border-right:none">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px">
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="ms" style="font-size:18px;color:var(--cyan)">list_alt</span>
-            <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Reports</h1>
-          </div>
-          <select id="cl-person-select" onchange="clSelectPerson(this.value)"
-            style="background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);border-radius:9999px;
-                   padding:5px 12px;color:var(--cyan-lt);font-family:Space Grotesk,sans-serif;font-size:10px;
-                   font-weight:700;cursor:pointer;outline:none;max-width:140px">
-            <option value="">All People</option>
-          </select>
-        </div>
-        <!-- Period + Category pills -->
-        <div style="display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 12px 10px;align-items:center">
-          <div style="display:flex;gap:5px;flex-shrink:0;margin-right:10px;padding-right:10px;border-right:1px solid rgba(255,255,255,.08)">
-            <button onclick="setCLPeriod('week')"  id="clp-week"  class="sg" style="font-size:9px;font-weight:700;padding:4px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim);white-space:nowrap;transition:all .2s">Week</button>
-            <button onclick="setCLPeriod('month')" id="clp-month" class="sg" style="font-size:9px;font-weight:700;padding:4px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim);white-space:nowrap;transition:all .2s">Month</button>
-            <button onclick="setCLPeriod('all')"   id="clp-all"   class="sg" style="font-size:9px;font-weight:700;padding:4px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(0,240,255,.4);background:rgba(0,240,255,.1);color:var(--cyan-lt);white-space:nowrap;transition:all .2s">All</button>
-          </div>
-          <div style="display:flex;gap:5px;overflow-x:auto;scrollbar-width:none" id="cl-cat-pills"></div>
-        </div>
-      </div>
-
-      <div style="position:relative;z-index:1;padding:10px 14px 0;display:flex;flex-direction:column;gap:12px">
+                    style="flex:1;background:transparent;border:none;color:var(--fg);font-size:12px;ption>
+                  <option value="badding-bottom:72px">
+      <div class="bindex:1;padding:10px 14px 0;display:flex;flex-direction:column;gap:12px">
 
         <!-- Total received banner with person dropdown -->
-        <div id="cl-total-banner" style="border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)"></div>
+        <div id="cl-total-banner" style="border-radius:14px;padding:14px 16px;border:1px solid var(--card-border);background:var(--card-bg);box-shadow:0 2px 12px var(--card-shadow)"></div>
 
         <!-- Paid by each Partner -->
         <div class="glass" style="border-radius:14px;overflow:hidden">
@@ -1021,74 +1155,12 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
     </div>
 
     <!-- ══ REPORTS ══ -->
-    <div class="screen" id="s-reports" style="padding-bottom:72px">
-      <div class="blob-c" style="width:55%;height:55%;top:-10%;left:-10%"></div>
-      <div class="blob-m" style="width:60%;height:60%;bottom:-10%;right:-10%"></div>
-
-      <header class="glass" style="position:sticky;top:0;z-index:20;border-radius:0;border-top:none;border-left:none;border-right:none">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px">
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="ms" style="font-size:18px;color:var(--cyan)">bar_chart</span>
-            <h1 class="sg" style="font-size:15px;font-weight:700;color:var(--fg)">Analytics</h1>
-          </div>
-          <div style="display:flex;gap:5px">
-            <button onclick="setRPeriod('week')"  id="rp-week"  class="sg" style="font-size:10px;font-weight:700;padding:5px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim);transition:all .2s">Week</button>
-            <button onclick="setRPeriod('month')" id="rp-month" class="sg" style="font-size:10px;font-weight:700;padding:5px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim);transition:all .2s">Month</button>
-            <button onclick="setRPeriod('all')"   id="rp-all"   class="sg" style="font-size:10px;font-weight:700;padding:5px 10px;border-radius:9999px;cursor:pointer;border:1px solid rgba(0,240,255,.4);background:rgba(0,240,255,.1);color:var(--cyan-lt);transition:all .2s">All</button>
-          </div>
-        </div>
-        <div style="display:flex;gap:6px;overflow-x:auto;padding:0 14px 10px;scrollbar-width:none" id="rcat-filter">
-          <button onclick="setRCat('')"            id="rcat-all"          class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(0,240,255,.35);background:rgba(0,240,255,.1);color:var(--cyan-lt)">All Types</button>
-          <button onclick="setRCat('Suppliers')"   id="rcat-Suppliers"    class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Suppliers</button>
-          <button onclick="setRCat('Vendors')"     id="rcat-Vendors"      class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Vendors</button>
-          <button onclick="setRCat('Contractors')" id="rcat-Contractors"  class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Contractors</button>
-          <button onclick="setRCat('Partners')"    id="rcat-Partners"     class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Partners</button>
-          <button onclick="setRCat('Employees')"   id="rcat-Employees"    class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Employees</button>
-          <button onclick="setRCat('Debtors')"     id="rcat-Debtors"      class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Debtors</button>
-          <button onclick="setRCat('Wagers')"      id="rcat-Wagers"       class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Wagers</button>
-          <button onclick="setRCat('Others')"      id="rcat-Others"       class="rcat-btn" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--fg-dim)">Others</button>
-        </div>
-      </header>
-
-      <div style="position:relative;z-index:1;padding:12px 14px 0;display:flex;flex-direction:column;gap:12px">
-
-        <!-- Grand total banner -->
-        <div id="r-grand-total" style="border-radius:14px;padding:16px 18px;background:linear-gradient(135deg,rgba(0,240,255,.08),rgba(255,36,228,.05));border:1px solid rgba(0,240,255,.15)"></div>
-
-        <!-- Per-person breakdown -->
-        <div class="glass" style="border-radius:14px;overflow:hidden">
-          <div style="padding:9px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
-            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--lime);text-transform:uppercase">Payments by Payee</p>
-          </div>
-          <div id="report-by-payee" style="display:flex;flex-direction:column"></div>
-        </div>
-
-        <!-- Totals by type -->
-        <div class="glass" style="border-radius:14px;overflow:hidden">
-          <div style="padding:9px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
-            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--mag-lt);text-transform:uppercase">Totals by Type</p>
-          </div>
-          <div id="r-by-type" style="padding:10px 14px;display:flex;flex-direction:column;gap:9px"></div>
-        </div>
-
-        <!-- Partner contributions text -->
-        <div class="glass" style="border-radius:14px;overflow:hidden">
-          <div style="padding:9px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05)">
-            <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--out);text-transform:uppercase">Partner Contributions</p>
-          </div>
-          <div id="r-partners" style="padding:10px 14px;display:flex;flex-direction:column;gap:10px"></div>
-        </div>
-
-        <!-- Hidden -->
-        <div style="display:none"><div id="report-summary"></div><div id="report-by-cat"></div><div id="report-entries"></div><div id="report-cat-total"></div><div id="report-payee-total"></div><div id="r-legend"></div><div id="r-chart"></div></div>
-
-      </div>
-    </div>
+    
 
   </div><!-- /screens -->
 
     <!-- ══ PERSON MODAL ══ -->
-    <div id="person-modal" style="display:none;position:absolute;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:flex-end;justify-content:center">
+    <div id="person-modal" style="display:none;position:absolute;inset:0;z-index:500;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(10px);align-items:flex-end;justify-content:center">
       <div class="glass" style="width:100%;border-radius:20px 20px 0 0;padding:20px 18px 30px;max-height:90%;overflow-y:auto">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
           <h3 class="sg" id="modal-title" style="font-size:15px;font-weight:700;color:var(--fg)">Add Person</h3>
@@ -1097,28 +1169,28 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
         <div style="display:flex;flex-direction:column;gap:12px">
           <div>
             <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--fg-dim);display:block;margin-bottom:5px;text-transform:uppercase">Full Name</label>
-            <input id="m-name" placeholder="Enter full name" style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
+            <input id="m-name" placeholder="Enter full name" style="width:100%;background:var(--input-bg);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
               onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--out-v)'"/>
           </div>
           <div>
             <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--fg-dim);display:block;margin-bottom:5px;text-transform:uppercase">Category</label>
-            <select id="m-cat" style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;cursor:pointer"
+            <select id="m-cat" style="width:100%;background:var(--input-bg);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px;cursor:pointer"
               onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--out-v)'">
               <!-- Options rendered dynamically -->
             </select>
           </div>
           <div>
             <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--fg-dim);display:block;margin-bottom:5px;text-transform:uppercase">Email</label>
-            <input id="m-email" type="email" placeholder="email@company.com" style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
+            <input id="m-email" type="email" placeholder="email@company.com" style="width:100%;background:var(--input-bg);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
               onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--out-v)'"/>
           </div>
           <div>
             <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--fg-dim);display:block;margin-bottom:5px;text-transform:uppercase">Phone</label>
-            <input id="m-phone" type="tel" placeholder="+91 XXXXX XXXXX" style="width:100%;background:rgba(12,12,34,.85);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
+            <input id="m-phone" type="tel" placeholder="+91 XXXXX XXXXX" style="width:100%;background:var(--input-bg);border:1px solid var(--out-v);border-radius:9px;padding:10px 12px;color:var(--fg);font-size:13px"
               onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--out-v)'"/>
           </div>
           <!-- Admin role toggle — only for Employees and Partners -->
-          <div id="admin-role-row" style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.15);border-radius:9px">
+          <div id="admin-role-row" style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--card-accent);border:1px solid var(--card-border,.15);border-radius:9px">
             <div style="display:flex;align-items:center;gap:8px">
               <span class="ms" style="font-size:16px;color:var(--cyan)">shield_person</span>
               <div>
@@ -1133,14 +1205,18 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
               <span class="ms" style="font-size:14px;color:var(--err)">delete</span>DELETE
             </button>
             <button onclick="savePerson()" class="btn-primary" style="flex:1;border-radius:9999px;padding:11px 0;font-size:13px;gap:6px">
-              <span class="ms" style="font-size:16px;color:#003034">save</span>SAVE
+              <span class="ms" style="font-size:16px;color:var(--btn-text)">save</span>SAVE
             </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
   <!-- Bottom Nav -->
   <div id="bottom-nav" class="hidden">
     <button class="nav-btn active" id="nav-home" onclick="gotoScreen('home')">
@@ -1151,9 +1227,6 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
     </button>
     <button class="nav-btn" id="nav-catledger" onclick="gotoScreen('catledger')">
       <span class="ms">list_alt</span><span class="label">Reports</span>
-    </button>
-    <button class="nav-btn" id="nav-reports" onclick="gotoScreen('reports')">
-      <span class="ms">bar_chart</span><span class="label">Analytics</span>
     </button>
     <button class="nav-btn" id="nav-admin" onclick="gotoScreen('admin')">
       <span class="ms">admin_panel_settings</span><span class="label">Admin</span>
@@ -1167,6 +1240,19 @@ input::placeholder,textarea::placeholder{color:var(--out-v)}
 </div>
 
 <script>
+// ── Colour utilities (must be first — used by setTheme + DB restore) ─────────
+function adjustHex(hex, amount){
+  if(!hex || hex.length < 6) return hex;
+  hex = hex.replace('#','');
+  if(hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  const num = parseInt(hex,16);
+  const r = Math.min(255,Math.max(0,(num>>16)+amount));
+  const g = Math.min(255,Math.max(0,((num>>8)&0xff)+amount));
+  const b = Math.min(255,Math.max(0,(num&0xff)+amount));
+  return '#'+(((r<<16)|(g<<8)|b)).toString(16).padStart(6,'0');
+}
+
+
 // ── Dynamic Category Store ────────────────────────────────────────────────────
 let USER_CATS = [
   {id:'partners',    name:'Partners',    icon:'handshake',       color:'#ff24e4', isSystem:true,  isPayer:true,  disabled:false},
@@ -1203,7 +1289,17 @@ function updateClock(){
 updateClock();setInterval(updateClock,15000);
 
 // ── Screen navigation ──
+
+
+// ════════════════════════════════════════════════════════════════
+// UI STATE
+// ════════════════════════════════════════════════════════════════
 let currentScreen='splash';
+
+
+// ════════════════════════════════════════════════════════════════
+// NAVIGATION & EVENT HANDLERS
+// ════════════════════════════════════════════════════════════════
 function gotoScreen(id){
   if(!document.getElementById('s-'+id)) return;
   const old=document.getElementById('s-'+currentScreen);
@@ -1236,9 +1332,11 @@ function gotoScreen(id){
     if(cashPendingApprovals[msgId].status==='pending') renderCashApproval(Number(msgId));
   });
   // Init settings screen on nav
-  if(id==='settings') initSettings();
-  if(id==='reports') initReports();
-  if(id==='catledger'){ initCatLedger(); renderCLContent(); }
+  if(id==='settings')  initSettings();
+  if(id==='admin')     initAdmin();
+  if(id==='catledger'){ renderCLCatPills(); renderCLContent(); }
+  if(id==='ledger')    initChat();
+  if(id==='home')      initHome();
 }
 
 // ── Splash ──
@@ -1270,7 +1368,7 @@ const splashIv=setInterval(splashTick,55);
 // ── Login ──
 function doLogin(){
   const btn=document.getElementById('auth-btn');
-  btn.innerHTML='<span class="ms" style="font-size:17px;color:#003034;animation:spin 1s linear infinite">sync</span> AUTHENTICATING...';
+  btn.innerHTML='<span class="ms" style="font-size:17px;color:var(--btn-text);animation:spin 1s linear infinite">sync</span> AUTHENTICATING...';
   btn.disabled=true;
   setTimeout(()=>{
     document.getElementById('bottom-nav').classList.remove('hidden');
@@ -1296,6 +1394,15 @@ const PARTNERS=[
   {name:'James Okafor',role:'Partner',amt:'₹1,80,200',pct:14.4,cls:'mag'},
 ];
 const CLS_COLOR={cyan:'var(--cyan)',mag:'var(--mag)',lime:'var(--lime)'};
+
+// CL_PARTNERS — partners for the Reports screen (derived from PARTNERS)
+const CL_PARTNERS = PARTNERS.map(p=>({
+  name:  p.name,
+  role:  p.role,
+  color: p.cls==='cyan'?'#00c8ff': p.cls==='mag'?'#c084fc':'#34d399',
+  share: p.pct,
+  isMe:  !!p.isMe,
+}));
 function initHome(){
   const list=document.getElementById('partners-list');
   list.innerHTML='';
@@ -1336,7 +1443,7 @@ function renderMsg(m){
   const wrap=document.createElement('div');
   if(m.type==='date'){
     wrap.style.cssText='display:flex;justify-content:center;margin:4px 0';
-    wrap.innerHTML=`<span class="badge" style="background:rgba(255,255,255,.03);border-color:var(--out-v);color:var(--out);letter-spacing:.1em">${m.text}</span>`;
+    wrap.innerHTML=`<span class="badge" style="background:var(--surface-raised);border-color:var(--out-v);color:var(--out);letter-spacing:.1em">${m.text}</span>`;
   } else if(m.type==='user'){
     wrap.style.cssText='display:flex;justify-content:flex-end;animation:msgSelf .3s ease both';
     wrap.innerHTML=`<div class="glass2" style="border-radius:14px 3px 14px 14px;padding:11px 14px;max-width:80%">
@@ -1375,7 +1482,7 @@ function renderMsg(m){
           <span class="ms" style="font-size:13px;color:var(--cyan-lt)">edit</span>EDIT
         </button>
         <button class="btn-primary" style="flex:1;padding:7px 0;border-radius:9999px;font-size:10px;gap:4px">
-          <span class="ms" style="font-size:13px;color:#003034">check_circle</span>CONFIRM
+          <span class="ms" style="font-size:13px;color:var(--btn-text)">check_circle</span>CONFIRM
         </button>
       </div>
     </div>`;
@@ -1388,7 +1495,7 @@ function renderMsg(m){
         <span class="badge" id="scan-badge">PROCESSING IMAGE... 0%</span>
       </div>
       <div class="prog-track" style="margin-bottom:10px"><div class="prog-fill" id="scan-bar" style="width:0%;transition:width .1s"></div></div>
-      <div style="position:relative;height:58px;background:rgba(0,240,255,.03);border-radius:8px;overflow:hidden;border:1px solid rgba(0,240,255,.1)">
+      <div style="position:relative;height:58px;background:var(--surface-raised);border-radius:8px;overflow:hidden;border:1px solid rgba(0,240,255,.1)">
         <div id="scan-line" style="position:absolute;left:0;right:0;height:2px;background:rgba(0,240,255,.55);animation:scanLine 1.5s ease-in-out infinite;box-shadow:0 0 7px rgba(0,240,255,.9)"></div>
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
           <span class="ms" style="font-size:28px;color:rgba(0,240,255,.15)">document_scanner</span>
@@ -1433,7 +1540,7 @@ function renderMsg(m){
         </div>
         <div style="display:flex;align-items:center;gap:5px;padding-left:2px">
           <span class="ms" style="font-size:11px;color:var(--out)">schedule</span>
-          <span class="sg" style="font-size:9px;color:var(--out)">Scanned ${fmtDateTime(m.scannedAt)}</span>
+          <span class="sg" style="font-size:9px;color:var(--fg-dim)">Scanned ${fmtDateTime(m.scannedAt)}</span>
         </div>
       </div>`;
     wrap.appendChild(header);
@@ -1472,7 +1579,7 @@ function renderMsg(m){
             </div>`
           : `<div style="margin-bottom:8px">
               <label class="sg" style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--out);display:block;margin-bottom:4px;text-transform:uppercase">Reference / Subject</label>
-              <div style="display:flex;align-items:center;gap:6px;background:rgba(12,12,34,.7);border:1px solid var(--out-v);border-radius:8px;padding:7px 10px;transition:border-color .2s"
+              <div style="display:flex;align-items:center;gap:6px;background:var(--surface-raised);border:1px solid var(--out-v);border-radius:8px;padding:7px 10px;transition:border-color .2s"
                 onfocusin="this.style.borderColor='#a78bfa'" onfocusout="this.style.borderColor='var(--out-v)'">
                 <span class="ms" style="font-size:13px;color:var(--out);flex-shrink:0">label</span>
                 <input id="ref-input-${idx}" placeholder="Enter reference or subject…"
@@ -1484,7 +1591,7 @@ function renderMsg(m){
             </div>`
         }
         <div style="display:flex;gap:7px;margin-bottom:10px">
-          <div style="flex:1;display:flex;align-items:center;gap:6px;background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.12);border-radius:8px;padding:7px 10px">
+          <div style="flex:1;display:flex;align-items:center;gap:6px;background:var(--card-accent);border:1px solid var(--card-border,.12);border-radius:8px;padding:7px 10px">
             <span class="ms" style="font-size:13px;color:var(--cyan-lt)">receipt</span>
             <div>
               <p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.08em;margin-bottom:1px">INVOICE DATE</p>
@@ -1513,16 +1620,16 @@ function renderMsg(m){
           <div><p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.1em;margin-bottom:2px">SCANNED AT</p><p class="sg" style="font-size:9px;font-weight:600;color:var(--fg-dim)">${fmtDateTime(e.scannedAt)}</p></div>
         </div>
         <div style="display:flex;gap:7px">
-          <button onclick="dismissEntry(${idx},this.closest('.glass'))" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9999px;padding:6px 0;flex:0.6;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px">
+          <button onclick="dismissEntry(${idx},this.closest('.glass'))" style="background:var(--surface-raised);border:1px solid rgba(255,255,255,.1);border-radius:9999px;padding:6px 0;flex:0.6;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px">
             <span class="ms" style="font-size:13px;color:var(--out)">close</span>
             <span class="sg" style="font-size:10px;color:var(--out);font-weight:600">SKIP</span>
           </button>
-          <button onclick="editEntry(${idx})" style="background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:6px 0;flex:0.8;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px">
+          <button onclick="editEntry(${idx})" style="background:var(--card-accent);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:6px 0;flex:0.8;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px">
             <span class="ms" style="font-size:13px;color:var(--cyan-lt)">edit</span>
             <span class="sg" style="font-size:10px;color:var(--cyan-lt);font-weight:600">EDIT</span>
           </button>
           <button onclick="confirmEntry(${idx},this.closest('.glass'))" class="btn-primary" style="flex:1;border-radius:9999px;padding:6px 0;font-size:10px;gap:4px">
-            <span class="ms" style="font-size:13px;color:#003034">check_circle</span>LOG IT
+            <span class="ms" style="font-size:13px;color:var(--btn-text)">check_circle</span>LOG IT
           </button>
         </div>`;
       wrap.appendChild(card);
@@ -1536,7 +1643,7 @@ function renderMsg(m){
         <span class="badge" id="scan-badge">${m.label||'READING FILE...'}</span>
       </div>
       <div class="prog-track" style="margin-bottom:10px"><div class="prog-fill" id="scan-bar" style="width:0%;transition:width .15s"></div></div>
-      <div style="position:relative;height:58px;background:rgba(0,240,255,.03);border-radius:8px;overflow:hidden;border:1px solid rgba(0,240,255,.1)">
+      <div style="position:relative;height:58px;background:var(--surface-raised);border-radius:8px;overflow:hidden;border:1px solid rgba(0,240,255,.1)">
         <div id="scan-line" style="position:absolute;left:0;right:0;height:2px;background:rgba(0,240,255,.55);animation:scanLine 1.5s ease-in-out infinite;box-shadow:0 0 7px rgba(0,240,255,.9)"></div>
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
           <span class="ms" style="font-size:28px;color:rgba(0,240,255,.15)">document_scanner</span>
@@ -1560,7 +1667,7 @@ function renderMsg(m){
         <span class="sg" style="font-size:10px;color:var(--err);font-weight:700;letter-spacing:.06em">MANUAL ENTRIES NOT ALLOWED</span>
       </div>
       <p style="font-size:11px;color:var(--fg-dim);font-family:Inter,sans-serif;line-height:1.5;margin-bottom:8px">All entries must be submitted via document scan. Use the <strong style="color:var(--cyan)">Scan</strong> button to upload a receipt, invoice, or PDF.</p>
-      <button onclick="triggerFilePick()" style="display:flex;align-items:center;gap:6px;background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.22);border-radius:9999px;padding:6px 14px;cursor:pointer">
+      <button onclick="triggerFilePick()" style="display:flex;align-items:center;gap:6px;background:var(--card-accent);border:1px solid rgba(0,240,255,.22);border-radius:9999px;padding:6px 14px;cursor:pointer">
         <span class="ms" style="font-size:14px;color:var(--cyan)">document_scanner</span>
         <span class="sg" style="font-size:10px;font-weight:700;color:var(--cyan-lt)">OPEN SCANNER</span>
       </button>
@@ -1650,7 +1757,7 @@ function openPayeeModal(){
   // Render cat pills dynamically
   const pp = document.getElementById('payee-cat-pills');
   if(pp){
-    pp.innerHTML = USER_CATS.filter(c=>!c.disabled).reduce((h,c)=>h+`<button class="payee-cat-btn" data-cat="${c.name}" onclick="selectPayeeCat(this,\'${c.name}\')" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--fg-dim)">${c.name}</button>`, '<button class="payee-cat-btn" data-cat="" onclick="selectPayeeCat(this,\'\');" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(0,240,255,.4);background:rgba(0,240,255,.1);color:var(--cyan-lt)">All</button>');
+    pp.innerHTML = USER_CATS.filter(c=>!c.disabled).reduce((h,c)=>h+`<button class="payee-cat-btn" data-cat="${c.name}" onclick="selectPayeeCat(this,\'${c.name}\')" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.12);background:var(--surface-raised);color:var(--fg-dim)">${c.name}</button>`, '<button class="payee-cat-btn" data-cat="" onclick="selectPayeeCat(this,\'\');" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(0,240,255,.4);background:var(--card-accent);color:var(--cyan-lt)">All</button>');
   }
   // Reset proceed btn
   const btn = document.getElementById('payee-proceed-btn');
@@ -1697,7 +1804,7 @@ function renderPayeeList(){
   people.forEach(p=>{
     const m = (typeof CAT_META!=='undefined'&&CAT_META[p.cat])||{color:'var(--cyan)',icon:'person'};
     const btn=document.createElement('button');
-    btn.style.cssText='display:flex;align-items:center;gap:10px;width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left;transition:all .15s';
+    btn.style.cssText='display:flex;align-items:center;gap:10px;width:100%;background:var(--surface-raised);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left;transition:all .15s';
     btn.innerHTML=`
       <div style="width:34px;height:34px;border-radius:50%;background:${m.bg||'rgba(0,240,255,.1)'};border:1px solid ${m.color}44;display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <span class="sg" style="font-size:13px;font-weight:700;color:${m.color}">${p.name.charAt(0)}</span>
@@ -1706,10 +1813,10 @@ function renderPayeeList(){
         <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</p>
         <div style="display:flex;align-items:center;gap:4px;margin-top:2px">
           <span class="ms" style="font-size:11px;color:${m.color}">${m.icon}</span>
-          <span class="sg" style="font-size:9px;color:var(--out)">${p.cat.replace(/s$/,'')}</span>
+          <span class="sg" style="font-size:9px;color:var(--fg-dim)">${p.cat.replace(/s$/,'')}</span>
         </div>
       </div>
-      <span class="ms" id="payee-check-${p.id}" style="font-size:18px;color:rgba(255,255,255,.1)">radio_button_unchecked</span>`;
+      <span class="ms" id="payee-check-${p.id}" style="font-size:18px;color:var(--out)">radio_button_unchecked</span>`;
     btn.onclick=()=>selectPayeePerson(p, btn);
     list.appendChild(btn);
   });
@@ -2299,6 +2406,11 @@ let confirmedEntries = [
 function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,''); }
 
 // Strip currency symbols and parse float
+
+
+// ════════════════════════════════════════════════════════════════
+// UTILITY FUNCTIONS
+// ════════════════════════════════════════════════════════════════
 function parseAmt(s){ return parseFloat(String(s||'0').replace(/[₹$,\s]/g,'').replace(/[^0-9.]/g,'')); }
 
 // Check a candidate entry against already-confirmed ones
@@ -2395,7 +2507,7 @@ function confirmEntry(idx, card){
         <p style="font-size:11px;font-weight:600;color:#a78bfa;font-family:Inter,sans-serif;line-height:1.4">${entry.reference}</p>
       </div>
     </div>`:''}
-    <div style="display:flex;align-items:center;gap:6px;margin-top:9px;background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.12);border-radius:8px;padding:7px 10px">
+    <div style="display:flex;align-items:center;gap:6px;margin-top:9px;background:var(--card-accent);border:1px solid var(--card-border,.12);border-radius:8px;padding:7px 10px">
       <span class="ms" style="font-size:13px;color:var(--cyan-lt)">receipt</span>
       <div>
         <p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.08em;margin-bottom:1px">INVOICE DATE</p>
@@ -2435,19 +2547,19 @@ function showDupWarning(card, entry, idx, dup){
       <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
         <span class="sg" style="font-size:12px;font-weight:700;color:var(--err)">${dup.amount}</span>
         <span class="badge" style="font-size:9px;background:rgba(255,180,171,.1);border-color:rgba(255,180,171,.3);color:var(--err)">${dup.category}</span>
-        <span class="sg" style="font-size:9px;color:var(--out)">${dup.date}</span>
+        <span class="sg" style="font-size:9px;color:var(--fg-dim)">${dup.date}</span>
       </div>
     </div>
     <!-- Actions -->
     <div style="display:flex;gap:7px">
       <button onclick="dismissEntry(${idx},this.closest('.glass'))"
-        style="flex:1;background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:7px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px">
+        style="flex:1;background:var(--card-accent);border:1px solid rgba(0,240,255,.2);border-radius:9999px;padding:7px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px">
         <span class="ms" style="font-size:13px;color:var(--cyan-lt)">close</span>
         <span class="sg" style="font-size:10px;color:var(--cyan-lt);font-weight:600">SKIP</span>
       </button>
       <button onclick="forceConfirm(${idx},this.closest('.glass'))"
         class="btn-primary" style="flex:1;border-radius:9999px;padding:7px 0;font-size:10px;gap:4px">
-        <span class="ms" style="font-size:13px;color:#003034">add_circle</span>LOG ANYWAY
+        <span class="ms" style="font-size:13px;color:var(--btn-text)">add_circle</span>LOG ANYWAY
       </button>
     </div>`;
 }
@@ -2535,7 +2647,7 @@ function renderCashApproval(msgId){
     background:${dotColor};box-shadow:${dotGlow};
     display:flex;align-items:center;justify-content:center;
     border:2.5px solid #111127;
-    font-size:10px;color:#003034;font-weight:900;font-family:Space Grotesk,sans-serif;
+    font-size:10px;color:var(--btn-text);font-weight:900;font-family:Space Grotesk,sans-serif;
     pointer-events:none`;
   dot.textContent = isApproved ? '✓' : isRejected ? '✕' : '◆';
   // Append to wrap (parent of card) so backdrop-filter stacking context doesn't clip it
@@ -2551,13 +2663,13 @@ function renderCashApproval(msgId){
       <span class="ms" style="font-size:18px;color:var(--mag-lt);flex-shrink:0">payments</span>
       <p style="font-size:12px;color:var(--fg);font-family:Inter,sans-serif;line-height:1.5">${state.text}</p>
     </div>
-    <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);margin-bottom:11px">
+    <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;background:var(--surface-raised);border:1px solid var(--out-v);255,.07);margin-bottom:11px">
       <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(0,240,255,.18),rgba(255,36,228,.12));border:1px solid rgba(0,240,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <span class="ms" style="font-size:18px;color:var(--cyan-lt)">shield_person</span>
       </div>
       <div style="flex:1">
         <p class="sg" style="font-size:12px;font-weight:700;color:var(--fg)">Dr. Aris Thorne</p>
-        <p class="sg" style="font-size:9px;color:var(--out)">System Admin</p>
+        <p class="sg" style="font-size:9px;color:var(--fg-dim)">System Admin</p>
       </div>
       <span class="badge" style="font-size:9px;${isPending?'':'display:none'}"
       >PENDING</span>
@@ -2571,7 +2683,7 @@ function renderCashApproval(msgId){
       </button>
       <button onclick="adminDecide(${msgId},'approve')"
         class="btn-primary" style="flex:1;border-radius:9999px;padding:9px 0;font-size:11px;gap:5px">
-        <span class="ms" style="font-size:14px;color:#003034">verified</span>
+        <span class="ms" style="font-size:14px;color:var(--btn-text)">verified</span>
         APPROVE
       </button>
     </div>` :
@@ -2630,7 +2742,7 @@ function adminDecide(msgId, decision){
         </div>
         <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:5px">
           <span class="ms" style="font-size:11px;color:var(--out)">shield_person</span>
-          <span class="sg" style="font-size:9px;color:var(--out)">Dr. Aris Thorne · System Admin</span>
+          <span class="sg" style="font-size:9px;color:var(--fg-dim)">Dr. Aris Thorne · System Admin</span>
           <span class="sg" style="font-size:9px;color:var(--out);margin-left:auto">${fmtDateTime(now)}</span>
         </div>`;
 
@@ -2639,7 +2751,7 @@ function adminDecide(msgId, decision){
       // Hint below
       const hint = document.createElement('p');
       hint.className = 'sg';
-      hint.style.cssText = 'font-size:9px;color:#ef4444;text-align:left;padding:3px 6px 0;letter-spacing:.04em;opacity:.7';
+      hint.style.cssText = 'font-size:9px;color:var(--err);text-align:left;padding:3px 6px 0;letter-spacing:.04em;opacity:.7';
       hint.innerHTML = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9b1c1c;margin-right:5px;vertical-align:middle;box-shadow:0 0 5px rgba(155,28,28,.8)"></span>Cash entry — marked for reconciliation';
       chatArea.appendChild(hint);
       chatArea.scrollTop = chatArea.scrollHeight;
@@ -2648,7 +2760,7 @@ function adminDecide(msgId, decision){
 }
 document.getElementById('chat-input').addEventListener('input',function(){
   const btn=document.getElementById('send-btn');
-  if(this.value){btn.style.background='var(--cyan)';btn.querySelector('.ms').style.color='#003034';}
+  if(this.value){btn.style.background='var(--cyan)';btn.querySelector('.ms').style.color='#ffffff';}
   else{btn.style.background='rgba(0,240,255,.09)';btn.querySelector('.ms').style.color='var(--out)';}
 });
 
@@ -2688,7 +2800,7 @@ function renderAdminStats(){
     {l:'Active',  v:active,   c:'var(--lime)'},
     {l:'Inactive',v:inactive, c:'var(--out)'},
     {l:'Admins',  v:admins,   c:'var(--mag-lt)'},
-  ].map(s=>`<div style="flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:7px 14px;text-align:center;min-width:58px">
+  ].map(s=>`<div style="flex-shrink:0;background:var(--surface-raised);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:7px 14px;text-align:center;min-width:58px">
     <p class="sg" style="font-size:16px;font-weight:700;color:${s.c}">${s.v}</p>
     <p class="sg" style="font-size:9px;color:var(--out);letter-spacing:.05em;margin-top:1px">${s.l}</p>
   </div>`).join('');
@@ -2714,7 +2826,7 @@ function renderAdminList(){
     card.innerHTML=`
       <div style="width:40px;height:40px;border-radius:50%;background:${m.bg};border:1px solid ${m.color}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
         <span class="sg" style="font-size:15px;font-weight:700;color:${m.color}">${p.name.charAt(0)}</span>
-        ${p.isAdmin?`<div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#111127;border:1px solid ${m.color};display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:9px;color:var(--cyan)">shield</span></div>`:''}
+        ${p.isAdmin?`<div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:1px solid ${m.color};display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:9px;color:var(--cyan)">shield</span></div>`:''}
       </div>
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:5px">
@@ -2723,7 +2835,7 @@ function renderAdminList(){
         </div>
         <div style="display:flex;align-items:center;gap:4px;margin-top:2px">
           <span class="ms" style="font-size:11px;color:${m.color}">${m.icon}</span>
-          <span class="sg" style="font-size:9px;color:var(--out)">${p.cat.replace(/s$/,'')}</span>
+          <span class="sg" style="font-size:9px;color:var(--fg-dim)">${p.cat.replace(/s$/,'')}</span>
           <div style="width:3px;height:3px;border-radius:50%;background:${isActive?'var(--lime)':'var(--err)'}"></div>
           <span class="sg" style="font-size:9px;color:${isActive?'var(--lime)':'var(--err)'}">${p.status}</span>
         </div>
@@ -2734,7 +2846,7 @@ function renderAdminList(){
           <span class="ms" style="font-size:14px;color:${isActive?'var(--err)':'var(--lime)'}">${isActive?'person_off':'person_check'}</span>
         </button>
         <button onclick="openModal(${p.id})"
-          style="background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.18);border-radius:8px;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center">
+          style="background:var(--card-accent);border:1px solid rgba(0,240,255,.18);border-radius:8px;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center">
           <span class="ms" style="font-size:14px;color:var(--cyan-lt)">edit</span>
         </button>
       </div>`;
@@ -2860,7 +2972,7 @@ function doLogout(){
     b.querySelector('.ms').classList.remove('fill');
   });
   // Reset auth form
-  document.getElementById('auth-btn').innerHTML='<span class="ms" style="font-size:17px;color:#003034">lock_open</span> AUTHENTICATE';
+  document.getElementById('auth-btn').innerHTML='<span class="ms" style="font-size:17px;color:var(--btn-text)">lock_open</span> AUTHENTICATE';
   document.getElementById('auth-btn').disabled=false;
   document.getElementById('inp-bid').value='';
   document.getElementById('inp-ak').value='';
@@ -2871,6 +2983,11 @@ let SQL = null;
 let db  = null;
 const DB_KEY = 'ledger_db';
 
+
+
+// ════════════════════════════════════════════════════════════════
+// DATABASE & PERSISTENCE
+// ════════════════════════════════════════════════════════════════
 async function initDB(){
   try {
     // Load sql.js dynamically — never blocks page render
@@ -2936,6 +3053,145 @@ function saveDB(){
   } catch(e){ console.warn('DB save failed:', e); }
 }
 
+// Font size labels
+const FONT_LABELS = {
+  85:'XS', 90:'Small', 95:'Small', 100:'Normal',
+  105:'Normal', 110:'Medium', 115:'Large', 120:'Large',
+  125:'XL', 130:'XL'
+};
+
+function setFontSize(v){
+  const pct = parseInt(v) || 100;
+  document.documentElement.style.fontSize = (pct/100) + 'rem';
+  const sl = document.getElementById('font-size-slider');
+  if(sl) sl.value = pct;
+  const lbl = document.getElementById('font-size-label');
+  if(lbl) lbl.textContent = FONT_LABELS[pct] || 'Normal';
+  dbSaveSetting('fontSize', pct);
+}
+
+function setAccentFromSelect(val){
+  if(!val) return;
+  document.documentElement.style.setProperty('--cyan',    val);
+  document.documentElement.style.setProperty('--cyan-dk', val);
+  const ap = document.getElementById('accent-preview');
+  if(ap){ ap.style.background=val; ap.style.boxShadow='0 0 8px '+val+'80'; }
+  dbSaveSetting('accent', val);
+}
+
+function setAccent(val){
+  setAccentFromSelect(val);
+}
+
+function setBgColor(val){
+  if(!val) return;
+  document.documentElement.style.setProperty('--bg', val);
+  document.documentElement.style.setProperty('--bg-low', val);
+  const shell = document.getElementById('shell');
+  if(shell) shell.style.background = val;
+  document.body.style.background = val;
+  const sel = document.getElementById('bg-select');
+  if(sel) sel.value = val;
+  dbSaveSetting('bg', val);
+}
+
+function setTextColor(val){
+  if(!val) return;
+  document.documentElement.style.setProperty('--fg', val);
+  const sel = document.getElementById('text-select');
+  if(sel) sel.value = val;
+  dbSaveSetting('textcolor', val);
+}
+function setTheme(name){
+  const t = THEMES[name];
+  if(!t) return;
+  currentTheme = name;
+  const root = document.documentElement;
+  const L = !t.dark; // light theme flag
+
+  // ── Brand ─────────────────────────────────────────────────────────────────
+  root.style.setProperty('--bg',      t.bg);
+  root.style.setProperty('--fg',      t.fg);
+  root.style.setProperty('--cyan',    t.primary);
+  root.style.setProperty('--cyan-lt', t.accent);
+  root.style.setProperty('--cyan-dk', t.secondary);
+  root.style.setProperty('--mag',     t.secondary);
+  root.style.setProperty('--mag-lt',  t.accent);
+  root.style.setProperty('--lime',    t.accent);
+
+  // ── Surface hierarchy ─────────────────────────────────────────────────────
+  if(L){
+    // Light themes — all text must be dark, all cards white/near-white
+    const tint = (hex,a) => hex+''+Math.round(a*255).toString(16).padStart(2,'0');
+    root.style.setProperty('--bg-low',         adjustHex(t.bg,-3));
+    root.style.setProperty('--bg-con',         adjustHex(t.bg,-8));
+    root.style.setProperty('--bg-hi',          adjustHex(t.bg,-14));
+    root.style.setProperty('--bg-top',         adjustHex(t.bg,-22));
+    root.style.setProperty('--bg-bot',         '#ffffff');
+    // Text — WCAG AA: --fg-dim min 4.5:1, --out min 3:1 for large/bold
+    root.style.setProperty('--fg-dim',         adjustHex(t.fg, 22));   // ~5:1 on white
+    root.style.setProperty('--out',            adjustHex(t.fg, 40));   // ~4.5:1 on white
+    root.style.setProperty('--out-v',          adjustHex(t.bg,-12));   // subtle border
+    // Cards — white surface, colored border
+    root.style.setProperty('--card-bg',        '#ffffff');
+    root.style.setProperty('--card-bg2',       adjustHex(t.bg,-4));
+    root.style.setProperty('--card-border',    t.primary+'25');
+    root.style.setProperty('--card-shadow',    t.primary+'18');
+    root.style.setProperty('--card-accent',    t.primary+'0d');
+    // Inputs — always white with dark text
+    root.style.setProperty('--input-bg',       '#ffffff');
+    root.style.setProperty('--input-border',   adjustHex(t.bg,-20));
+    root.style.setProperty('--input-text',     t.fg);
+    root.style.setProperty('--surface',        '#ffffff');
+    root.style.setProperty('--surface-raised', adjustHex(t.bg,-4));
+    root.style.setProperty('--btn-text',       '#ffffff');
+    root.style.setProperty('--err',            '#dc2626');
+  } else {
+    // Dark themes — text must be light, cards layered dark
+    const c1 = adjustHex(t.bg, 9);
+    const c2 = adjustHex(t.bg,17);
+    const c3 = adjustHex(t.bg,26);
+    root.style.setProperty('--bg-low',         adjustHex(t.bg,-3));
+    root.style.setProperty('--bg-con',         c1);
+    root.style.setProperty('--bg-hi',          c2);
+    root.style.setProperty('--bg-top',         c3);
+    root.style.setProperty('--bg-bot',         c1);
+    // Text — WCAG AA on dark backgrounds
+    root.style.setProperty('--fg-dim',         adjustHex(t.fg,-12));   // slightly dimmer than fg
+    root.style.setProperty('--out',            adjustHex(t.fg,-38));   // muted labels
+    root.style.setProperty('--out-v',          c2);
+    // Cards — layered dark
+    root.style.setProperty('--card-bg',        c1);
+    root.style.setProperty('--card-bg2',       c2);
+    root.style.setProperty('--card-border',    t.primary+'35');
+    root.style.setProperty('--card-shadow',    t.primary+'25');
+    root.style.setProperty('--card-accent',    t.primary+'18');
+    // Inputs — slightly lighter than bg
+    root.style.setProperty('--input-bg',       c1);
+    root.style.setProperty('--input-border',   t.primary+'45');
+    root.style.setProperty('--input-text',     t.fg);
+    root.style.setProperty('--surface',        c1);
+    root.style.setProperty('--surface-raised', c2);
+    // Ember: amber button needs dark text for contrast
+    root.style.setProperty('--btn-text', name==='ember' ? '#1c1917' : '#ffffff');
+    root.style.setProperty('--err',      '#f87171');
+  }
+
+  // ── Shell + body ──────────────────────────────────────────────────────────
+  document.body.style.background = L ? adjustHex(t.bg,-5) : adjustHex(t.bg,-4);
+  const shell = document.getElementById('shell');
+  if(shell) shell.style.background = t.bg;
+
+  // ── Sync UI controls ─────────────────────────────────────────────────────
+  const ts = document.getElementById('theme-select');
+  if(ts) ts.value = name;
+  const ap = document.getElementById('accent-preview');
+  if(ap){ ap.style.background=t.primary; ap.style.boxShadow='0 0 8px '+t.primary+'80'; }
+  const pd = document.getElementById('theme-preview-dot');
+  if(pd){ pd.style.background=t.primary; pd.style.boxShadow='0 0 8px '+t.primary+'80'; }
+
+  dbSaveSetting('theme', name);
+}
 async function loadFromDB(){
   if(!db) return;
   try {
@@ -2988,16 +3244,23 @@ async function loadFromDB(){
       });
     }
 
-    // Load settings
+    // Load settings — deferred so all theme/color fns are defined
     const sets = db.exec("SELECT key,value FROM settings_store");
     if(sets.length && sets[0].values.length){
-      sets[0].values.forEach(([k,v])=>{
-        if(k==='accent') setAccent(v);
-        if(k==='theme')  setTheme(v);
-        if(k==='bg')     setBgColor(v);
-        if(k==='textcolor') setTextColor(v);
-        if(k==='zoom')   { const shell=document.getElementById('shell'); if(shell) shell.style.zoom=v; const sl=document.getElementById('font-size-slider'); if(sl){sl.value=Math.round(parseFloat(v)*100);const lbl=document.getElementById('font-size-label');if(lbl)lbl.textContent=FONT_LABELS[sl.value]||sl.value+'%';} }
-      });
+      const savedSettings = sets[0].values;
+      // Use setTimeout(0) to run after all JS is parsed & defined
+      setTimeout(()=>{
+        savedSettings.forEach(([k,v])=>{
+          try {
+            if(k==='theme')     setTheme(v);
+            if(k==='accent')    setAccent(v);
+            if(k==='bg')        setBgColor(v);
+            if(k==='textcolor') setTextColor(v);
+            if(k==='zoom')      setFontSize(Math.round(parseFloat(v)*100)||100);
+            if(k==='fontSize')  setFontSize(parseInt(v)||100);
+          } catch(e2){ console.warn('Setting restore failed:', k, e2.message); }
+        });
+      }, 0);
     }
   } catch(e){ console.warn('DB load failed:', e); }
 }
@@ -3061,17 +3324,26 @@ function sortMeFirst(arr, nameKey){
 }
 
 // ── Settings ──────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// THEME & STYLING
+// ════════════════════════════════════════════════════════════════
 const THEMES = {
-  // ── Light — Feminine Glow Collection ─────────────────────────────────────
-  lavender:  {bg:'#faf7ff', fg:'#32226a', primary:'#8c72d0', secondary:'#a990e8', accent:'#c5b8f0', label:'Lavender Dream', dark:false},
-  rose:      {bg:'#fff8fa', fg:'#62182e', primary:'#d07898', secondary:'#e898b0', accent:'#f4bcd0', label:'Rose Quartz',    dark:false},
-  seafoam:   {bg:'#f5fcfb', fg:'#123e3a', primary:'#48a0a0', secondary:'#68c0b8', accent:'#9cd8d4', label:'Seafoam',        dark:false},
-  amber:     {bg:'#fffdf5', fg:'#3e2608', primary:'#c89840', secondary:'#e8b858', accent:'#f4d488', label:'Warm Amber',     dark:false},
-  peri:      {bg:'#f6f9ff', fg:'#101845', primary:'#5878d8', secondary:'#7898f0', accent:'#aac0f8', label:'Periwinkle',     dark:false},
-  // ── Dark ─────────────────────────────────────────────────────────────────
-  cyber:     {bg:'#111127', fg:'#e2dffe', primary:'#00f0ff', secondary:'#ff24e4', accent:'#eeff96', label:'Cyber',          dark:true},
-  midnight:  {bg:'#0a0a0f', fg:'#e2e8f0', primary:'#818cf8', secondary:'#c084fc', accent:'#f0abfc', label:'Midnight',       dark:true},
+  // ── Light (5) ─────────────────────────────────────────────────────────────
+  arctic:   {bg:'#f8fafc', fg:'#0f172a', primary:'#2563eb', secondary:'#1d4ed8', accent:'#93c5fd', label:'Arctic Blue',    dark:false},
+  sage:     {bg:'#f9fafb', fg:'#111827', primary:'#16a34a', secondary:'#15803d', accent:'#86efac', label:'Sage',            dark:false},
+  violet:   {bg:'#faf9ff', fg:'#1e1b4b', primary:'#7c3aed', secondary:'#6d28d9', accent:'#c4b5fd', label:'Dusk Violet',    dark:false},
+  copper:   {bg:'#fffbf0', fg:'#1c1300', primary:'#d97706', secondary:'#b45309', accent:'#fcd34d', label:'Copper',          dark:false},
+  rose:     {bg:'#fff7f8', fg:'#1a0010', primary:'#e11d48', secondary:'#be123c', accent:'#fda4af', label:'Rose',            dark:false},
+  // ── Dark (5) ──────────────────────────────────────────────────────────────
+  obsidian: {bg:'#0f172a', fg:'#f1f5f9', primary:'#818cf8', secondary:'#6366f1', accent:'#a5b4fc', label:'Obsidian',        dark:true},
+  ember:    {bg:'#1c1917', fg:'#fafaf9', primary:'#f59e0b', secondary:'#d97706', accent:'#fde68a', label:'Ember',           dark:true},
+  teal:     {bg:'#0c1f1e', fg:'#f0fdfa', primary:'#14b8a6', secondary:'#0f766e', accent:'#5eead4', label:'Midnight Teal',   dark:true},
+  noir:     {bg:'#0d0d0d', fg:'#f5f5f5', primary:'#f43f5e', secondary:'#be123c', accent:'#fda4af', label:'Noir Rose',       dark:true},
+  aurora:   {bg:'#080f1c', fg:'#e2f8ff', primary:'#06b6d4', secondary:'#0891b2', accent:'#67e8f9', label:'Aurora',          dark:true},
 };
+
+
+
 
 // Background colour presets (independent of theme)
 const BG_PRESETS = [
@@ -3125,9 +3397,9 @@ const DATA_ROWS = [
 ];
 
 function buildSettingRow(row, isLast){
-  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;${isLast?'':'border-bottom:1px solid rgba(255,255,255,.04)'}">
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;${isLast?'':'border-bottom:1px solid var(--card-border)'}">
     <div style="display:flex;align-items:center;gap:10px">
-      <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--surface-raised);display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <span class="ms" style="font-size:17px;color:${row.color}">${row.icon}</span>
       </div>
       <div>
@@ -3156,509 +3428,15 @@ function toggleSetting(key){
   renderSettingRows();
 }
 
-function setTheme(name){
-  const t = THEMES[name];
-  if(!t) return;
-  currentTheme = name;
-  const root = document.documentElement;
-  root.style.setProperty('--bg',       t.bg);
-  root.style.setProperty('--bg-low',   t.bg);
-  root.style.setProperty('--bg-con',   adjustHex(t.bg, 10));
-  root.style.setProperty('--bg-hi',    adjustHex(t.bg, 18));
-  root.style.setProperty('--bg-top',   adjustHex(t.bg, 26));
-  root.style.setProperty('--bg-bot',   adjustHex(t.bg, -4));
-  root.style.setProperty('--cyan',     t.primary);
-  root.style.setProperty('--cyan-lt',  t.accent);
-  root.style.setProperty('--cyan-dk',  t.primary);
-  root.style.setProperty('--mag',      t.secondary);
-  root.style.setProperty('--mag-lt',   t.secondary);
-  // Update body bg
-  document.body.style.background = adjustHex(t.bg, -6);
-  // Update shell bg
-  const shell = document.getElementById('shell');
-  if(shell) shell.style.background = t.bg;
-  // Update accent preview
-  const ap = document.getElementById('accent-preview');
-  if(ap){ ap.style.background=t.primary; ap.style.boxShadow='0 0 8px '+t.primary; }
-  // Highlight active theme button
-  document.querySelectorAll('.theme-btn').forEach(b=>{
-    const isActive = b.id === 'theme-'+name;
-    b.style.border = isActive ? '2px solid '+t.primary : '1px solid rgba(255,255,255,.1)';
-    b.style.background = isActive ? t.primary+'22' : 'rgba(255,255,255,.04)';
-    const dot = b.querySelector('.theme-dot');
-    if(dot) dot.style.boxShadow = isActive ? '0 0 8px '+t.primary : 'none';
-  });
-  dbSaveSetting('theme', name);
-}
-
-// ── Accent from dropdown ──────────────────────────────────────────────────────
-function setAccentFromSelect(color){
-  setAccent(color);
-  const as = document.getElementById('accent-select');
-  if(as) as.value = color;
-}
-
-// ── Text colour ───────────────────────────────────────────────────────────────
-function setTextColor(color){
-  document.documentElement.style.setProperty('--fg', color);
-  const ts = document.getElementById('text-select');
-  if(ts) ts.value = color;
-  dbSaveSetting('textcolor', color);
-}
-
-// ── Background colour ─────────────────────────────────────────────────────────
-function setBgColor(color){
-  const root = document.documentElement;
-  root.style.setProperty('--bg',     color);
-  root.style.setProperty('--bg-low', color);
-  root.style.setProperty('--bg-con', adjustHex(color, 10));
-  root.style.setProperty('--bg-hi',  adjustHex(color, 18));
-  root.style.setProperty('--bg-top', adjustHex(color, 26));
-  root.style.setProperty('--bg-bot', adjustHex(color, -4));
-  document.body.style.background = adjustHex(color, -6);
-  const shell = document.getElementById('shell');
-  if(shell) shell.style.background = color;
-  // Update picker
-  const picker = document.getElementById('bg-color-picker');
-  if(picker) picker.value = color;
-  // Highlight active preset
-  document.querySelectorAll('.bg-preset-btn').forEach(b=>{
-    b.style.border = b.dataset.color===color ? '2px solid var(--cyan)' : '2px solid transparent';
-    b.style.transform = b.dataset.color===color ? 'scale(1.2)' : 'scale(1)';
-  });
-  dbSaveSetting('bg', color);
-}
-
-function renderThemeGrid(){}
-
-function renderBgPresets(){}
-
-function adjustHex(hex, amount){
-  // Lighten/darken a hex color
-  let r=parseInt(hex.slice(1,3)||'11',16);
-  let g=parseInt(hex.slice(3,5)||'11',16);
-  let b=parseInt(hex.slice(5,7)||'27',16);
-  r=Math.max(0,Math.min(255,r+amount));
-  g=Math.max(0,Math.min(255,g+amount));
-  b=Math.max(0,Math.min(255,b+amount));
-  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
-}
-
-function setAccent(color){
-  document.documentElement.style.setProperty('--cyan', color);
-  document.documentElement.style.setProperty('--cyan-lt', color);
-  document.documentElement.style.setProperty('--cyan-dk', color);
-  const ap = document.getElementById('accent-preview');
-  if(ap){ ap.style.background=color; ap.style.boxShadow='0 0 8px '+color; }
-  dbSaveSetting('accent', color);
-}
-
-const FONT_LABELS = {85:'Small', 90:'Small+', 100:'Normal', 110:'Medium+', 120:'Large', 130:'X-Large'};
-function setFontSize(v){
-  const pct = parseInt(v);
-  const labels = {85:'XS',90:'Small',95:'Small',100:'Normal',105:'Normal',110:'Medium',115:'Large',120:'Large',125:'XL',130:'XL'};
-  document.getElementById('font-size-label').textContent = labels[pct]||'Normal';
-  // Only change base font-size — no zoom, no scale, no shell resize
-  document.documentElement.style.fontSize = (pct/100) + 'rem';
-  const sl = document.getElementById('font-size-slider');
-  if(sl) sl.value = pct;
-  dbSaveSetting('fontSize', v);
-}
-
-function saveApiKey(val){
-  val = (val||'').trim();
-  if(val){
-    localStorage.setItem('ledger_apikey', val);
-  } else {
-    localStorage.removeItem('ledger_apikey');
-  }
-  const dot = document.getElementById('api-key-status');
-  if(!dot) return;
-  const provider = localStorage.getItem('ledger_provider')||'anthropic';
-  if(!val){ dot.style.background='var(--out)'; return; }
-  const valid = (provider==='anthropic' && val.startsWith('sk-ant'))
-             || (provider==='openai'    && val.startsWith('sk-'))
-             || (provider==='gemini'    && val.length > 20);
-  dot.style.background = valid ? '#34d399' : '#fb923c';
-}
-
-function setAIProvider(provider){
-  localStorage.setItem('ledger_provider', provider);
-  const isOllama = provider === 'ollama' || provider === 'tesseract' || provider === 'deviceocr';
-  const keyRow    = document.getElementById('api-key-row');
-  const ollamaRow = document.getElementById('ollama-row');
-  const hint      = document.getElementById('api-key-hint');
-  if(keyRow)    keyRow.style.display    = isOllama ? 'none' : 'block';
-  if(ollamaRow) ollamaRow.style.display = isOllama ? 'flex' : 'none';
-  if(hint){
-    const hints = {
-      anthropic: 'console.anthropic.com',
-      openai:    'platform.openai.com → API Keys',
-      gemini:    'aistudio.google.com → Get API Key (free tier available)',
-      ollama:    'brew install ollama && ollama pull llava',
-    };
-    hint.textContent = hints[provider]||'';
-  }
-  const inp = document.getElementById('api-key-input');
-  const phs = {anthropic:'sk-ant-api03-...', openai:'sk-...', gemini:'AIza...'};
-  if(inp) inp.placeholder = phs[provider]||'';
-}
-
-function initSettings(){
-  renderSettingRows();
-  renderThemeGrid();
-  renderBgPresets();
-  // Restore AI provider + key
-  const savedProvider = localStorage.getItem('ledger_provider')||'anthropic';
-  const sel = document.getElementById('ai-provider-select');
-  if(sel) sel.value = savedProvider;
-  setAIProvider(savedProvider);
-  const saved = localStorage.getItem('ledger_apikey')||'';
-  const inp = document.getElementById('api-key-input');
-  if(inp && saved) { inp.value = saved; saveApiKey(saved); }
-  // Ollama settings
-  const ou = document.getElementById('ollama-url-input');
-  if(ou) ou.value = localStorage.getItem('ledger_ollama_url')||'http://localhost:11434';
-  const om = document.getElementById('ollama-model-select');
-  if(om) om.value = localStorage.getItem('ledger_ollama_model')||'llava';
-}
-
-
-// ── Reports ────────────────────────────────────────────────────────────────────
-let rPeriod = 'all';
-let rCat    = '';
-
-const RCAT_COLORS = {
-  Partners:'#ff24e4', Vendors:'#00f0ff', Suppliers:'#7df4ff',
-  Contractors:'#eeff96', Debtors:'#fb923c', Wagers:'#a78bfa',
-  Employees:'#34d399', Others:'#94a3b8',
-};
-const RCAT_ICONS = {
-  Partners:'handshake', Vendors:'storefront', Suppliers:'inventory_2',
-  Contractors:'engineering', Debtors:'account_balance', Wagers:'casino',
-  Employees:'badge', Others:'group',
-};
-
-const PARTNER_DATA = [
-  {name:'You',           role:'My Contribution', base:45219,  pct:3.6,  color:'#34d399'},
-  {name:'Elena Jenkins', role:'Lead Syndicator', base:450000, pct:36,   color:'#ff24e4'},
-  {name:'Marcus Reed',   role:'Partner',         base:325500, pct:26,   color:'#00f0ff'},
-  {name:'Sofia Chen',    role:'Partner',         base:210000, pct:16.8, color:'#eeff96'},
-  {name:'James Okafor',  role:'Partner',         base:180200, pct:14.4, color:'#fb923c'},
-];
-
-function fmtINR(n){
-  if(!n || isNaN(n)) return '₹0';
-  return '₹' + Number(n).toLocaleString('en-IN', {maximumFractionDigits:2});
-}
-
-function getPeriodLabel(){ return rPeriod==='week'?'This Week':rPeriod==='month'?'This Month':'All Time'; }
-
-function getCutoff(){
-  if(rPeriod==='all') return 0;
-  const now=Date.now();
-  return rPeriod==='week' ? now-7*86400000 : now-30*86400000;
-}
-
-function getEntries(){
-  const cutoff = getCutoff();
-  return confirmedEntries.filter(e=>{
-    if(!e.confirmedAt) return false;
-    if(cutoff && new Date(e.confirmedAt).getTime()<cutoff) return false;
-    return true;
-  });
-}
-
-function setRPeriod(p){
-  rPeriod = p;
-  ['week','month','all'].forEach(id=>{
-    const b=document.getElementById('rp-'+id); if(!b) return;
-    const on=id===p;
-    b.style.border = on?'1px solid rgba(0,240,255,.4)':'1px solid rgba(255,255,255,.1)';
-    b.style.background = on?'rgba(0,240,255,.1)':'rgba(255,255,255,.04)';
-    b.style.color = on?'var(--cyan-lt)':'var(--fg-dim)';
-  });
-  renderReports();
-}
-
-function setRCat(c){
-  rCat = c;
-  document.querySelectorAll('.rcat-btn').forEach(b=>{
-    const id = b.id.replace('rcat-','');
-    const on = (c===''&&id==='all')||(c===id);
-    b.style.border = on?'1px solid rgba(0,240,255,.35)':'1px solid rgba(255,255,255,.1)';
-    b.style.background = on?'rgba(0,240,255,.1)':'rgba(255,255,255,.04)';
-    b.style.color = on?'var(--cyan-lt)':'var(--fg-dim)';
-  });
-  renderReports();
-}
-
-function miniBar(pct,color){
-  return `<div style="height:4px;background:var(--out-v);border-radius:9999px;overflow:hidden;width:100%"><div style="height:100%;width:${Math.min(pct,100).toFixed(1)}%;background:${color};border-radius:9999px;transition:width .7s ease"></div></div>`;
-}
-
-function renderReports(){
-  const entries = getEntries();
-
-  // Build payee map: name → {cat, week[], month[], all, weekly:{label:total}, monthly:{label:total}}
-  const payeeMap = {};
-  entries.forEach(e=>{
-    const pn  = e.payee_name||(e.payee&&e.payee.name)||null;
-    const pc  = e.payee_category||(e.payee&&e.payee.cat?e.payee.cat.replace(/s$/,'')+'s':null)||'Others';
-    if(!pn) return;
-    if(!payeeMap[pn]) payeeMap[pn]={cat:pc, total:0, count:0, txns:[]};
-    payeeMap[pn].total += parseAmt(e.amount);
-    payeeMap[pn].count++;
-    payeeMap[pn].txns.push(e);
-  });
-
-  // Filter by rCat
-  const visiblePayees = Object.entries(payeeMap)
-    .filter(([,d])=> !rCat || d.cat===rCat )
-    .sort((a,b)=>b[1].total-a[1].total);
-
-  const grandTotal = visiblePayees.reduce((s,[,d])=>s+d.total,0);
-  const label = getPeriodLabel();
-
-  // ── Grand total banner ─────────────────────────────────────────────────────
-  const bannerEl = document.getElementById('r-grand-total');
-  if(bannerEl) bannerEl.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <p class="sg" style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--out);text-transform:uppercase;margin-bottom:6px">
-          ${rCat||'All Types'} · ${label}
-        </p>
-        <p class="sg" style="font-size:28px;font-weight:900;color:var(--cyan);letter-spacing:-.02em">${fmtINR(grandTotal)}</p>
-        <p class="sg" style="font-size:10px;color:var(--out);margin-top:4px">${visiblePayees.length} payee${visiblePayees.length!==1?'s':''} · ${visiblePayees.reduce((s,[,d])=>s+d.count,0)} transaction${visiblePayees.reduce((s,[,d])=>s+d.count,0)!==1?'s':''}</p>
-      </div>
-      <div style="text-align:right">
-        <span class="ms" style="font-size:40px;color:rgba(0,240,255,.12)">summarize</span>
-      </div>
-    </div>`;
-
-  // ── Per-person table ───────────────────────────────────────────────────────
-  const thead = document.getElementById('r-table-header');
-  const tbody = document.getElementById('r-table-body');
-
-  if(thead) thead.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center">
-      <span class="sg" style="font-size:9px;color:var(--out);letter-spacing:.08em;text-transform:uppercase">Name</span>
-      <span class="sg" style="font-size:9px;color:var(--out);letter-spacing:.08em;text-transform:uppercase;text-align:right">Txns</span>
-      <span class="sg" style="font-size:9px;color:var(--out);letter-spacing:.08em;text-transform:uppercase;text-align:right;min-width:80px">Total Paid</span>
-    </div>`;
-
-  if(tbody){
-    if(!visiblePayees.length){
-      tbody.innerHTML = `<div style="padding:24px;text-align:center">
-        <span class="ms" style="font-size:32px;color:var(--out);display:block;margin-bottom:8px">person_search</span>
-        <p class="sg" style="font-size:11px;color:var(--out)">No payments found</p>
-        <p style="font-size:10px;color:var(--out-v);font-family:Inter,sans-serif;margin-top:4px">Tag payees when scanning receipts to see them here</p>
-      </div>`;
-    } else {
-      const maxAmt = visiblePayees[0][1].total;
-      tbody.innerHTML = visiblePayees.map(([name,d],i)=>{
-        const color = RCAT_COLORS[d.cat]||'#94a3b8';
-        const icon  = RCAT_ICONS[d.cat]||'group';
-        const pct   = grandTotal>0 ? (d.total/grandTotal*100).toFixed(1) : 0;
-        const barPct= maxAmt>0 ? (d.total/maxAmt*100) : 0;
-        const isLast= i===visiblePayees.length-1;
-        // Weekly breakdown — last 4 weeks
-        const weeklyBars = buildWeeklyBars(d.txns, color);
-        return `<div style="padding:12px 14px;${isLast?'':'border-bottom:1px solid rgba(255,255,255,.04)'}">
-          <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;margin-bottom:8px">
-            <div style="display:flex;align-items:center;gap:8px;min-width:0">
-              <div style="width:30px;height:30px;border-radius:50%;background:${color}18;border:1px solid ${color}44;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <span class="sg" style="font-size:12px;font-weight:700;color:${color}">${name.charAt(0)}</span>
-              </div>
-              <div style="min-width:0">
-                <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</p>
-                <div style="display:flex;align-items:center;gap:4px">
-                  <span class="ms" style="font-size:10px;color:${color}">${icon}</span>
-                  <span class="sg" style="font-size:9px;color:var(--out)">${d.cat} · ${pct}%</span>
-                </div>
-              </div>
-            </div>
-            <span class="sg" style="font-size:11px;color:var(--out);text-align:right">${d.count}</span>
-            <span class="sg" style="font-size:12px;font-weight:700;color:${color};text-align:right;min-width:80px">${fmtINR(d.total)}</span>
-          </div>
-          <div style="margin-bottom:6px">${miniBar(barPct,color)}</div>
-          ${weeklyBars}
-        </div>`;
-      }).join('');
-    }
-  }
-
-  // ── By type totals ─────────────────────────────────────────────────────────
-  const typeMap = {};
-  visiblePayees.forEach(([,d])=>{
-    if(!typeMap[d.cat]) typeMap[d.cat]={total:0,count:0,payees:0};
-    typeMap[d.cat].total += d.total;
-    typeMap[d.cat].count += d.count;
-    typeMap[d.cat].payees++;
-  });
-  const sortedTypes = Object.entries(typeMap).sort((a,b)=>b[1].total-a[1].total);
-  const maxType = sortedTypes[0]?.[1]?.total||1;
-
-  const typeEl = document.getElementById('r-by-type');
-  if(typeEl){
-    if(!sortedTypes.length){
-      typeEl.innerHTML=`<p class="sg" style="font-size:11px;color:var(--out);text-align:center;padding:12px 0">No data</p>`;
-    } else {
-      typeEl.innerHTML = sortedTypes.map(([cat,d])=>{
-        const color = RCAT_COLORS[cat]||'#94a3b8';
-        const icon  = RCAT_ICONS[cat]||'group';
-        const pct   = grandTotal>0?(d.total/grandTotal*100).toFixed(1):0;
-        return `<div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
-            <div style="width:28px;height:28px;border-radius:8px;background:${color}18;border:1px solid ${color}33;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <span class="ms" style="font-size:14px;color:${color}">${icon}</span>
-            </div>
-            <div style="flex:1">
-              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-                <div>
-                  <span class="sg" style="font-size:11px;font-weight:700;color:var(--fg)">${cat}</span>
-                  <span class="sg" style="font-size:9px;color:var(--out);margin-left:6px">${d.payees} person${d.payees!==1?'s':''} · ${d.count} txn${d.count!==1?'s':''}</span>
-                </div>
-                <span class="sg" style="font-size:12px;font-weight:700;color:${color}">${fmtINR(d.total)}</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:7px">
-                ${miniBar(d.total/maxType*100,color)}
-                <span class="sg" style="font-size:9px;color:var(--out);white-space:nowrap">${pct}%</span>
-              </div>
-            </div>
-          </div>
-        </div>`;
-      }).join('');
-    }
-  }
-
-  // ── Partner contributions ─────────────────────────────────────────────────
-  const partnerEl = document.getElementById('r-partners');
-  const myExtra = confirmedEntries.filter(e=>e.confirmedAt).reduce((s,e)=>s+parseAmt(e.amount),0);
-  const allP = PARTNER_DATA.map(p=>({...p, amt:p.name==='You'?p.base+myExtra:p.base}));
-  const totalProject = 1250400;
-  const maxP = Math.max(...allP.map(p=>p.amt));
-
-  if(partnerEl){
-    partnerEl.innerHTML = allP.map(p=>{
-      const pct = (p.amt/totalProject*100).toFixed(1);
-      const isMe= p.name==='You';
-      return `<div style="${isMe?'background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15);border-radius:10px;padding:8px 10px;':''}">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-          <div style="display:flex;align-items:center;gap:7px">
-            <div style="width:28px;height:28px;border-radius:50%;background:${p.color}18;border:1px solid ${p.color}44;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <span class="sg" style="font-size:12px;font-weight:700;color:${p.color}">${p.name.charAt(0)}</span>
-            </div>
-            <div>
-              <p style="font-size:11px;font-weight:600;color:${isMe?'#34d399':'var(--fg)'};font-family:Inter,sans-serif">${p.name}${isMe?' ★':''}</p>
-              <p class="sg" style="font-size:9px;color:var(--out)">${p.role}</p>
-            </div>
-          </div>
-          <div style="text-align:right">
-            <p class="sg" style="font-size:12px;font-weight:700;color:${p.color}">${fmtINR(p.amt)}</p>
-            <p class="sg" style="font-size:9px;color:var(--out)">${pct}% of total</p>
-          </div>
-        </div>
-        ${miniBar(p.amt/maxP*100, p.color)}
-      </div>`;
-    }).join('');
-  }
-}
-
-function buildWeeklyBars(txns, color){
-  if(!txns.length) return '';
-  // Build last 4 week buckets
-  const now  = new Date();
-  const weeks = [];
-  for(let i=3;i>=0;i--){
-    const wStart = new Date(now); wStart.setDate(now.getDate() - now.getDay() - i*7); wStart.setHours(0,0,0,0);
-    const wEnd   = new Date(wStart); wEnd.setDate(wStart.getDate()+6); wEnd.setHours(23,59,59,999);
-    const label  = i===0?'This wk': i===1?'Last wk': wStart.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
-    const total  = txns.filter(e=>{const d=new Date(e.confirmedAt||e.date);return d>=wStart&&d<=wEnd;}).reduce((s,e)=>s+parseAmt(e.amount),0);
-    weeks.push({label, total});
-  }
-  const maxW = Math.max(...weeks.map(w=>w.total), 1);
-  if(weeks.every(w=>w.total===0)) return '';
-  return `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:4px">
-    ${weeks.map(w=>`<div style="text-align:center">
-      <div style="height:28px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:3px">
-        <div style="width:100%;background:${color}${w.total?'':'00'};border-radius:3px 3px 0 0;height:${w.total?Math.max((w.total/maxW*100),8):0}%;min-height:${w.total?'3px':'0'};transition:height .6s ease;box-shadow:${w.total?'0 0 6px '+color+'66':'none'}"></div>
-      </div>
-      <p class="sg" style="font-size:8px;color:${w.total?color:'var(--out-v)'};white-space:nowrap;overflow:hidden">${w.label}</p>
-      ${w.total?`<p class="sg" style="font-size:8px;color:var(--out)">${fmtINR(w.total)}</p>`:''}
-    </div>`).join('')}
-  </div>`;
-}
-
-function initReports(){
-  setRPeriod(rPeriod);
-  setRCat(rCat);
-}
-
-
-// ── Category Ledger (Reports) — Chart + Partner view ─────────────────────────
-const CL_CATS = ['Vendors','Suppliers','Contractors','Debtors','Wagers','Employees','Others'];
-
-const CL_PARTNERS = [
-  {name:'You',           role:'My Contribution', color:'#34d399', share:3.6},
-  {name:'Elena Jenkins', role:'Lead Syndicator', color:'#ff24e4', share:36},
-  {name:'Marcus Reed',   role:'Partner',         color:'#00f0ff', share:26},
-  {name:'Sofia Chen',    role:'Partner',         color:'#eeff96', share:16.8},
-  {name:'James Okafor',  role:'Partner',         color:'#fb923c', share:14.4},
-];
-
-let clCat    = 'Suppliers';
-let clPeriod = 'all';
-let clPerson = null;
-let clChartType = 'bar';
-
-function initCatLedger(){
-  ensureValidCLCat();
-  renderCLCatPills();
-  refreshPersonSelect();
-  renderCLContent();
-}
-
-function ensureValidCLCat(){
-  const cats = getCL_CATS();
-  if(!cats.includes(clCat)) clCat = cats[0]||'Suppliers';
-}
-
-function getCL_CATS(){ return getReceiverCats().map(c=>c.name); }
-
-// ── Filter pills ───────────────────────────────────────────────────────────────
-function renderCLCatPills(){
-  const el = document.getElementById('cl-cat-pills');
-  if(!el) return;
-  const cats = getCL_CATS();
-  el.innerHTML = cats.map(cat=>{
-    const m   = getCLMeta(cat);
-    const on  = cat===clCat;
-    return `<button onclick="setCLCat('${cat}')" id="clcatpill-${cat.replace(/\s/g,'_')}"
-      style="flex-shrink:0;border-radius:9999px;padding:4px 12px;cursor:pointer;
-             font-family:Space Grotesk,sans-serif;font-size:9px;font-weight:700;
-             border:1px solid ${on?m.color+'88':'rgba(255,255,255,.1)'};
-             background:${on?m.color+'18':'rgba(255,255,255,.04)'};
-             color:${on?m.color:'var(--fg-dim)'};white-space:nowrap;transition:all .2s">${cat}</button>`;
-  }).join('');
-}
-
-function setCLCat(cat){
-  clCat   = cat;
-  clPerson= null;
-  renderCLCatPills();
-  refreshPersonSelect();
-  renderCLContent();
-}
-
 function setCLPeriod(p){
   clPeriod = p;
   ['week','month','all'].forEach(id=>{
     const b=document.getElementById('clp-'+id); if(!b)return;
     const on=id===p;
-    b.style.border=on?'1px solid rgba(0,240,255,.4)':'1px solid rgba(255,255,255,.1)';
-    b.style.background=on?'rgba(0,240,255,.1)':'rgba(255,255,255,.04)';
-    b.style.color=on?'var(--cyan-lt)':'var(--fg-dim)';
+    b.style.border    = on ? '1px solid var(--cyan)' : '1px solid var(--out-v)';
+    b.style.background= on ? 'var(--cyan)' : 'var(--surface-raised)';
+    b.style.color     = on ? 'var(--btn-text)' : 'var(--fg-dim)';
+    b.style.fontWeight= on ? '700' : '600';
   });
   renderCLContent();
 }
@@ -3717,9 +3495,96 @@ function clGetEntries(personOverride, periodOverride){
   });
 }
 
+
+// ── Cat Ledger state ────────────────────────────────────────────────────────────
+let clCat    = 'Suppliers';
+let clPeriod = 'all';
+let clPerson = null;
+let clChartType = 'bar';
+
+function initCatLedger(){
+  ensureValidCLCat();
+  renderCLCatPills();
+}
+
+function ensureValidCLCat(){
+  const valid = getCL_CATS();
+  if(!valid.includes(clCat)) clCat = valid[0] || 'Suppliers';
+}
+
+function setCLCat(cat){
+  clCat = cat;
+  clPerson = null;
+  renderCLCatPills();
+  refreshPersonSelect();
+  renderCLContent();
+}
+
+function renderCLCatPills(){
+  const el = document.getElementById('cl-cat-pills');
+  if(!el) return;
+  const cats = getCL_CATS();
+  el.innerHTML = cats.map(cat=>{
+    const m  = getCLMeta(cat);
+    const on = cat===clCat;
+    return `<button onclick="setCLCat('${cat}')" id="clcatpill-${cat.replace(/\s/g,'_')}"
+      style="flex-shrink:0;border-radius:9999px;padding:4px 12px;cursor:pointer;
+             font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;
+             border:1px solid ${on?m.color:('var(--out-v)')};
+             background:${on?m.color:'var(--surface-raised)'};
+             color:${on?'#ffffff':'var(--fg-dim)'};
+             transition:all .2s;white-space:nowrap"
+      >${cat}</button>`;
+  }).join('');
+}
+
+function drawChart(data){
+  lastChartData = data;
+  const canvas = document.getElementById('cl-sparkline');
+  if(!canvas || !data || !data.length) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const max = Math.max(...data.map(d=>d.v), 1);
+  const pts = data.map((d,i)=>({
+    x: (i/(data.length-1||1))*(W-20)+10,
+    y: H-10 - ((d.v/max)*(H-20))
+  }));
+  // Fill
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  const cyan = getComputedStyle(document.documentElement).getPropertyValue('--cyan').trim() || '#2563eb';
+  grad.addColorStop(0, cyan+'55');
+  grad.addColorStop(1, cyan+'00');
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, H);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x, H);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.strokeStyle = cyan;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  // Last dot
+  const last = pts[pts.length-1];
+  ctx.beginPath();
+  ctx.arc(last.x, last.y, 4, 0, Math.PI*2);
+  ctx.fillStyle = cyan;
+  ctx.fill();
+}
+
 // ── Main render ────────────────────────────────────────────────────────────────
 let lastChartData = null;
 
+
+
+// ════════════════════════════════════════════════════════════════
+// SCREEN RENDERING
+// ════════════════════════════════════════════════════════════════
 function renderCLContent(){
   ensureValidCLCat();
   const m = getCLMeta(clCat)||getCLMeta('Others');
@@ -3748,10 +3613,10 @@ function renderCLContent(){
 
   const banner=document.getElementById('cl-total-banner');
   if(banner){
-    banner.style.cssText=`border-radius:14px;padding:14px 16px;border:1px solid ${m.color}44;background:${m.bg}`;
+    banner.style.cssText=`border-radius:14px;padding:14px 16px;border:1px solid ${m.color}25;background:var(--card-bg);box-shadow:0 2px 12px ${m.color}12`;
     banner.innerHTML=`
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-      <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,0,0,.2);border:1px solid ${m.color}55;
+      <div style="width:40px;height:40px;border-radius:12px;background:${m.color}18;border:1px solid ${m.color}40;
                   display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <span class="ms" style="font-size:22px;color:${m.color}">${m.icon}</span>
       </div>
@@ -3760,26 +3625,31 @@ function renderCLContent(){
           Total received by ${clCat}
         </p>
         <select onchange="clSelectPerson(this.value)"
-          style="width:100%;background:rgba(0,0,0,.3);border:1px solid ${m.color}33;border-radius:8px;
-                 padding:7px 10px;color:${clPerson?m.color:'rgba(255,255,255,.6)'};font-family:Space Grotesk,sans-serif;
-                 font-size:11px;font-weight:700;cursor:pointer;appearance:none;outline:none">
-          <option value="" ${!clPerson?'selected':''} style="background:#1d1d34">All ${clCat}</option>
-          ${catPeople.map(p=>`<option value="${p.name}" ${clPerson===p.name?'selected':''} style="background:#1d1d34">${p.name}</option>`).join('')}
+          style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;
+                 padding:7px 10px;color:var(--fg);font-family:Space Grotesk,sans-serif;
+                 font-size:11px;font-weight:700;cursor:pointer;outline:none;-webkit-appearance:none">
+          <option value="" ${!clPerson?'selected':''}>All ${clCat}</option>
+          ${catPeople.map(p=>`<option value="${p.name}" ${clPerson===p.name?'selected':''}>${p.name}</option>`).join('')}
         </select>
       </div>
     </div>
-    <p class="sg" style="font-size:28px;font-weight:900;color:${m.color};letter-spacing:-.02em;margin-bottom:4px">${clFmt(sVal)}</p>
-    <p class="sg" style="font-size:10px;color:rgba(255,255,255,.45);margin-bottom:12px">${scope.length} txn${scope.length!==1?'s':''} · ${pLabel}${clPerson?' · '+clPerson:''}</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-      ${[{l:'This Week',v:sWk},{l:'This Month',v:sMo},{l:'All Time',v:sAl}].map(x=>`
-      <div style="background:rgba(0,0,0,.2);border-radius:9px;padding:8px 10px;text-align:center;border:1px solid rgba(255,255,255,.08)">
-        <p class="sg" style="font-size:8px;color:rgba(255,255,255,.4);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">${x.l}</p>
-        <p class="sg" style="font-size:13px;font-weight:700;color:${x.v?m.color:'rgba(255,255,255,.2)'}">${clFmt(x.v)}</p>
+    <p class="sg" style="font-size:30px;font-weight:900;color:${m.color};letter-spacing:-.02em;margin-bottom:4px">${clFmt(sVal)}</p>
+    <p class="sg" style="font-size:10px;color:var(--fg-dim);margin-bottom:12px">${scope.length} txn${scope.length!==1?'s':''} · ${pLabel}${clPerson?' · '+clPerson:''}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px">
+      ${[{l:'This Week',v:sWk},{l:'This Month',v:sMo},{l:'All Time',v:sAl}].map((x,i)=>`
+      <div style="background:${i===(['week','month','all'].indexOf(clPeriod))? m.color : 'var(--surface-raised)'};
+                  border-radius:10px;padding:9px 8px;text-align:center;
+                  border:1px solid ${i===(['week','month','all'].indexOf(clPeriod))? m.color : 'var(--card-border)'};
+                  transition:all .2s">
+        <p class="sg" style="font-size:7px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;
+                             color:${i===(['week','month','all'].indexOf(clPeriod))? 'rgba(255,255,255,.85)' : 'var(--fg-dim)'}">${x.l}</p>
+        <p class="sg" style="font-size:12px;font-weight:800;
+                             color:${i===(['week','month','all'].indexOf(clPeriod))? '#fff' : (x.v?m.color:'var(--fg-dim)')}">${clFmt(x.v)}</p>
       </div>`).join('')}
     </div>
     <!-- Sparkline -->
-    <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.08);padding-top:10px">
-      <p class="sg" style="font-size:8px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:8px">Growth over time</p>
+    <div style="margin-top:12px;border-top:1px solid var(--card-border);padding-top:10px">
+      <p class="sg" style="font-size:8px;font-weight:700;letter-spacing:.1em;color:var(--out);text-transform:uppercase;margin-bottom:8px">Growth over time</p>
       <canvas id="cl-sparkline" style="width:100%;height:52px;display:block"></canvas>
     </div>`;
   }
@@ -3806,24 +3676,25 @@ function renderCLContent(){
     partnerEl.innerHTML=partnerData.map((r,i)=>{
       const val=clPeriod==='week'?r.wk:clPeriod==='month'?r.mo:r.al;
       const isLast=i===partnerData.length-1;
-      return `<div style="padding:10px 14px;${isLast?'':'border-bottom:1px solid rgba(255,255,255,.04)'}">
+      return `<div style="padding:10px 14px;${isLast?'':'border-bottom:1px solid var(--card-border)'}">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
-          <div style="width:30px;height:30px;border-radius:50%;background:${r.color}18;border:1px solid ${r.color}44;
-                      display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <span class="sg" style="font-size:12px;font-weight:700;color:${r.color}">${r.name.charAt(0)}</span>
+          <div style="width:34px;height:34px;border-radius:50%;background:${r.color}22;border:2px solid ${r.color}55;
+                      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+                      box-shadow:0 0 8px ${r.color}20">
+            <span class="sg" style="font-size:13px;font-weight:800;color:${r.color}">${r.name.charAt(0)}</span>
           </div>
           <div style="flex:1;min-width:0">
             <p style="font-size:12px;font-weight:600;color:var(--fg);font-family:Inter,sans-serif">${r.name}</p>
-            <p class="sg" style="font-size:9px;color:var(--out)">${r.role} · ${scopeLabel}</p>
+            <p class="sg" style="font-size:9px;color:var(--fg-dim)">${r.role} · ${scopeLabel}</p>
           </div>
-          <p class="sg" style="font-size:13px;font-weight:700;color:${r.color};flex-shrink:0">${clFmt(val)}</p>
+          <p class="sg" style="font-size:14px;font-weight:800;color:${r.color};flex-shrink:0">${clFmt(val)}</p>
         </div>
         ${clBar(r.al/maxVal*100,r.color)}
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:6px">
           ${[{l:'Wk',v:r.wk},{l:'Mo',v:r.mo},{l:'All',v:r.al}].map(x=>`
-          <div style="background:rgba(255,255,255,.03);border-radius:7px;padding:5px 7px;text-align:center;border:1px solid rgba(255,255,255,.05)">
+          <div style="background:var(--surface-raised);border-radius:7px;padding:6px 7px;text-align:center;border:1px solid var(--card-border)">
             <p class="sg" style="font-size:8px;color:var(--out);margin-bottom:2px">${x.l}</p>
-            <p class="sg" style="font-size:10px;font-weight:700;color:${x.v?r.color:'var(--out-v)'}">${clFmt(x.v)}</p>
+            <p class="sg" style="font-size:10px;font-weight:700;color:${x.v?r.color:'var(--out)'}">${clFmt(x.v)}</p>
           </div>`).join('')}
         </div>
       </div>`;
@@ -3978,13 +3849,13 @@ function renderCatList(){
   const list = document.getElementById('cat-list');
   if(!list) return;
   list.innerHTML = USER_CATS.map((c,i)=>`
-    <div style="display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:9px 12px">
+    <div style="display:flex;align-items:center;gap:9px;background:var(--surface-raised);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:9px 12px">
       <div style="width:32px;height:32px;border-radius:9px;background:${c.color}18;border:1px solid ${c.color}44;display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <span class="ms" style="font-size:17px;color:${c.color}">${c.icon}</span>
       </div>
       <div style="flex:1">
         <p class="sg" style="font-size:12px;font-weight:700;color:var(--fg)">${c.name}</p>
-        <p class="sg" style="font-size:9px;color:var(--out)">${c.isPayer?'Payer (Partner)':'Receiver'} ${c.isSystem?'· System':'· Custom'}</p>
+        <p class="sg" style="font-size:9px;color:var(--fg-dim)">${c.isPayer?'Payer (Partner)':'Receiver'} ${c.isSystem?'· System':'· Custom'}</p>
       </div>
       ${!c.isSystem ? `
       <div style="display:flex;gap:5px">
@@ -4075,7 +3946,7 @@ function refreshAllCatLists(){
   renderPayeeList();
   const pp = document.getElementById('payee-cat-pills');
   if(pp){
-    pp.innerHTML = USER_CATS.filter(c=>!c.disabled).reduce((h,c)=>h+`<button class="payee-cat-btn" data-cat="${c.name}" onclick="selectPayeeCat(this,\'${c.name}\')" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--fg-dim)">${c.name}</button>`, '<button class="payee-cat-btn" data-cat="" onclick="selectPayeeCat(this,\'\');" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(0,240,255,.4);background:rgba(0,240,255,.1);color:var(--cyan-lt)">All</button>');
+    pp.innerHTML = USER_CATS.filter(c=>!c.disabled).reduce((h,c)=>h+`<button class="payee-cat-btn" data-cat="${c.name}" onclick="selectPayeeCat(this,\'${c.name}\')" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.12);background:var(--surface-raised);color:var(--fg-dim)">${c.name}</button>`, '<button class="payee-cat-btn" data-cat="" onclick="selectPayeeCat(this,\'\');" style="flex-shrink:0;border-radius:9999px;padding:5px 12px;cursor:pointer;font-family:Space Grotesk,sans-serif;font-size:10px;font-weight:700;border:1px solid rgba(0,240,255,.4);background:var(--card-accent);color:var(--cyan-lt)">All</button>');
   }
   // Refresh catledger tabs — reset active cat if it was disabled
   ensureValidCLCat();
